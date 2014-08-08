@@ -19,28 +19,42 @@ namespace SWPCCBilling2
 	{
 		private readonly IList<string> _history;
 		private int _historyIndex;
+		private int _left;
+		private int _top;
+		private int _pos;
+		private int _prevLineLength;
+		private bool _recalled;
+		private bool _done;
+		private bool _reparse;
+		private StringBuilder _line;
 
 		public CommandLineFactory()
 		{
 			_history = new List<string>();
 			_historyIndex = 0;
+			_line = new StringBuilder();
+			_done = false;
+		}
+
+		public void Prompt()
+		{
+			Console.WriteLine();
+			Console.Write("> ");
+			_left = Console.CursorLeft;
+			_top = Console.CursorTop;
+			_line.Clear();
+			_pos = 0;
+			_recalled = false;
 		}
 
 		public IEnumerable<CommandLine> Acquire()
 		{
-			Console.Write("> ");
-			int left = Console.CursorLeft;
-			int top = Console.CursorTop;
-			var line = new StringBuilder();
-			int pos = 0;
-
-			bool done = false;
-			bool recalled = false;
+			Prompt();
 
 			do
 			{
-				int prevLineLength = line.Length;
-				bool reparse = false;
+				_prevLineLength = _line.Length;
+				_reparse = false;
 
 				ConsoleKeyInfo keyInfo = ConsoleEx.TranslateKey();
 
@@ -50,104 +64,148 @@ namespace SWPCCBilling2
 					break;
 
 				case ConsoleKey.Enter:
-					Console.WriteLine();
-					Console.Write("> ");
-					left = Console.CursorLeft;
-					top = Console.CursorTop;
-					pos = 0;
-					yield return new CommandLine(line.ToString());
-				
-					if (!recalled)
-						_history.Add(line.ToString());
-
-					_historyIndex = _history.Count;
-					line.Clear();
-
+					yield return new CommandLine(_line.ToString());
+					SaveLineToHistory();
+					Prompt();
 					break;
 
 				case ConsoleKey.Backspace:
-					if (pos > 0)
-					{
-						line.Remove(pos-1, 1);
-						pos--;
-						reparse = true;
-						recalled = false;
-					}
+					DeletePreviousCharacter();
 					break;
 
 				case ConsoleKey.Delete:
-					if (pos < line.Length)
-					{
-						line.Remove(pos, 1);
-						reparse = true;
-						recalled = false;
-					}
+					DeleteCurrentCharacter();
 					break;
 
 				case ConsoleKey.LeftArrow:
-					if (pos > 0)
-						pos--;
+					MoveLeft();
 					break;
 
 				case ConsoleKey.RightArrow:
-					if (pos != line.Length)
-						pos++;
+					MoveRight();
 					break;
 
 				case ConsoleKey.UpArrow:
-					if (_history.Count == 0)
-						break;
-					_historyIndex--;
-					if (_historyIndex < 0)
-						_historyIndex = _history.Count-1;
-					line = new StringBuilder(_history[_historyIndex]);
-					pos = line.Length;
-					reparse = true;
-
-					recalled = true;
+					RecallPreviousLineFromHistory();
 					break;
 
 				case ConsoleKey.DownArrow:
-					if (_history.Count == 0)
-						break;
-					_historyIndex++;
-					if (_historyIndex >= _history.Count)
-						_historyIndex = 0;
-					line = new StringBuilder(_history[_historyIndex]);
-					pos = line.Length;
-					reparse = true;
-					recalled = true;
+					RecallNextLineFromHistory();
 					break;
 
 				default:
-					if (keyInfo.Modifiers == ConsoleModifiers.Alt ||
-						keyInfo.Modifiers == ConsoleModifiers.Control ||
-						keyInfo.KeyChar == '\0')
-						break;
-
-					line.Insert(pos, keyInfo.KeyChar);
-					pos++;
-					reparse = true;
-					recalled = false;
+					InsertKeyInfo(keyInfo);
 					break;
 				}
 
-				int lineLengthDelta = line.Length - prevLineLength;
+				RenderLine();
 
-				Console.CursorVisible = false;
-				Console.SetCursorPosition(left, top);
-				Console.Write(line.ToString());
+			} while (!_done);
+		}
 
-				while (lineLengthDelta < 0)
-				{
-					Console.Write(' ');
-					lineLengthDelta++;
-				}
+		public void SaveLineToHistory()
+		{
+			if (!_recalled)
+				_history.Add(_line.ToString());
 
-				Console.SetCursorPosition(left + pos, top);
-				Console.CursorVisible = true;
+			_historyIndex = _history.Count;
+		}
 
-			} while (!done);
+		public void DeletePreviousCharacter()
+		{
+			if (_pos > 0)
+			{
+				_line.Remove(_pos-1, 1);
+				_pos--;
+				_reparse = true;
+				_recalled = false;
+			}
+		}
+
+		public void DeleteCurrentCharacter()
+		{
+			if (_pos < _line.Length)
+			{
+				_line.Remove(_pos, 1);
+				_reparse = true;
+				_recalled = false;
+			}
+		}
+
+		public void MoveLeft()
+		{
+			if (_pos > 0)
+				_pos--;
+		}
+
+		public void MoveRight()
+		{
+			if (_pos != _line.Length)
+				_pos++;
+		}
+
+		public void RecallPreviousLineFromHistory()
+		{
+			if (_history.Count == 0)
+				return;
+
+			_historyIndex--;
+
+			if (_historyIndex < 0)
+				_historyIndex = _history.Count-1;
+
+			_line = new StringBuilder(_history[_historyIndex]);
+			_pos = _line.Length;
+			_reparse = true;
+			_recalled = true;
+		}
+
+		public void RecallNextLineFromHistory()
+		{
+			if (_history.Count == 0)
+				return;
+
+			_historyIndex++;
+
+			if (_historyIndex >= _history.Count)
+				_historyIndex = 0;
+
+			_line = new StringBuilder(_history[_historyIndex]);
+			_pos = _line.Length;
+			_reparse = true;
+			_recalled = true;
+		}
+
+		public void InsertKeyInfo(ConsoleKeyInfo keyInfo)
+		{
+			if (keyInfo.Modifiers == ConsoleModifiers.Alt ||
+				keyInfo.Modifiers == ConsoleModifiers.Control ||
+				keyInfo.KeyChar == '\0')
+				return;
+
+			_line.Insert(_pos, keyInfo.KeyChar);
+
+			_pos++;
+			_reparse = true;
+			_recalled = false;
+		}
+
+		public void RenderLine()
+		{
+			int lineLengthDelta = _line.Length - _prevLineLength;
+
+			Console.CursorVisible = false;
+			Console.SetCursorPosition(_left, _top);
+			Console.Write(_line.ToString());
+
+			while (lineLengthDelta < 0)
+			{
+				Console.Write(' ');
+				lineLengthDelta++;
+			}
+
+			Console.SetCursorPosition(_left + _pos, _top);
+			Console.CursorVisible = true;
 		}
 	}
 
