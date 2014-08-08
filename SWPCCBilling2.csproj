@@ -52,6 +52,19 @@
     <Compile Include="Models\Family.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Completions\ActionCompletion.cs" />
+    <Compile Include="Infrastructure\ActionAttribute.cs" />
+    <Compile Include="Infrastructure\CompleteWithAttribute.cs" />
+    <Compile Include="Infrastructure\ConsoleEx.cs" />
+    <Compile Include="Infrastructure\Controller.cs" />
+    <Compile Include="Infrastructure\ICompleteText.cs" />
+    <Compile Include="Infrastructure\Span.cs" />
+    <Compile Include="Controllers\CreditDebitController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Completions\FamilyCompletion.cs" />
+    <Compile Include="Completions\FeeCompletion.cs" />
+    <Compile Include="Completions\FilteredStringCompletion.cs" />
+    <Compile Include="Completions\NoCompletion.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
