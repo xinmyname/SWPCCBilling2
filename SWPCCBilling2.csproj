@@ -68,6 +68,7 @@
     <Compile Include="Models\CommandLine.cs" />
     <Compile Include="Infrastructure\CommandLineFactory.cs" />
     <Compile Include="Infrastructure\ActionMetaData.cs" />
+    <Compile Include="Models\CommandLineToken.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

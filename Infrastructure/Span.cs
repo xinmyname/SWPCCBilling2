@@ -6,16 +6,26 @@ namespace SWPCCBilling2.Infrastructure
 	public class Span
 	{
 		public string Text { get; private set; }
-		public int Length { get { return Text.Length; } }
+		public bool IsWhiteSpace { get; private set; }
 
 		private readonly ICompleteText _completion;
 
-		public Span(string trunk, ICompleteText completion)
+		public Span(string trunk, bool isWhiteSpace, ICompleteText completion)
 		{
+			Text = trunk;
+			IsWhiteSpace = isWhiteSpace;
 			_completion = completion;
 			_completion.Trunk = trunk;
-			Text = trunk;
 		}
+
+		public Span(string trunk, bool isWhiteSpace)
+		{
+			Text = trunk;
+			IsWhiteSpace = isWhiteSpace;
+			_completion = new NoCompletion();
+		}
+
+		public int Length { get { return Text.Length; } }
 
 		public void CompleteNext()
 		{
@@ -25,6 +35,14 @@ namespace SWPCCBilling2.Infrastructure
 				return;
 
 			Text = completeWith;
+		}
+	}
+
+	public class WhiteSpaceSpan : Span
+	{
+		public WhiteSpaceSpan(string trunk)
+			: base(trunk, true)
+		{
 		}
 	}
 }

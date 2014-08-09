@@ -1,32 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Infrastructure/ActionMetaData.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Infrastructure/CommandLineFactory.cs">
     <Files>
-      <File FileName="Bootstrapper.cs" Line="1" Column="1" />
-      <File FileName="Infrastructure/CommandLineFactory.cs" Line="5" Column="5" />
-      <File FileName="Infrastructure/Span.cs" Line="1" Column="1" />
-      <File FileName="Completions/ActionCompletion.cs" Line="1" Column="1" />
-      <File FileName="Completions/FilteredStringCompletion.cs" Line="1" Column="1" />
-      <File FileName="Completions/FamilyCompletion.cs" Line="4" Column="4" />
-      <File FileName="Completions/FeeCompletion.cs" Line="1" Column="1" />
-      <File FileName="Completions/NoCompletion.cs" Line="1" Column="1" />
-      <File FileName="Models/CommandLine.cs" Line="1" Column="1" />
-      <File FileName="Controllers/CreditDebitController.cs" Line="3" Column="3" />
-      <File FileName="Infrastructure/ActionMetaData.cs" Line="1" Column="1" />
+      <File FileName="Bootstrapper.cs" Line="20" Column="20" />
+      <File FileName="Infrastructure/CommandLineFactory.cs" Line="24" Column="24" />
+      <File FileName="Completions/NoCompletion.cs" Line="4" Column="4" />
+      <File FileName="Completions/FilteredStringCompletion.cs" Line="5" Column="5" />
+      <File FileName="Models/CommandLineToken.cs" Line="31" Column="31" />
+      <File FileName="Infrastructure/ICompleteText.cs" Line="29" Column="29" NotebookId="1" />
+      <File FileName="Infrastructure/Span.cs" Line="4" Column="4" NotebookId="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="SWPCCBilling2" expanded="True">
-            <Node name="Completions" expanded="True" />
-            <Node name="Controllers" expanded="True" />
-            <Node name="Infrastructure" expanded="True">
-              <Node name="ActionMetaData.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

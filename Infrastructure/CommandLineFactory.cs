@@ -256,31 +256,48 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void ParseLine()
 		{
-			bool actionPresent = false;
 			ActionInfo actionInfo = null;
 
 			_spans.Clear();
 			_errors.Clear();
 
-			foreach (Token token in TokenizeLine())
+			foreach (CommandLineToken token in TokenizeLine())
 			{
+				// Skip white space
+				while (token.IsWhiteSpace)
+				{
+					_spans.Add(new WhiteSpaceSpan(token.Text));
+					continue;
+				}
+
+				if (actionInfo == null)
+				{
+				}
+
+
+				// THIS IS A MESS!!
+
+
 				ICompleteText completion = new NoCompletion();
 
 				if (!token.IsWhiteSpace && !actionPresent)
 				{
-					completion = new ActionCompletion();
 					actionPresent = true;
 					actionInfo = _actionMetaData.GetAction(token.Text);
 
 					if (actionInfo == null)
 						_errors.Add("Unknown action. Type 'help' to get a list of actions.");
-				}
 
-				_spans.Add(new Span(token.Text, completion));
+					_spans.Add(new Span(token.Text, token.IsWhiteSpace, new ActionCompletion()));
+				}
+				else
+				{
+					_spans.Add(new Span(token.Text, token.IsWhiteSpace, new NoCompletion()));
+				}
 			}
 		}
 
-		public IEnumerable<Token> TokenizeLine()
+		public IEnumerable<CommandLineToken> TokenizeLine()
 		{
  			char[] chars = _line.ToString().ToCharArray();
 
@@ -294,7 +311,7 @@ namespace SWPCCBilling2.Infrastructure
 					for (; i < chars.Length && Char.IsWhiteSpace(chars[i]); i++)
 						token.Append(chars[i]);
 
-					yield return new Token {
+					yield return new CommandLineToken {
 						Position = position,
 						Length = i - position,
 						Text = token.ToString(),
@@ -306,7 +323,7 @@ namespace SWPCCBilling2.Infrastructure
 					for (; i < chars.Length && !Char.IsWhiteSpace(chars[i]); i++)
 						token.Append(chars[i]);
 
-					yield return new Token {
+					yield return new CommandLineToken {
 						Position = position,
 						Length = i - position,
 						Text = token.ToString(),
@@ -314,19 +331,6 @@ namespace SWPCCBilling2.Infrastructure
 					};
 				}
 			}
-		}
-	}
-
-	public class Token
-	{
-		public int Position { get; set; }
-		public int Length { get; set; }
-		public string Text { get; set; }
-		public bool IsWhiteSpace { get; set; }
-
-		public override string ToString()
-		{
-			return string.Format("[Token: Position={0}, Length={1}, Text=\"{2}\", IsWhiteSpace={3}]", Position, Length, Text, IsWhiteSpace);
 		}
 	}
 }
