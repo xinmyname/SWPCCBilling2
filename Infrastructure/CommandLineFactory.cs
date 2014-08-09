@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace SWPCCBilling2.Infrastructure
 {
-
 	public class CommandLineFactory
 	{
 		private readonly StringBuilder _line;
@@ -15,10 +14,12 @@ namespace SWPCCBilling2.Infrastructure
 		private int _left;
 		private int _top;
 		private int _pos;
-		private int _prevLineLength;
+		private int _prevSpanLength;
 		private bool _recalled;
 		private bool _done;
 		private bool _reparse;
+		private IList<Span> _spans;
+		private IList<string> _errors;
 
 		public CommandLineFactory()
 		{
@@ -26,6 +27,8 @@ namespace SWPCCBilling2.Infrastructure
 			_history = new List<string>();
 			_historyIndex = 0;
 			_done = false;
+			_spans = new List<Span>();
+			_errors = new List<string>();
 		}
 
 		public void Prompt()
@@ -37,6 +40,8 @@ namespace SWPCCBilling2.Infrastructure
 			_line.Clear();
 			_pos = 0;
 			_recalled = false;
+			_prevSpanLength = 0;
+			_spans.Clear();
 		}
 
 		public IEnumerable<CommandLine> Acquire()
@@ -45,49 +50,53 @@ namespace SWPCCBilling2.Infrastructure
 
 			do
 			{
-				_prevLineLength = _line.Length;
 				_reparse = false;
 
 				ConsoleKeyInfo keyInfo = ConsoleEx.TranslateKey();
 
 				switch (keyInfo.Key)
 				{
-				case ConsoleKey.Tab:
-					break;
+					case ConsoleKey.Tab:
+						break;
 
-				case ConsoleKey.Enter:
-					yield return new CommandLine(_line.ToString());
-					SaveLineToHistory();
-					Prompt();
-					break;
+					case ConsoleKey.Enter:
+						yield return new CommandLine(_line.ToString());
+						SaveLineToHistory();
+						Prompt();
+						break;
 
-				case ConsoleKey.Backspace:
-					DeletePreviousCharacter();
-					break;
+					case ConsoleKey.Backspace:
+						DeletePreviousCharacter();
+						break;
 
-				case ConsoleKey.Delete:
-					DeleteCurrentCharacter();
-					break;
+					case ConsoleKey.Delete:
+						DeleteCurrentCharacter();
+						break;
 
-				case ConsoleKey.LeftArrow:
-					MoveLeft();
-					break;
+					case ConsoleKey.LeftArrow:
+						MoveLeft();
+						break;
 
-				case ConsoleKey.RightArrow:
-					MoveRight();
-					break;
+					case ConsoleKey.RightArrow:
+						MoveRight();
+						break;
 
-				case ConsoleKey.UpArrow:
-					RecallPreviousLineFromHistory();
-					break;
+					case ConsoleKey.UpArrow:
+						RecallPreviousLineFromHistory();
+						break;
 
-				case ConsoleKey.DownArrow:
-					RecallNextLineFromHistory();
-					break;
+					case ConsoleKey.DownArrow:
+						RecallNextLineFromHistory();
+						break;
+					
+					case ConsoleKey.Escape:
+						_line.Append("    credit-payment Sherwood/Odman 1235 123.45");
+						_reparse = true;
+						break;
 
-				default:
-					InsertKeyInfo(keyInfo);
-					break;
+					default:
+						InsertKeyInfo(keyInfo);
+						break;
 				}
 
 				if (_reparse)
@@ -189,17 +198,26 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void RenderLine()
 		{
-			int lineLengthDelta = _line.Length - _prevLineLength;
-
 			Console.CursorVisible = false;
 			Console.SetCursorPosition(_left, _top);
-			Console.Write(_line.ToString());
 
-			while (lineLengthDelta < 0)
+			int spanLength = 0;
+
+			foreach (Span span in _spans)
+			{
+				Console.Write(span.Text);
+				spanLength += span.Length;
+			}
+
+			int spanDelta = spanLength - _prevSpanLength;
+
+			while (spanDelta < 0)
 			{
 				Console.Write(' ');
-				lineLengthDelta++;
+				spanDelta++;
 			}
+
+			_prevSpanLength = spanLength;
 
 			Console.SetCursorPosition(_left + _pos, _top);
 			Console.CursorVisible = true;
@@ -207,21 +225,59 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void ParseLine()
 		{
-			IList<Token> tokens = TokenizeLine().ToList();
+			bool actionFound = false;
+
+			_spans.Clear();
+			_errors.Clear();
+
+			foreach (Token token in TokenizeLine())
+			{
+				ICompleteText completion = new NoCompletion();
+
+				if (!token.IsWhiteSpace && !actionFound)
+				{
+					completion = new ActionCompletion();
+					actionFound = true;
+				}
+
+				_spans.Add(new Span(token.Text, completion));
+			}
 		}
 
 		public IEnumerable<Token> TokenizeLine()
 		{
-			char[] chars = _line.ToString().ToCharArray();
+ 			char[] chars = _line.ToString().ToCharArray();
 
-			for (int i = 0; i < chars.Length; i++) 
+			for (int i = 0; i < chars.Length;) 
 			{
-				char ch = chars[i];
+				var token = new StringBuilder();
+				int position = i;
 
+				if (Char.IsWhiteSpace(chars[i]))
+				{
+					for (; i < chars.Length && Char.IsWhiteSpace(chars[i]); i++)
+						token.Append(chars[i]);
 
+					yield return new Token {
+						Position = position,
+						Length = i - position,
+						Text = token.ToString(),
+						IsWhiteSpace = true
+					};
+				}
+				else
+				{
+					for (; i < chars.Length && !Char.IsWhiteSpace(chars[i]); i++)
+						token.Append(chars[i]);
+
+					yield return new Token {
+						Position = position,
+						Length = i - position,
+						Text = token.ToString(),
+						IsWhiteSpace = false
+					};
+				}
 			}
-
-			yield return null;
 		}
 	}
 
@@ -230,5 +286,11 @@ namespace SWPCCBilling2.Infrastructure
 		public int Position { get; set; }
 		public int Length { get; set; }
 		public string Text { get; set; }
+		public bool IsWhiteSpace { get; set; }
+
+		public override string ToString()
+		{
+			return string.Format("[Token: Position={0}, Length={1}, Text=\"{2}\", IsWhiteSpace={3}]", Position, Length, Text, IsWhiteSpace);
+		}
 	}
 }
