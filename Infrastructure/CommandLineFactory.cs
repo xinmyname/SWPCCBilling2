@@ -8,6 +8,7 @@ namespace SWPCCBilling2.Infrastructure
 {
 	public class CommandLineFactory
 	{
+		private readonly ActionMetaData _actionMetaData;
 		private readonly StringBuilder _line;
 		private readonly IList<string> _history;
 		private int _historyIndex;
@@ -18,11 +19,12 @@ namespace SWPCCBilling2.Infrastructure
 		private bool _recalled;
 		private bool _done;
 		private bool _reparse;
-		private IList<Span> _spans;
-		private IList<string> _errors;
+		private List<Span> _spans;
+		private List<string> _errors;
 
-		public CommandLineFactory()
+		public CommandLineFactory(ActionMetaData actionMetaData)
 		{
+			_actionMetaData = actionMetaData;
 			_line = new StringBuilder();
 			_history = new List<string>();
 			_historyIndex = 0;
@@ -33,7 +35,6 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void Prompt()
 		{
-			Console.WriteLine();
 			Console.Write("> ");
 			_left = Console.CursorLeft;
 			_top = Console.CursorTop;
@@ -42,6 +43,7 @@ namespace SWPCCBilling2.Infrastructure
 			_recalled = false;
 			_prevSpanLength = 0;
 			_spans.Clear();
+			_errors.Clear();
 		}
 
 		public IEnumerable<CommandLine> Acquire()
@@ -60,7 +62,8 @@ namespace SWPCCBilling2.Infrastructure
 						break;
 
 					case ConsoleKey.Enter:
-						yield return new CommandLine(_line.ToString());
+						Console.WriteLine();
+						yield return new CommandLine(null, null, _errors);
 						SaveLineToHistory();
 						Prompt();
 						break;
@@ -90,7 +93,7 @@ namespace SWPCCBilling2.Infrastructure
 						break;
 					
 					case ConsoleKey.Escape:
-						_line.Append("    credit-payment Sherwood/Odman 1235 123.45");
+						_line.Append("credit-payment Sherwood/Odman 1235 123.45");
 						_reparse = true;
 						break;
 
@@ -225,7 +228,8 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void ParseLine()
 		{
-			bool actionFound = false;
+			bool actionPresent = false;
+			ActionInfo actionInfo = null;
 
 			_spans.Clear();
 			_errors.Clear();
@@ -234,10 +238,14 @@ namespace SWPCCBilling2.Infrastructure
 			{
 				ICompleteText completion = new NoCompletion();
 
-				if (!token.IsWhiteSpace && !actionFound)
+				if (!token.IsWhiteSpace && !actionPresent)
 				{
 					completion = new ActionCompletion();
-					actionFound = true;
+					actionPresent = true;
+					actionInfo = _actionMetaData.GetAction(token.Text);
+
+					if (actionInfo == null)
+						_errors.Add("Unknown action. Type 'help' to get a list of actions.");
 				}
 
 				_spans.Add(new Span(token.Text, completion));

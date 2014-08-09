@@ -9,9 +9,10 @@ namespace SWPCCBilling2
 		{
 		}
 
-		[Action("help", ":topic?")]
-		public void Help(string topic)
+		[Action("help", ":action?")]
+		public void Help(string action)
 		{
+			Console.WriteLine("Halp!!");
 		}
 	}
 }

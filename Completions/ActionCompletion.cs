@@ -10,22 +10,8 @@ namespace SWPCCBilling2
 	{
 		public ActionCompletion()
 		{
-			foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
-			{
-				if (!type.IsSubclassOf(typeof(Controller)))
-					continue;
-
-				foreach (MethodInfo methodInfo in type.GetMethods())
-				{
-					ActionAttribute actionAttr = methodInfo.GetCustomAttributes(false)
-						.Where(attr => attr.GetType() == typeof(ActionAttribute))
-						.Cast<ActionAttribute>()
-						.SingleOrDefault();
-
-					if (actionAttr != null)
-						AllStrings.Add(actionAttr.Name);
-				}
-			}
+			foreach (ActionInfo actionInfo in ActionMetaData.DefaultActionMetaData.GetAllActions())
+				AllStrings.Add(actionInfo.Name);
 		}
 	}
 }

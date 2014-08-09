@@ -67,6 +67,7 @@
     <Compile Include="Completions\NoCompletion.cs" />
     <Compile Include="Models\CommandLine.cs" />
     <Compile Include="Infrastructure\CommandLineFactory.cs" />
+    <Compile Include="Infrastructure\ActionMetaData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

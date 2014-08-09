@@ -7,11 +7,20 @@ namespace SWPCCBilling2.Models
 {
 	public class CommandLine
 	{
-		public string Text { get; private set; }
+		public ActionInfo ActionInfo { get; private set; }
+		public object[] Parameters { get; private set; }
+		public IList<string> Errors { get; private set; }
 
-		public CommandLine(string text)
+		public CommandLine(ActionInfo actionInfo, object[] parameters, IList<string> errors)
 		{
-			Text = text;
+			ActionInfo = actionInfo;
+			Parameters = parameters;
+			Errors = errors;
+		}
+
+		public bool HasErrors
+		{
+			get { return Errors.Count > 0; }
 		}
 	}
 	
