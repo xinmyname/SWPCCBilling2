@@ -9,11 +9,8 @@ namespace SWPCCBilling2.Infrastructure
 {
 	public interface ICompleteText
 	{
-		string Trunk { get; }
-		int TrunkLength { get; }
+		string Trunk { get; set; }
 		void Preload();
-		void TrunkInsert(int position, char ch);
-		void TrunkRemove(int position);
 		string Next();
 	}
 	

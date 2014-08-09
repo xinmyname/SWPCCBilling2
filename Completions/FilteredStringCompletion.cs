@@ -10,17 +10,15 @@ namespace SWPCCBilling2
 
 	public class FilteredStringCompletion : ICompleteText
 	{
-		private StringBuilder _trunk;
+		private string _trunk;
 		private IList<string> _allStrings;
 		private IList<string> _filteredStrings;
 		private int _curIndex;
 
 		public FilteredStringCompletion()
 		{
-			_trunk = new StringBuilder();
 			_allStrings = new List<string>();
 			_filteredStrings = _allStrings;
-		
 			_curIndex = 0;
 		}
 
@@ -38,24 +36,15 @@ namespace SWPCCBilling2
 		public string Trunk
 		{
 			get { return _trunk.ToString(); }
+			set
+			{ 
+				_trunk = value; 
+				Refilter();
+			}
 		}
-
-		public int TrunkLength { get { return _trunk.Length; } }
 
 		public void Preload()
 		{
-		}
-
-		public void TrunkInsert(int position, char ch)
-		{
-			_trunk.Insert(position, ch);
-			Refilter();
-		}
-
-		public void TrunkRemove(int position)
-		{
-			_trunk.Remove(position, 1);
-			Refilter();
 		}
 
 		public string Next()

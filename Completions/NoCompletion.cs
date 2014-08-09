@@ -9,15 +9,7 @@ namespace SWPCCBilling2
 		public void Preload()
 		{
 		}
-
-		public void TrunkInsert(int position, char ch)
-		{
-		}
-
-		public void TrunkRemove(int position)
-		{
-		}
-
+			
 		public string Next()
 		{
 			return null;
@@ -26,11 +18,7 @@ namespace SWPCCBilling2
 		public string Trunk
 		{
 			get { return null; }
-		}
-
-		public int TrunkLength
-		{
-			get { return 0; }
+			set { }
 		}
 	}
 }

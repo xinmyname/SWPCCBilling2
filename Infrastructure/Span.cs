@@ -8,16 +8,13 @@ namespace SWPCCBilling2.Infrastructure
 		public string Text { get; private set; }
 		public int Length { get { return Text.Length; } }
 
-		private readonly string _stem;
 		private readonly ICompleteText _completion;
 
-		public Span(string stem, ICompleteText completion)
+		public Span(string trunk, ICompleteText completion)
 		{
-
-			_stem = stem;
 			_completion = completion;
-			//_completion.Trunk = _stem;
-			Text = stem;
+			_completion.Trunk = trunk;
+			Text = trunk;
 		}
 
 		public void CompleteNext()
