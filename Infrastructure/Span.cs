@@ -13,8 +13,10 @@ namespace SWPCCBilling2.Infrastructure
 
 		public Span(string stem, ICompleteText completion)
 		{
+
 			_stem = stem;
 			_completion = completion;
+			//_completion.Trunk = _stem;
 			Text = stem;
 		}
 

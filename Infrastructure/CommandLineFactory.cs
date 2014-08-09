@@ -59,6 +59,7 @@ namespace SWPCCBilling2.Infrastructure
 				switch (keyInfo.Key)
 				{
 					case ConsoleKey.Tab:
+						CompleteUnderCursor();
 						break;
 
 					case ConsoleKey.Enter:
@@ -110,6 +111,30 @@ namespace SWPCCBilling2.Infrastructure
 			} while (!_done);
 		}
 
+		public void CompleteUnderCursor()
+		{
+			int lenAccum = 0;
+			Span curSpan = null;
+
+			foreach (Span span in _spans)
+			{
+				lenAccum += span.Length;
+
+				if (lenAccum <= _pos)
+					curSpan = span;
+				else
+					break;
+			}
+
+			if (curSpan != null)
+			{
+				string lastText = curSpan.Text;
+				curSpan.CompleteNext();
+				int delta = curSpan.Text.Length - lastText.Length;
+				_pos += delta;
+			}
+		}
+
 		public void SaveLineToHistory()
 		{
 			if (!_recalled)
@@ -147,7 +172,7 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void MoveRight()
 		{
-			if (_pos != _line.Length)
+			if (_pos != _prevSpanLength)
 				_pos++;
 		}
 
@@ -204,13 +229,16 @@ namespace SWPCCBilling2.Infrastructure
 			Console.CursorVisible = false;
 			Console.SetCursorPosition(_left, _top);
 
+			_line.Clear();
 			int spanLength = 0;
 
 			foreach (Span span in _spans)
 			{
-				Console.Write(span.Text);
+				_line.Append(span.Text);
 				spanLength += span.Length;
 			}
+
+			Console.Write(_line);
 
 			int spanDelta = spanLength - _prevSpanLength;
 
