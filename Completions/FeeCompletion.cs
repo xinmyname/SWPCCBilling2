@@ -9,4 +9,12 @@ namespace SWPCCBilling2
 	public class FeeCompletion : FilteredStringCompletion
 	{
 	}
+
+	public class DiscountCompletion : FilteredStringCompletion
+	{
+	}
+
+	public class DateCompletion : FilteredStringCompletion
+	{
+	}
 }

@@ -13,10 +13,23 @@ namespace SWPCCBilling2
 		[Action("help", "action-name (or nothing to see list of actions)")]
 		public void Help([Optional][CompleteWith(typeof(ActionCompletion))]string action)
 		{
+			ActionMetaData actionMetaData = ActionMetaData.DefaultActionMetaData;
+
 			if (action == null)
-				Console.WriteLine("All the halps!");
+			{
+				Console.WriteLine("You can request help on the following actions:\n");
+				foreach (ActionInfo actionInfo in actionMetaData.GetAllActions())
+					Console.WriteLine("    {0}", actionInfo.Name);
+			}
 			else
-				Console.WriteLine("Some specific halp for {0}.", action);
+			{
+				ActionInfo actionInfo = actionMetaData.GetAction(action);
+
+				if (actionInfo == null)
+					Console.WriteLine("Action \"{0}\" does not exist. Type \"help\" for a list of actions.", action);
+				else
+					Console.WriteLine(actionInfo.HelpText);
+			}
 		}
 	}
 }

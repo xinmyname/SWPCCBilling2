@@ -20,6 +20,7 @@ namespace SWPCCBilling2
 		public string Name { get; set; }
 		public Type ControllerType { get; set; }
 		public MethodInfo ActionMethod { get; set; }
+		public string HelpText { get; set; }
 		public IList<ActionParam> Parameters { get; set; }
 	}
 
@@ -81,6 +82,7 @@ namespace SWPCCBilling2
 				Name = actionAttr.Name,
 				ControllerType = controllerType,
 				ActionMethod = methodInfo,
+				HelpText = actionAttr.ParamTemplate,
 				Parameters = BuildActionParameters(methodInfo).ToList()
 			};
 		}
