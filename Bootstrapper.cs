@@ -23,6 +23,7 @@ namespace SWPCCBilling2
 				{
 					ActionInfo actionInfo = cmdLine.ActionInfo;
 					object controller = Activator.CreateInstance(actionInfo.ControllerType);
+
 					actionInfo.ActionMethod.Invoke(controller, cmdLine.Parameters);
 				}
 			}

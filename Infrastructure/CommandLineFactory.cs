@@ -21,6 +21,7 @@ namespace SWPCCBilling2.Infrastructure
 		private bool _reparse;
 		private List<Span> _spans;
 		private List<string> _errors;
+		private ActionInfo _actionInfo;
 
 		public CommandLineFactory(ActionMetaData actionMetaData)
 		{
@@ -31,6 +32,7 @@ namespace SWPCCBilling2.Infrastructure
 			_done = false;
 			_spans = new List<Span>();
 			_errors = new List<string>();
+			_actionInfo = null;
 		}
 
 		public void Prompt()
@@ -63,8 +65,10 @@ namespace SWPCCBilling2.Infrastructure
 						break;
 
 					case ConsoleKey.Enter:
+						ParseLine();
 						Console.WriteLine();
-						yield return new CommandLine(null, null, _errors);
+						object[] parameters = LoadParametersFromSpans();
+						yield return new CommandLine(_actionInfo, parameters, _errors);
 						SaveLineToHistory();
 						Prompt();
 						break;
@@ -98,7 +102,6 @@ namespace SWPCCBilling2.Infrastructure
 						_reparse = true;
 						break;
 
-
 					default:
 						InsertKeyInfo(keyInfo);
 						break;
@@ -115,6 +118,7 @@ namespace SWPCCBilling2.Infrastructure
 		public void CompleteUnderCursor()
 		{
 			int lenAccum = 0;
+
 			Span curSpan = null;
 
 			foreach (Span span in _spans)
@@ -257,7 +261,7 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void ParseLine()
 		{
-			ActionInfo actionInfo = null;
+			_actionInfo = null;
 		
 			_spans.Clear();
 			_errors.Clear();
@@ -273,11 +277,11 @@ namespace SWPCCBilling2.Infrastructure
 					continue;
 				}
 
-				if (actionInfo == null)
-					actionInfo = ConvertTokenToActionSpan(token);
+				if (_actionInfo == null)
+					_actionInfo = ConvertTokenToActionSpan(token);
 				else 
 				{
-					ConvertTokenToParameterSpan(token, actionInfo, paramNum);
+					ConvertTokenToParameterSpan(token, paramNum);
 					paramNum++;
 				}
 			}
@@ -336,13 +340,13 @@ namespace SWPCCBilling2.Infrastructure
 			return actionInfo;
 		}
 
-		private void ConvertTokenToParameterSpan(CommandLineToken token, ActionInfo actionInfo, int paramNum)
+		private void ConvertTokenToParameterSpan(CommandLineToken token, int paramNum)
 		{
 			ICompleteText completion = null;
 
-			if (paramNum < actionInfo.Parameters.Count) 
+			if (paramNum < _actionInfo.Parameters.Count) 
 			{
-				ActionParam actionParam = actionInfo.Parameters[paramNum];
+				ActionParam actionParam = _actionInfo.Parameters[paramNum];
 				completion = (ICompleteText)Activator.CreateInstance(actionParam.CompletionType);
 			}
 
@@ -350,6 +354,12 @@ namespace SWPCCBilling2.Infrastructure
 				completion = NoCompletion.Default;
 
 			_spans.Add(new Span(token.Text, false, completion));
+		}
+
+		private object[] LoadParametersFromSpans()
+		{
+
+			return null;
 		}
 	}
 }
