@@ -3,7 +3,7 @@ using SWPCCBilling2.Infrastructure;
 
 namespace SWPCCBilling2
 {
-	public class ReportController
+	public class ReportController : Controller
 	{
 		public ReportController()
 		{
