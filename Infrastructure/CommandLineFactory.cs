@@ -325,7 +325,7 @@ namespace SWPCCBilling2.Infrastructure
 
 		private void AddTokenToSpansWithoutCompletion(CommandLineToken token)
 		{
-			_spans.Add(new Span(token.Text, token.IsWhiteSpace));
+			_spans.Add(new Span(token.Text, token.IsWhiteSpace, false));
 		}
 
 		private ActionInfo ConvertTokenToActionSpan(CommandLineToken token)
@@ -335,7 +335,7 @@ namespace SWPCCBilling2.Infrastructure
 			if (actionInfo == null)
 				_errors.Add("Unknown action. Type 'help' to get a list of actions.");
 
-			_spans.Add(new Span(token.Text, false, new ActionCompletion()));
+			_spans.Add(new Span(token.Text, false, false, new ActionCompletion()));
 
 			return actionInfo;
 		}
@@ -347,19 +347,47 @@ namespace SWPCCBilling2.Infrastructure
 			if (paramNum < _actionInfo.Parameters.Count) 
 			{
 				ActionParam actionParam = _actionInfo.Parameters[paramNum];
-				completion = (ICompleteText)Activator.CreateInstance(actionParam.CompletionType);
+				if (actionParam.CompletionType == typeof(NoCompletion))
+					completion = NoCompletion.Default;
+				else
+					completion = (ICompleteText)Activator.CreateInstance(actionParam.CompletionType);
 			}
 
 			if (completion == null)
 				completion = NoCompletion.Default;
 
-			_spans.Add(new Span(token.Text, false, completion));
+			_spans.Add(new Span(token.Text, false, true, completion));
 		}
 
 		private object[] LoadParametersFromSpans()
 		{
+			if (_actionInfo.Parameters.Count == 0)
+				return null;
 
-			return null;
+			IList<Span> paramSpans = _spans.Where(s => s.IsParameter).ToList();
+
+			if (paramSpans.Count > _actionInfo.Parameters.Count)
+				paramSpans = paramSpans.Take(_actionInfo.Parameters.Count).ToList();
+
+			if (paramSpans.Count < _actionInfo.Parameters.Count)
+			{
+				_errors.Add(String.Format("Action \"{0}\" expects {1} parameters", _actionInfo.Name, _actionInfo.Parameters.Count));
+				_actionInfo = null;
+				return null;
+			}
+
+			var parameters = new List<object>();
+
+			for (int i = 0; i < paramSpans.Count; i++)
+			{
+				Span paramSpan = paramSpans[i];
+				ActionParam actionParam = _actionInfo.Parameters[i];
+
+				object parameter = Convert.ChangeType(paramSpan.Text, actionParam.ParamType);
+				parameters.Add(parameter);
+			}
+
+			return parameters.ToArray();
 		}
 	}
 }

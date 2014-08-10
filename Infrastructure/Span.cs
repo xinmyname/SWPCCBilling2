@@ -7,21 +7,24 @@ namespace SWPCCBilling2.Infrastructure
 	{
 		public string Text { get; private set; }
 		public bool IsWhiteSpace { get; private set; }
+		public bool IsParameter { get; private set; }
 
 		private readonly ICompleteText _completion;
 
-		public Span(string trunk, bool isWhiteSpace, ICompleteText completion)
+		public Span(string trunk, bool isWhiteSpace, bool isParameter, ICompleteText completion)
 		{
 			Text = trunk;
 			IsWhiteSpace = isWhiteSpace;
+			IsParameter = isParameter;
 			_completion = completion;
 			_completion.Trunk = trunk;
 		}
 
-		public Span(string trunk, bool isWhiteSpace)
+		public Span(string trunk, bool isWhiteSpace, bool isParameter)
 		{
 			Text = trunk;
 			IsWhiteSpace = isWhiteSpace;
+			IsParameter = isParameter;
 			_completion = NoCompletion.Default;
 		}
 
@@ -41,7 +44,20 @@ namespace SWPCCBilling2.Infrastructure
 	public class WhiteSpaceSpan : Span
 	{
 		public WhiteSpaceSpan(string trunk)
-			: base(trunk, true)
+			: base(trunk, true, false)
+		{
+		}
+	}
+
+	public class ParameterSpan : Span
+	{
+		public ParameterSpan(string trunk)
+			: base(trunk, false, true)
+		{
+		}
+
+		public ParameterSpan(string trunk, ICompleteText completion)
+			: base(trunk, false, true, completion)
 		{
 		}
 	}
