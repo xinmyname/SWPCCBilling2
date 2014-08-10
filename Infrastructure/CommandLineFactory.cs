@@ -361,27 +361,43 @@ namespace SWPCCBilling2.Infrastructure
 
 		private object[] LoadParametersFromSpans()
 		{
-			if (_actionInfo.Parameters.Count == 0)
+			if (_actionInfo == null)
+				return null;
+
+			IList<ActionParam> actionParams = _actionInfo.Parameters;
+
+			if (actionParams.Count == 0)
 				return null;
 
 			IList<Span> paramSpans = _spans.Where(s => s.IsParameter).ToList();
 
-			if (paramSpans.Count > _actionInfo.Parameters.Count)
-				paramSpans = paramSpans.Take(_actionInfo.Parameters.Count).ToList();
+			if (paramSpans.Count > actionParams.Count)
+				paramSpans = paramSpans.Take(actionParams.Count).ToList();
 
-			if (paramSpans.Count < _actionInfo.Parameters.Count)
+			int numOptionalParams = actionParams.Where(p => p.Optional).Count();
+			int minNumParams = actionParams.Count - numOptionalParams;
+
+			if (paramSpans.Count < minNumParams)
 			{
-				_errors.Add(String.Format("Action \"{0}\" expects {1} parameters", _actionInfo.Name, _actionInfo.Parameters.Count));
+				_errors.Add(String.Format("Action \"{0}\" expects at least {1} {2}", _actionInfo.Name, minNumParams,
+					minNumParams == 1 ? "parameter" : "parameters"));
+
 				_actionInfo = null;
 				return null;
 			}
 
 			var parameters = new List<object>();
 
-			for (int i = 0; i < paramSpans.Count; i++)
+			for (int i = 0; i < actionParams.Count; i++)
 			{
+				if (i >= paramSpans.Count)
+				{
+					parameters.Add(null);
+					continue;
+				}
+
 				Span paramSpan = paramSpans[i];
-				ActionParam actionParam = _actionInfo.Parameters[i];
+				ActionParam actionParam = actionParams[i];
 
 				object parameter = Convert.ChangeType(paramSpan.Text, actionParam.ParamType);
 				parameters.Add(parameter);

@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using SWPCCBilling2.Infrastructure;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SWPCCBilling2
 {
@@ -11,6 +12,7 @@ namespace SWPCCBilling2
 		public string Name { get; set; }
 		public Type ParamType { get; set; }
 		public Type CompletionType { get; set; }
+		public bool Optional { get; set; }
 	}
 
 	public class ActionInfo
@@ -97,11 +99,16 @@ namespace SWPCCBilling2
 				if (completeWithAttr != null)
 					completionType = completeWithAttr.Type;
 
+				bool isOptional = paramInfo.GetCustomAttributes(false)
+					.Where(attr => attr.GetType() == typeof(OptionalAttribute))
+					.Any();
+
 				yield return new ActionParam
 				{
 					Name = paramInfo.Name,
 					ParamType = paramInfo.ParameterType,
-					CompletionType = completionType
+					CompletionType = completionType,
+					Optional = isOptional
 				};
 			}
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using SWPCCBilling2.Infrastructure;
+using System.Runtime.InteropServices;
 
 namespace SWPCCBilling2
 {
@@ -9,10 +10,13 @@ namespace SWPCCBilling2
 		{
 		}
 
-		[Action("help", ":action?")]
-		public void Help(string action)
+		[Action("help", "action-name (or nothing to see list of actions)")]
+		public void Help([Optional][CompleteWith(typeof(ActionCompletion))]string action)
 		{
-			Console.WriteLine("Halp!!");
+			if (action == null)
+				Console.WriteLine("All the halps!");
+			else
+				Console.WriteLine("Some specific halp for {0}.", action);
 		}
 	}
 }
