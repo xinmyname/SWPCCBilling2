@@ -98,6 +98,7 @@ namespace SWPCCBilling2.Infrastructure
 						_reparse = true;
 						break;
 
+
 					default:
 						InsertKeyInfo(keyInfo);
 						break;
@@ -257,42 +258,27 @@ namespace SWPCCBilling2.Infrastructure
 		public void ParseLine()
 		{
 			ActionInfo actionInfo = null;
-
+		
 			_spans.Clear();
 			_errors.Clear();
 
+			int paramNum = 0;
+
 			foreach (CommandLineToken token in TokenizeLine())
 			{
-				// Skip white space
-				while (token.IsWhiteSpace)
+				// If there was an error, don't do any else, just copy the text
+				if (_errors.Any() || token.IsWhiteSpace) 
 				{
-					_spans.Add(new WhiteSpaceSpan(token.Text));
+					AddTokenToSpansWithoutCompletion(token);
 					continue;
 				}
 
 				if (actionInfo == null)
+					actionInfo = ConvertTokenToActionSpan(token);
+				else 
 				{
-				}
-
-
-				// THIS IS A MESS!!
-
-
-				ICompleteText completion = new NoCompletion();
-
-				if (!token.IsWhiteSpace && !actionPresent)
-				{
-					actionPresent = true;
-					actionInfo = _actionMetaData.GetAction(token.Text);
-
-					if (actionInfo == null)
-						_errors.Add("Unknown action. Type 'help' to get a list of actions.");
-
-					_spans.Add(new Span(token.Text, token.IsWhiteSpace, new ActionCompletion()));
-				}
-				else
-				{
-					_spans.Add(new Span(token.Text, token.IsWhiteSpace, new NoCompletion()));
+					ConvertTokenToParameterSpan(token, actionInfo, paramNum);
+					paramNum++;
 				}
 			}
 		}
@@ -331,6 +317,39 @@ namespace SWPCCBilling2.Infrastructure
 					};
 				}
 			}
+		}
+
+		private void AddTokenToSpansWithoutCompletion(CommandLineToken token)
+		{
+			_spans.Add(new Span(token.Text, token.IsWhiteSpace));
+		}
+
+		private ActionInfo ConvertTokenToActionSpan(CommandLineToken token)
+		{
+			ActionInfo actionInfo = _actionMetaData.GetAction(token.Text);
+
+			if (actionInfo == null)
+				_errors.Add("Unknown action. Type 'help' to get a list of actions.");
+
+			_spans.Add(new Span(token.Text, false, new ActionCompletion()));
+
+			return actionInfo;
+		}
+
+		private void ConvertTokenToParameterSpan(CommandLineToken token, ActionInfo actionInfo, int paramNum)
+		{
+			ICompleteText completion = null;
+
+			if (paramNum < actionInfo.Parameters.Count) 
+			{
+				ActionParam actionParam = actionInfo.Parameters[paramNum];
+				completion = (ICompleteText)Activator.CreateInstance(actionParam.CompletionType);
+			}
+
+			if (completion == null)
+				completion = NoCompletion.Default;
+
+			_spans.Add(new Span(token.Text, false, completion));
 		}
 	}
 }

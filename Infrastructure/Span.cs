@@ -22,7 +22,7 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			Text = trunk;
 			IsWhiteSpace = isWhiteSpace;
-			_completion = new NoCompletion();
+			_completion = NoCompletion.Default;
 		}
 
 		public int Length { get { return Text.Length; } }

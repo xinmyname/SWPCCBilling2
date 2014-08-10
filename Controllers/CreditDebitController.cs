@@ -9,7 +9,7 @@ namespace SWPCCBilling2
 		{
 		}
 
-		[Action("debit", ":familyName :feeName * :quantity @ :amount")]
+		[Action("debit", ":familyName :feeName :quantity :amount")]
 		public void Debit(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName, 
 			[CompleteWith(typeof(FeeCompletion))] string feeName, 
@@ -18,7 +18,7 @@ namespace SWPCCBilling2
 		{
 		}
 
-		[Action("credit-fee", ":familyName :feeName * :quantity @ :amount")]
+		[Action("credit-fee", ":familyName :feeName :quantity :amount")]
 		public void CreditFee(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName, 
 			[CompleteWith(typeof(FeeCompletion))] string feeName, 

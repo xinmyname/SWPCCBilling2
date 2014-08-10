@@ -6,6 +6,23 @@ namespace SWPCCBilling2
 {
 	public class NoCompletion : ICompleteText
 	{
+		private static NoCompletion _default;
+
+		public static NoCompletion Default
+		{
+			get 
+			{
+				if (_default == null)
+					_default = new NoCompletion();
+
+				return _default;
+			}
+		}
+
+		private NoCompletion()
+		{
+		}
+
 		public void Preload()
 		{
 		}
