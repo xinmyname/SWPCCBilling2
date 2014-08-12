@@ -4,6 +4,7 @@ using SWPCCBilling2.Infrastructure;
 using System.Text;
 using SWPCCBilling2.Models;
 using System.Reflection;
+using System.Linq;
 
 namespace SWPCCBilling2
 {
@@ -13,7 +14,12 @@ namespace SWPCCBilling2
 		{
 			var cmdLineFactory = new CommandLineFactory(ActionMetaData.DefaultActionMetaData);
 
-			foreach (CommandLine cmdLine in cmdLineFactory.Acquire())
+			string combinedArgs = null;
+
+			if (args.Length > 0)
+				combinedArgs = args.Aggregate((cur, next) => cur + " " + next);
+
+			foreach (CommandLine cmdLine in cmdLineFactory.Acquire(combinedArgs))
 			{
 				if (cmdLine.HasErrors)
 				{

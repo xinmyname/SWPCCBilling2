@@ -18,6 +18,7 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
+    <Commandlineparameters>import-families ~/Dropbox/Documents/SWPCC/FY2015/RosterImport.csv </Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -38,6 +39,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="Mono.Data.Sqlite" />
     <Reference Include="System.Xml" />
+    <Reference Include="CsvHelper">
+      <HintPath>packages\CsvHelper.2.7.0\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

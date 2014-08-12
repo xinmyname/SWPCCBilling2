@@ -13,7 +13,7 @@ namespace SWPCCBilling2
 		public void ImportFamilies(
 			string path)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine("Importing {0}...", path);
 		}
 
 		[Action("show-family", "family-name")]

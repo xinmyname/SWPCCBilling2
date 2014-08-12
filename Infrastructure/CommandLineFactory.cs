@@ -48,15 +48,28 @@ namespace SWPCCBilling2.Infrastructure
 			_errors.Clear();
 		}
 
-		public IEnumerable<CommandLine> Acquire()
+		public IEnumerable<CommandLine> Acquire(string oneTimeArgs)
 		{
 			Prompt();
+
+			// HUGE HACK to accept one command line from the shell
+			if (oneTimeArgs != null)
+			{
+				_line.Append(oneTimeArgs);
+				_done = true;
+			}
 
 			do
 			{
 				_reparse = false;
 
-				ConsoleKeyInfo keyInfo = ConsoleEx.TranslateKey();
+				ConsoleKeyInfo keyInfo;
+
+				// A little more hacking to accept a command line from the shell.
+				if (oneTimeArgs != null)
+					keyInfo = new ConsoleKeyInfo('\x10', ConsoleKey.Enter, false, false, false);
+				else
+					keyInfo = ConsoleEx.TranslateKey();
 
 				switch (keyInfo.Key)
 				{
