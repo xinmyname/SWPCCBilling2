@@ -12,7 +12,7 @@ namespace SWPCCBilling2
 		public int DueDay { get; set; }
 		public int NumChildren { get; set; }
 		public int BillableDays { get; set; }
-		public string Disposition { get; set; } // New = 0, Returning = 1
+		public string IsNew { get; set; } 
 		public string IsGraduating { get; set; }
 		public string CheckSHA256 { get; set; }
 		public DateTime? Joined { get; set; }

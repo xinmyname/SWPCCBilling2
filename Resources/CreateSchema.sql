@@ -16,7 +16,7 @@ CREATE TABLE Family
     DueDay INTEGER,
     NumChildren INTEGER,
     BillableDays INTEGER,
-    Disposition INTEGER,
+    IsNew INTEGER,
     IsGraduating INTEGER,
     CheckSHA256 TEXT,
     Joined DATE,
@@ -34,7 +34,7 @@ CREATE TABLE Parent
 CREATE TABLE Fee
 (
     Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    Name TEXT,
+    Code TEXT,
     Type TEXT,
     Category TEXT,
     Amount NUMERIC

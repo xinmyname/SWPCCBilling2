@@ -83,6 +83,7 @@
     <Compile Include="Models\Parent.cs" />
     <Compile Include="Models\FamilyCsv.cs" />
     <Compile Include="Infrastructure\ParentStore.cs" />
+    <Compile Include="Infrastructure\StringExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

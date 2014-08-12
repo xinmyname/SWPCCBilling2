@@ -15,8 +15,8 @@ namespace SWPCCBilling2.Models
 		public int DueDay { get; set; }
 		public int NumChildren { get; set; }
 		public int BillableDays { get; set; }
-        public int Disposition { get; set; } // New = 0, Returning = 1
-		public int IsGraduating { get; set; }
+        public bool IsNew { get; set; }
+		public bool IsGraduating { get; set; }
 		public string CheckSHA256 { get; set; }
 		public DateTime? Joined { get; set; }
 		public DateTime? Departed { get; set; }

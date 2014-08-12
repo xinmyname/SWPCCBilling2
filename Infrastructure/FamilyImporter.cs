@@ -10,10 +10,6 @@ namespace SWPCCBilling2.Infrastructure
 		public Action<Family> FamilyAction { get; set; }
 		public Action<Parent> ParentAction { get; set; }
 
-		public FamilyImporter()
-		{
-		}
-
 		public void ImportCsvAtPath(string path)
 		{
 			var reader = new CsvReader(new StreamReader(path));
@@ -38,7 +34,22 @@ namespace SWPCCBilling2.Infrastructure
 
 		public Family FamilyFromFamilyCsv(FamilyCsv csvRecord)
 		{
-			throw new NotImplementedException();
+			return new Family 
+			{
+				Name = csvRecord.Name,
+				StreetAddress = csvRecord.StreetAddress,
+				City = csvRecord.City,
+				State = csvRecord.State,
+				Zip = csvRecord.Zip,
+				DueDay = csvRecord.DueDay,
+				NumChildren = csvRecord.NumChildren,
+				BillableDays = csvRecord.BillableDays,
+				IsNew = csvRecord.IsNew == "Yes",
+				IsGraduating = csvRecord.IsGraduating == "Yes",
+				CheckSHA256 = csvRecord.CheckSHA256.EmptyAsNull(),
+				Joined = csvRecord.Joined,
+				Departed = csvRecord.Departed
+			};
 		}
 
 		public Parent ParentForFamily(long familyId, string name, string email)
@@ -46,7 +57,12 @@ namespace SWPCCBilling2.Infrastructure
 			if (familyId == -1 || String.IsNullOrEmpty(name))
 				return null;
 
-			throw new NotImplementedException();
+			return new Parent 
+			{
+				FamilyId = familyId,
+				Name = name.EmptyAsNull(),
+				Email = email.EmptyAsNull()
+			};
 		}
 	}
 }
