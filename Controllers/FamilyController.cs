@@ -13,7 +13,17 @@ namespace SWPCCBilling2
 		public void ImportFamilies(
 			string path)
 		{
-			Console.WriteLine("Importing {0}...", path);
+			var familyStore = new FamilyStore();
+			var parentStore = new ParentStore();
+			var importer = new FamilyImporter();
+
+			familyStore.RemoveAll();
+			parentStore.RemoveAll();
+
+			importer.FamilyAction = familyStore.Add;
+			importer.ParentAction = parentStore.Add;
+
+			importer.ImportCsvAtPath(path);
 		}
 
 		[Action("show-family", "family-name")]

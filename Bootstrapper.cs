@@ -43,6 +43,7 @@ namespace SWPCCBilling2
 					{
 						Console.WriteLine("ERROR: {0}", ex.Message);
 					}
+
 				}
 			}
 

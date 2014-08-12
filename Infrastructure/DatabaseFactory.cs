@@ -14,8 +14,9 @@ namespace SWPCCBilling2.Infrastructure
 	{
 		readonly string _dbFileName;
 
-        public DatabaseFactory(SettingsStore settingsStore)
+        public DatabaseFactory()
 		{
+			var settingsStore = new SettingsStore();
             Settings settings = settingsStore.Load();
             _dbFileName = settings.DatabaseName;
 		}

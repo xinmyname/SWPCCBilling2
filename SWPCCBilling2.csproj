@@ -78,6 +78,11 @@
     <Compile Include="Controllers\DiscountController.cs" />
     <Compile Include="Completions\InvoiceController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Infrastructure\FamilyImporter.cs" />
+    <Compile Include="Infrastructure\FamilyStore.cs" />
+    <Compile Include="Models\Parent.cs" />
+    <Compile Include="Models\FamilyCsv.cs" />
+    <Compile Include="Infrastructure\ParentStore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
