@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Data;
 using SWPCCBilling2.Models;
 
 namespace SWPCCBilling2.Infrastructure
 {
-	public class FamilyStore
+
+	public class FeeStore
 	{
 		private readonly DatabaseFactory _dbFactory;
 
-		public FamilyStore()
+		public FeeStore()
 		{
 			_dbFactory = new DatabaseFactory();
 		}
@@ -17,20 +18,19 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				con.Execute("DELETE FROM Family");
+				con.Execute("DELETE FROM Fee");
 			}
 		}
 
-		public void Add(Family record)
+		public void Add(Fee record)
 		{
 			object[] values = record.NonKeyValues();
 
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				con.Execute("INSERT INTO [Family] VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?)", values);
-				record.Id = con.ExecuteScalar<long>("SELECT MAX(Id) FROM [Family]");
+				con.Execute("INSERT INTO [Fee] VALUES (NULL,?,?,?,?,?)", values);
+				record.Id = con.ExecuteScalar<long>("SELECT MAX(Id) FROM [Fee]");
 			}
 		}
 	}
 }
-

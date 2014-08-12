@@ -3,7 +3,7 @@ CREATE TABLE Version
     Version INTEGER
 );
 
-INSERT INTO Version (Version) VALUES (1);
+INSERT INTO Version (Version) VALUES (2);
 
 CREATE TABLE Family
 (
@@ -35,6 +35,7 @@ CREATE TABLE Fee
 (
     Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     Code TEXT,
+    Description TEXT,
     Type TEXT,
     Category TEXT,
     Amount NUMERIC

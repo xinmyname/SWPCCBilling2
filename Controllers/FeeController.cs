@@ -13,7 +13,14 @@ namespace SWPCCBilling2
 		public void ImportFees(
 			string path)
 		{
-			throw new NotImplementedException();
+			var feeStore = new FeeStore();
+			var importer = new FeeImporter();
+
+			feeStore.RemoveAll();
+
+			importer.FeeAction = feeStore.Add;
+
+			importer.ImportCsvAtPath(path);
 		}
 
 		[Action("show-fee","fee-name")]

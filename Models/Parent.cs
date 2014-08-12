@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SWPCCBilling2
+namespace SWPCCBilling2.Models
 {
 	public class Parent
 	{

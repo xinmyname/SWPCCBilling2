@@ -18,7 +18,7 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
-    <Commandlineparameters>import-families ~/Dropbox/Documents/SWPCC/FY2015/RosterImport.csv </Commandlineparameters>
+    <Commandlineparameters>import-fees ~/Dropbox/Documents/SWPCC/FY2015/FeeImport.csv </Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -84,6 +84,10 @@
     <Compile Include="Models\FamilyCsv.cs" />
     <Compile Include="Infrastructure\ParentStore.cs" />
     <Compile Include="Infrastructure\StringExtensions.cs" />
+    <Compile Include="Models\Fee.cs" />
+    <Compile Include="Infrastructure\FeeStore.cs" />
+    <Compile Include="Infrastructure\FeeImporter.cs" />
+    <Compile Include="Models\FeeCsv.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
