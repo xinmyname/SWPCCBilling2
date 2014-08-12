@@ -1,7 +1,8 @@
 ﻿using System;
 using SWPCCBilling2.Infrastructure;
+using SWPCCBilling2.Completions;
 
-namespace SWPCCBilling2
+namespace SWPCCBilling2.Controllers
 {
 	public class FamilyController : Controller
 	{

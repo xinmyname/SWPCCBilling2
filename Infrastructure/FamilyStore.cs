@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using SWPCCBilling2.Models;
+using System.Collections.Generic;
 
 namespace SWPCCBilling2.Infrastructure
 {
@@ -29,6 +30,15 @@ namespace SWPCCBilling2.Infrastructure
 			{
 				con.Execute("INSERT INTO [Family] VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?)", values);
 				record.Id = con.ExecuteScalar<long>("SELECT MAX(Id) FROM [Family]");
+			}
+		}
+
+		public IEnumerable<Family> LoadAll()
+		{
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				foreach (var record in con.Query<Family>("SELECT * FROM Family"))
+					yield return record;
 			}
 		}
 	}

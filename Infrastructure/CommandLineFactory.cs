@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SWPCCBilling2.Models;
 using System.Linq;
+using SWPCCBilling2.Completions;
 
 namespace SWPCCBilling2.Infrastructure
 {

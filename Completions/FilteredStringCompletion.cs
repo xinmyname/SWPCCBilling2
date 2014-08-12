@@ -5,7 +5,7 @@ using System.Reflection;
 using SWPCCBilling2.Infrastructure;
 using System.Text;
 
-namespace SWPCCBilling2
+namespace SWPCCBilling2.Completions
 {
 
 	public class FilteredStringCompletion : ICompleteText

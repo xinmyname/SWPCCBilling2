@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using SWPCCBilling2.Completions;
 
 namespace SWPCCBilling2.Infrastructure
 {

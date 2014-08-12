@@ -1,12 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Infrastructure/FamilyImporter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Completions/FamilyCompletion.cs">
     <Files>
       <File FileName="Infrastructure/FamilyImporter.cs" Line="63" Column="63" />
       <File FileName="Controllers/FamilyController.cs" Line="1" Column="1" />
-      <File FileName="Models/Fee.cs" Line="18" Column="18" NotebookId="1" />
+      <File FileName="Models/Fee.cs" Line="1" Column="1" NotebookId="1" />
       <File FileName="Controllers/FeeController.cs" Line="37" Column="37" NotebookId="1" />
-      <File FileName="Infrastructure/FeeImporter.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Infrastructure/FeeImporter.cs" Line="7" Column="7" NotebookId="1" />
+      <File FileName="Completions/FamilyCompletion.cs" Line="33" Column="33" NotebookId="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

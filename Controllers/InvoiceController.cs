@@ -1,8 +1,9 @@
 ﻿using System;
 using SWPCCBilling2.Infrastructure;
 using System.Runtime.InteropServices;
+using SWPCCBilling2.Completions;
 
-namespace SWPCCBilling2
+namespace SWPCCBilling2.Controllers
 {
 	public class InvoiceController : Controller
 	{

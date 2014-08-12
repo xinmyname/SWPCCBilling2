@@ -1,7 +1,7 @@
 ﻿using System;
 using SWPCCBilling2.Infrastructure;
 
-namespace SWPCCBilling2
+namespace SWPCCBilling2.Controllers
 {
 	public class SettingsController : Controller
 	{

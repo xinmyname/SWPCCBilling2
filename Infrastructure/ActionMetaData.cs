@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using SWPCCBilling2.Infrastructure;
 using System.Linq;
 using System.Runtime.InteropServices;
+using SWPCCBilling2.Completions;
 
-namespace SWPCCBilling2
+namespace SWPCCBilling2.Infrastructure
 {
 	public class ActionParam
 	{
