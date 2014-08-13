@@ -48,6 +48,8 @@ namespace SWPCCBilling2
 			{
 				host = new NancyHost(this, _urlFactory.BaseUri);
 				host.Start();
+
+				Console.WriteLine("Listening on {0}", _urlFactory.BaseUrl);
 			}
 
 			foreach (CommandLine cmdLine in cmdLineFactory.Acquire(combinedArgs))
@@ -107,7 +109,7 @@ namespace SWPCCBilling2
 
 			ResourceViewLocationProvider
 				.RootNamespaces
-				.Add(GetType().Assembly, "SWPCCBilling.Views");
+				.Add(GetType().Assembly, "SWPCCBilling2.Views");
 		}
 
 		protected override NancyInternalConfiguration InternalConfiguration

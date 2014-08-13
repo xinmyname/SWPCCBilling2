@@ -47,11 +47,11 @@
     <Reference Include="Nancy.Hosting.Self">
       <HintPath>packages\Nancy.Hosting.Self.0.23.2\lib\net40\Nancy.Hosting.Self.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac">
-      <HintPath>packages\Autofac.3.3.1\lib\net40\Autofac.dll</HintPath>
-    </Reference>
     <Reference Include="Nancy.Bootstrappers.Autofac">
       <HintPath>packages\Nancy.Bootstrappers.Autofac.0.23.2\lib\net40\Nancy.Bootstrappers.Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac">
+      <HintPath>packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +103,7 @@
     <Compile Include="Completions\DateCompletion.cs" />
     <Compile Include="Infrastructure\EmbeddedStaticContentConventionBuilder.cs" />
     <Compile Include="Infrastructure\UrlFactory.cs" />
+    <Compile Include="Modules\HomeModule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -111,9 +112,14 @@
     <Folder Include="Infrastructure\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\Home\" />
+    <Folder Include="Modules\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateSchema.sql" />
+    <EmbeddedResource Include="Views\Home\Index.html" />
+    <EmbeddedResource Include="Views\Master.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

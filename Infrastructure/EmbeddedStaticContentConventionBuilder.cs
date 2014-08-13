@@ -62,6 +62,7 @@ namespace SWPCCBilling2.Infrastructure
 				var responseFactory =
 					ResponseFactoryCache.GetOrAdd(path, BuildContentDelegate(ctx, requestedPath, contentPath, assembly, allowedExtensions));
 
+
 				return responseFactory.Invoke();
 			};
 		}
