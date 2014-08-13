@@ -5,19 +5,50 @@ using System.Text;
 using SWPCCBilling2.Models;
 using System.Reflection;
 using System.Linq;
+using Nancy.Hosting.Self;
+using Autofac;
+using Nancy.Conventions;
+using Nancy.ViewEngines;
+using Nancy.Bootstrapper;
 
 namespace SWPCCBilling2
 {
-	class Bootstrapper
+	class Bootstrapper : Nancy.Bootstrappers.Autofac.AutofacNancyBootstrapper
 	{
 		public static void Main(string[] args)
 		{
+			try
+			{
+				new Bootstrapper().Run(args);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
+			}
+		}
+
+		private readonly UrlFactory _urlFactory;
+
+		public Bootstrapper()
+		{
+			_urlFactory = UrlFactory.DefaultUrlFactory;
+		}
+
+		public void Run(string[] args)
+		{
+			NancyHost host = null;
+
 			var cmdLineFactory = new CommandLineFactory(ActionMetaData.DefaultActionMetaData);
 
 			string combinedArgs = null;
 
 			if (args.Length > 0)
 				combinedArgs = args.Aggregate((cur, next) => cur + " " + next);
+			else
+			{
+				host = new NancyHost(this, _urlFactory.BaseUri);
+				host.Start();
+			}
 
 			foreach (CommandLine cmdLine in cmdLineFactory.Acquire(combinedArgs))
 			{
@@ -47,7 +78,47 @@ namespace SWPCCBilling2
 				}
 			}
 
+			if (host != null)
+				host.Stop();
+
 			Console.WriteLine("Done!");
 		}
+
+		protected override void ConfigureApplicationContainer(ILifetimeScope existingContainer)
+		{
+			base.ConfigureApplicationContainer(existingContainer);
+		}
+
+		protected override void ConfigureConventions(NancyConventions conventions)
+		{
+			base.ConfigureConventions(conventions);
+
+			conventions.StaticContentsConventions.Add(
+				EmbeddedStaticContentConventionBuilder.AddDirectory(
+					"/vendor",
+					GetType().Assembly,
+					"vendor"));
+
+			conventions.StaticContentsConventions.Add(
+				EmbeddedStaticContentConventionBuilder.AddDirectory(
+					"/css",
+					GetType().Assembly,
+					"css"));
+
+			ResourceViewLocationProvider
+				.RootNamespaces
+				.Add(GetType().Assembly, "SWPCCBilling.Views");
+		}
+
+		protected override NancyInternalConfiguration InternalConfiguration
+		{
+			get { return NancyInternalConfiguration.WithOverrides(OnConfigurationBuilder); }
+		}
+
+		void OnConfigurationBuilder(NancyInternalConfiguration x)
+		{
+			x.ViewLocationProvider = typeof(ResourceViewLocationProvider);
+		}
+
 	}
 }

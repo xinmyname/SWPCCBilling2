@@ -1,31 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Completions/FamilyCompletion.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bootstrapper.cs">
     <Files>
-      <File FileName="Infrastructure/FamilyImporter.cs" Line="63" Column="63" />
       <File FileName="Controllers/FamilyController.cs" Line="1" Column="1" />
-      <File FileName="Models/Fee.cs" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Controllers/FeeController.cs" Line="37" Column="37" NotebookId="1" />
-      <File FileName="Infrastructure/FeeImporter.cs" Line="7" Column="7" NotebookId="1" />
-      <File FileName="Completions/FamilyCompletion.cs" Line="33" Column="33" NotebookId="1" />
+      <File FileName="Bootstrapper.cs" Line="46" Column="46" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="SWPCCBilling2" expanded="True" selected="True">
-            <Node name="Completions" expanded="True" />
-            <Node name="Controllers" expanded="True" />
-            <Node name="Infrastructure" expanded="True" />
-            <Node name="Models" expanded="True" />
-            <Node name="Resources" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/andy/Work/SWPCCBilling2/Controllers/CreditDebitController.cs" line="18" column="4" />
+      <Breakpoint file="/Users/andy/Work/SWPCCBilling2/Controllers/CreditDebitController.cs" line="19" column="4" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
