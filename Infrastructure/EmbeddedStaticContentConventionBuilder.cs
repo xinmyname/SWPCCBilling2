@@ -62,7 +62,6 @@ namespace SWPCCBilling2.Infrastructure
 				var responseFactory =
 					ResponseFactoryCache.GetOrAdd(path, BuildContentDelegate(ctx, requestedPath, contentPath, assembly, allowedExtensions));
 
-
 				return responseFactory.Invoke();
 			};
 		}
@@ -71,49 +70,15 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			return requestPath =>
 			{
-				context.Trace.TraceLog.WriteLog(x => x.AppendLine(string.Concat("[EmbeddedStaticContentConventionBuilder] Attempting to resolve embedded static content '", requestPath, "'")));
+				string resPath = "SWPCCBilling2" + requestPath
+					.Replace("_", "-")
+					.Replace("/", ".");
 
-				var extension = Path.GetExtension(requestPath);
+				string resName = Path.GetFileName(requestPath);
 
-				if (allowedExtensions.Length != 0 && !allowedExtensions.Any(e => string.Equals(e, extension, StringComparison.OrdinalIgnoreCase)))
-				{
-					context.Trace.TraceLog.WriteLog(x => x.AppendLine(string.Concat("[EmbeddedStaticContentConventionBuilder] The requested extension '", extension, "' does not match any of the valid extensions for the convention '", string.Join(",", allowedExtensions), "'")));
-					return () => null;
-				}
+				resPath = resPath.Substring(0, resPath.Length - (resName.Length + 1));
 
-				var transformedRequestPath =
-					GetSafeRequestPath(requestPath, requestedPath, contentPath);
-
-				transformedRequestPath =
-					GetEncodedPath(transformedRequestPath);
-
-				// Resolve relative paths by using c:\ as a fake root path
-				var fileName =
-					Path.GetFullPath(Path.Combine("c:\\", transformedRequestPath));
-
-				var contentRootPath =
-					Path.GetFullPath(Path.Combine("c:\\", GetEncodedPath(contentPath)));
-
-				if (!IsWithinContentFolder(contentRootPath, fileName))
-				{
-					context.Trace.TraceLog.WriteLog(x => x.AppendLine(string.Concat("[EmbeddedStaticContentConventionBuilder] The request '", fileName, "' is trying to access a path outside the content folder '", contentPath, "'")));
-					return () => null;
-				}
-
-				var resourceName =
-					Path.GetDirectoryName(assembly.GetName().Name + fileName.Substring(2)).Replace('\\', '.').Replace('-', '_');
-
-				fileName =
-					Path.GetFileName(fileName);
-
-				if (!assembly.GetManifestResourceNames().Any(x => string.Equals(x, resourceName + "." + fileName, StringComparison.OrdinalIgnoreCase)))
-				{
-					context.Trace.TraceLog.WriteLog(x => x.AppendLine(string.Concat("[EmbeddedStaticContentConventionBuilder] The requested resource '", requestPath, "' was not found in assembly '", assembly.GetName().Name, "'")));
-					return () => null;
-				}
-
-				context.Trace.TraceLog.WriteLog(x => x.AppendLine(string.Concat("[EmbeddedStaticContentConventionBuilder] Returning file '", fileName, "'")));
-				return () => new EmbeddedFileResponse(assembly, resourceName, fileName);
+				return () => new EmbeddedFileResponse(assembly, resPath, resName);
 			};
 		}
 

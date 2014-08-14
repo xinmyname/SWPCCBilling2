@@ -101,9 +101,9 @@
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Completions\DiscountCompletion.cs" />
     <Compile Include="Completions\DateCompletion.cs" />
-    <Compile Include="Infrastructure\EmbeddedStaticContentConventionBuilder.cs" />
     <Compile Include="Infrastructure\UrlFactory.cs" />
     <Compile Include="Modules\HomeModule.cs" />
+    <Compile Include="Infrastructure\EmbeddedStaticContentConventionBuilder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -115,11 +115,33 @@
     <Folder Include="Views\" />
     <Folder Include="Views\Home\" />
     <Folder Include="Modules\" />
+    <Folder Include="css\" />
+    <Folder Include="vendor\" />
+    <Folder Include="vendor\bootstrap\" />
+    <Folder Include="vendor\jquery\" />
+    <Folder Include="vendor\normalize-css\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateSchema.sql" />
     <EmbeddedResource Include="Views\Home\Index.html" />
     <EmbeddedResource Include="Views\Master.html" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\css\bootstrap.css" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\css\bootstrap.css.map" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\css\bootstrap.min.css" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\css\bootstrap-theme.css" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\css\bootstrap-theme.min.css" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\fonts\glyphicons-halflings-regular.eot" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\fonts\glyphicons-halflings-regular.woff" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\js\bootstrap.js" />
+    <EmbeddedResource Include="vendor\bootstrap\dist\js\bootstrap.min.js" />
+    <EmbeddedResource Include="vendor\jquery\dist\jquery.js" />
+    <EmbeddedResource Include="vendor\jquery\dist\jquery.min.js" />
+    <EmbeddedResource Include="vendor\jquery\dist\jquery.min.map" />
+    <EmbeddedResource Include="vendor\normalize-css\normalize.css" />
+    <EmbeddedResource Include="css\app.css" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
