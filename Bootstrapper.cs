@@ -6,14 +6,14 @@ using SWPCCBilling2.Models;
 using System.Reflection;
 using System.Linq;
 using Nancy.Hosting.Self;
-using Autofac;
 using Nancy.Conventions;
 using Nancy.ViewEngines;
 using Nancy.Bootstrapper;
+using Nancy;
 
 namespace SWPCCBilling2
 {
-	class Bootstrapper : Nancy.Bootstrappers.Autofac.AutofacNancyBootstrapper
+	class Bootstrapper : DefaultNancyBootstrapper
 	{
 		public static void Main(string[] args)
 		{
@@ -86,9 +86,11 @@ namespace SWPCCBilling2
 			Console.WriteLine("Done!");
 		}
 
-		protected override void ConfigureApplicationContainer(ILifetimeScope existingContainer)
+		protected override void ConfigureApplicationContainer(Nancy.TinyIoc.TinyIoCContainer container)
 		{
-			base.ConfigureApplicationContainer(existingContainer);
+			base.ConfigureApplicationContainer(container);
+
+			// More stuff here...
 		}
 
 		protected override void ConfigureConventions(NancyConventions conventions)
@@ -121,6 +123,5 @@ namespace SWPCCBilling2
 		{
 			x.ViewLocationProvider = typeof(ResourceViewLocationProvider);
 		}
-
 	}
 }
