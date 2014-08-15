@@ -47,6 +47,7 @@
     <Reference Include="Nancy.Hosting.Self">
       <HintPath>packages\Nancy.Hosting.Self.0.23.2\lib\net40\Nancy.Hosting.Self.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,6 +99,8 @@
     <Compile Include="Infrastructure\UrlFactory.cs" />
     <Compile Include="Modules\HomeModule.cs" />
     <Compile Include="Infrastructure\EmbeddedStaticContentConventionBuilder.cs" />
+    <Compile Include="Modules\FamilyModule.cs" />
+    <Compile Include="Models\MICR.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -114,6 +117,7 @@
     <Folder Include="vendor\bootstrap\" />
     <Folder Include="vendor\jquery\" />
     <Folder Include="vendor\normalize-css\" />
+    <Folder Include="Views\Family\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateSchema.sql" />
@@ -136,6 +140,7 @@
     <EmbeddedResource Include="vendor\jquery\dist\jquery.min.map" />
     <EmbeddedResource Include="vendor\normalize-css\normalize.css" />
     <EmbeddedResource Include="css\app.css" />
+    <EmbeddedResource Include="Views\Family\Show.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

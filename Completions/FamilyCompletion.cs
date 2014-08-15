@@ -18,7 +18,7 @@ namespace SWPCCBilling2.Completions
 
 			var familyStore = new FamilyStore();
 
-			foreach (Family family in familyStore.LoadAll())
+			foreach (Family family in familyStore.LoadActive())
 				AllStrings.Add(family.Name);
 		}
 	}

@@ -1,15 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Modules/HomeModule.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Models/MICR.cs">
     <Files>
-      <File FileName="Bootstrapper.cs" Line="25" Column="25" />
-      <File FileName="Modules/HomeModule.cs" Line="21" Column="21" />
+      <File FileName="Infrastructure/FamilyStore.cs" Line="1" Column="1" />
+      <File FileName="Controllers/FeeController.cs" Line="1" Column="1" />
+      <File FileName="Controllers/FamilyController.cs" Line="1" Column="1" />
+      <File FileName="Models/MICR.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/andy/Work/SWPCCBilling2/Controllers/CreditDebitController.cs" line="19" column="4" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

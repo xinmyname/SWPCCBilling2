@@ -44,6 +44,12 @@ namespace SWPCCBilling2
 		{
 			return String.Format("{0}/{1}", BaseUrl, path);
 		}
+
+		public string UrlForPath(string format, params object[] args)
+		{
+			return String.Format("{0}/{1}", BaseUrl, 
+				String.Format(format, args));
+		}
 	}
 }
 
