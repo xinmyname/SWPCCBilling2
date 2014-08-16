@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using SWPCCBilling2.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SWPCCBilling2.Infrastructure
 {
@@ -42,5 +43,32 @@ namespace SWPCCBilling2.Infrastructure
 					yield return record;
 			}
 		}
+
+		public Fee Load(long id)
+		{
+			Fee record = null;
+
+			using (IDbConnection con = _dbFactory.Open())
+				record = con.Query<Fee>("SELECT * FROM Fee WHERE Id=?", new { id }).SingleOrDefault();
+
+			return record;
+		}
+
+		public long GetIdForCode(string code)
+		{
+			long id = -1;
+
+			using (IDbConnection con = _dbFactory.Open())
+				id = con.ExecuteScalar<long>("SELECT Id FROM Fee WHERE Code=?", new { code });
+
+			return id;
+		}
+
+		public void Remove(long id)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+				con.Execute("DELETE FROM Fee WHERE Id=?", new { id });
+		}
+
 	}
 }

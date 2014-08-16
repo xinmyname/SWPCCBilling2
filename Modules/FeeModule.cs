@@ -4,13 +4,14 @@ using SWPCCBilling2.Infrastructure;
 
 namespace SWPCCBilling2.Modules
 {
-	public class FamilyModule : NancyModule
+
+	public class FeeModule : NancyModule
 	{
-		public FamilyModule(FamilyStore familyStore)
+		public FeeModule(FeeStore feeStore)
 		{
-			Get["/family/{id}"] = _ => {
+			Get["/fee/{id}"] = _ => {
 				long id = _.id;
-				var model = familyStore.Load(id);
+				var model = feeStore.Load(id);
 				return View["Index", model];
 			};
 		}

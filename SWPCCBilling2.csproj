@@ -101,6 +101,7 @@
     <Compile Include="Infrastructure\EmbeddedStaticContentConventionBuilder.cs" />
     <Compile Include="Modules\FamilyModule.cs" />
     <Compile Include="Models\MICR.cs" />
+    <Compile Include="Modules\FeeModule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -118,6 +119,7 @@
     <Folder Include="vendor\jquery\" />
     <Folder Include="vendor\normalize-css\" />
     <Folder Include="Views\Family\" />
+    <Folder Include="Views\Fee\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateSchema.sql" />
@@ -140,7 +142,8 @@
     <EmbeddedResource Include="vendor\jquery\dist\jquery.min.map" />
     <EmbeddedResource Include="vendor\normalize-css\normalize.css" />
     <EmbeddedResource Include="css\app.css" />
-    <EmbeddedResource Include="Views\Family\Show.html" />
+    <EmbeddedResource Include="Views\Family\Index.html" />
+    <EmbeddedResource Include="Views\Fee\Index.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
