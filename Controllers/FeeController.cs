@@ -33,8 +33,7 @@ namespace SWPCCBilling2.Controllers
 		public void ShowFee(
 			[CompleteWith(typeof(FeeCompletion))] string code)
 		{
-			long id = _feeStore.GetIdForCode(code);
-			string url = _urlFactory.UrlForPath("/fee/{0}", id);
+			string url = _urlFactory.UrlForPath("/fee/{0}", code);
 
 			Process.Start(url);
 		}
@@ -43,8 +42,7 @@ namespace SWPCCBilling2.Controllers
 		public void RemoveFee(
 			[CompleteWith(typeof(FeeCompletion))] string code)
 		{
-			long id = _feeStore.GetIdForCode(code);
-			_feeStore.Remove(id);
+			_feeStore.Remove(code);
 		}
 	}
 }

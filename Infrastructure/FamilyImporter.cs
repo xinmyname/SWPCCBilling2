@@ -20,12 +20,12 @@ namespace SWPCCBilling2.Infrastructure
 
 				FamilyAction(family);
 
-				Parent parent = ParentForFamily(family.Id, csvRecord.Parent1, csvRecord.Email1);
+				Parent parent = ParentForFamily(family.Name, csvRecord.Parent1, csvRecord.Email1);
 
 				if (parent != null)
 					ParentAction(parent);
 
-				parent = ParentForFamily(family.Id, csvRecord.Parent2, csvRecord.Email2);
+				parent = ParentForFamily(family.Name, csvRecord.Parent2, csvRecord.Email2);
 
 				if (parent != null)
 					ParentAction(parent);
@@ -52,14 +52,14 @@ namespace SWPCCBilling2.Infrastructure
 			};
 		}
 
-		public Parent ParentForFamily(long familyId, string name, string email)
+		public Parent ParentForFamily(string familyName, string name, string email)
 		{
-			if (familyId == -1 || String.IsNullOrEmpty(name))
+			if (String.IsNullOrEmpty(familyName) || String.IsNullOrEmpty(name))
 				return null;
 
 			return new Parent 
 			{
-				FamilyId = familyId,
+				FamilyName = familyName,
 				Name = name.EmptyAsNull(),
 				Email = email.EmptyAsNull()
 			};

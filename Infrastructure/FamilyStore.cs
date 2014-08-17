@@ -25,12 +25,11 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void Add(Family record)
 		{
-			object[] values = record.NonKeyValues();
+			object[] values = record.AllValues();
 
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				con.Execute("INSERT INTO [Family] VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?)", values);
-				record.Id = con.ExecuteScalar<long>("SELECT MAX(Id) FROM [Family]");
+				con.Execute("INSERT INTO [Family] VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", values);
 			}
 		}
 
@@ -52,30 +51,20 @@ namespace SWPCCBilling2.Infrastructure
 			}
 		}
 
-		public Family Load(long id)
+		public Family Load(string name)
 		{
 			Family record = null;
 
 			using (IDbConnection con = _dbFactory.Open())
-				record = con.Query<Family>("SELECT * FROM Family WHERE Id=?", new { id }).SingleOrDefault();
+				record = con.Query<Family>("SELECT * FROM Family WHERE Name=?", new { name }).SingleOrDefault();
 
 			return record;
 		}
 
-		public long GetIdForName(string name)
-		{
-			long id = -1;
-
-			using (IDbConnection con = _dbFactory.Open())
-				id = con.ExecuteScalar<long>("SELECT Id FROM Family WHERE Name=?", new { name });
-
-			return id;
-		}
-
-		public void Remove(long id)
+		public void Remove(string name)
 		{
 			using (IDbConnection con = _dbFactory.Open())
-				con.Execute("UPDATE Family SET Departed=date(\"now\") WHERE Id=?", new { id });
+				con.Execute("UPDATE Family SET Departed=date(\"now\") WHERE Name=?", new { name });
 		}
 
 		public bool Save(Family record)
@@ -84,7 +73,7 @@ namespace SWPCCBilling2.Infrastructure
 
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				rows = con.Execute("UPDATE Family SET Name=?,StreetAddress=?,City=?,State=?,Zip=?,DueDay=?,NumChildren=?,BillableDays=?,IsNew=?,IsGraduating=?,CheckSHA256=?,Joined=?,Departed=?",
+				rows = con.Execute("UPDATE Family SET StreetAddress=?,City=?,State=?,Zip=?,DueDay=?,NumChildren=?,BillableDays=?,IsNew=?,IsGraduating=?,CheckSHA256=?,Joined=?,Departed=? WHERE Name=?",
 					record.AllValuesKeyLast());
 			}
 

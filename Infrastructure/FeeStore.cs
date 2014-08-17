@@ -26,12 +26,11 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void Add(Fee record)
 		{
-			object[] values = record.NonKeyValues();
+			object[] values = record.AllValues();
 
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				con.Execute("INSERT INTO [Fee] VALUES (NULL,?,?,?,?,?)", values);
-				record.Id = con.ExecuteScalar<long>("SELECT MAX(Id) FROM [Fee]");
+				con.Execute("INSERT INTO [Fee] VALUES (?,?,?,?,?)", values);
 			}
 		}
 
@@ -44,30 +43,20 @@ namespace SWPCCBilling2.Infrastructure
 			}
 		}
 
-		public Fee Load(long id)
+		public Fee Load(string code)
 		{
 			Fee record = null;
 
 			using (IDbConnection con = _dbFactory.Open())
-				record = con.Query<Fee>("SELECT * FROM Fee WHERE Id=?", new { id }).SingleOrDefault();
+				record = con.Query<Fee>("SELECT * FROM Fee WHERE Code=?", new { code }).SingleOrDefault();
 
 			return record;
 		}
 
-		public long GetIdForCode(string code)
-		{
-			long id = -1;
-
-			using (IDbConnection con = _dbFactory.Open())
-				id = con.ExecuteScalar<long>("SELECT Id FROM Fee WHERE Code=?", new { code });
-
-			return id;
-		}
-
-		public void Remove(long id)
+		public void Remove(string code)
 		{
 			using (IDbConnection con = _dbFactory.Open())
-				con.Execute("DELETE FROM Fee WHERE Id=?", new { id });
+				con.Execute("DELETE FROM Fee WHERE Code=?", new { code });
 		}
 
 	}

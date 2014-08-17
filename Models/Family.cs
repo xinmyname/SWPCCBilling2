@@ -6,7 +6,6 @@ namespace SWPCCBilling2.Models
 	public class Family
 	{
 		[Key]
-		public long Id { get; set; }
 		public string Name { get; set; }
 		public string StreetAddress { get; set; }
 		public string City { get; set;}

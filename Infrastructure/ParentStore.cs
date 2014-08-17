@@ -23,12 +23,11 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void Add(Parent record)
 		{
-			object[] values = record.NonKeyValues();
+			object[] values = record.AllValues();
 
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				con.Execute("INSERT INTO [Parent] VALUES (NULL,?,?,?)", values);
-				record.Id = con.ExecuteScalar<long>("SELECT MAX(Id) FROM [Parent]");
+				con.Execute("INSERT INTO [Parent] VALUES (?,?,?)", values);
 			}
 		}
 	}

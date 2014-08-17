@@ -8,9 +8,9 @@ namespace SWPCCBilling2.Modules
 	{
 		public FamilyModule(FamilyStore familyStore)
 		{
-			Get["/family/{id}"] = _ => {
-				long id = _.id;
-				var model = familyStore.Load(id);
+			Get["/family/{name}"] = _ => {
+				string name = _.name;
+				var model = familyStore.Load(name);
 				return View["Index", model];
 			};
 		}

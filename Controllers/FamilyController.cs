@@ -37,8 +37,7 @@ namespace SWPCCBilling2.Controllers
 		public void ShowFamily(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName)
 		{
-			long id = _familyStore.GetIdForName(familyName);
-			string url = _urlFactory.UrlForPath("/family/{0}", id);
+			string url = _urlFactory.UrlForPath("/family/{0}", familyName);
 
 			Process.Start(url);
 		}
@@ -47,8 +46,7 @@ namespace SWPCCBilling2.Controllers
 		public void RemoveFamily(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName)
 		{
-			long id = _familyStore.GetIdForName(familyName);
-			_familyStore.Remove(id);
+			_familyStore.Remove(familyName);
 		}
 
 		[Action("import-micr", "family-name")]
@@ -64,8 +62,7 @@ namespace SWPCCBilling2.Controllers
 
 			Console.WriteLine(micr);
 
-			long id = _familyStore.GetIdForName(familyName);
-			Family family = _familyStore.Load(id);
+			Family family = _familyStore.Load(familyName);
 
 			family.CheckSHA256 = micr.SHA256;
 

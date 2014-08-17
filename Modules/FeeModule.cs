@@ -9,9 +9,9 @@ namespace SWPCCBilling2.Modules
 	{
 		public FeeModule(FeeStore feeStore)
 		{
-			Get["/fee/{id}"] = _ => {
-				long id = _.id;
-				var model = feeStore.Load(id);
+			Get["/fee/{code}"] = _ => {
+				string code = _.code;
+				var model = feeStore.Load(code);
 				return View["Index", model];
 			};
 		}

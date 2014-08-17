@@ -3,12 +3,11 @@ CREATE TABLE Version
     Version INTEGER
 );
 
-INSERT INTO Version (Version) VALUES (2);
+INSERT INTO Version (Version) VALUES (3);
 
 CREATE TABLE Family
 (
-    Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    Name TEXT,
+    Name TEXT NOT NULL PRIMARY KEY,
     StreetAddress TEXT,
     City TEXT,
     State TEXT,
@@ -25,16 +24,15 @@ CREATE TABLE Family
 
 CREATE TABLE Parent
 (
-    Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    FamilyId INTEGER,
+    FamilyName TEXT,
     Name TEXT,
     Email TEXT
 );
 
+
 CREATE TABLE Fee
 (
-    Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    Code TEXT,
+    Code TEXT NOT NULL PRIMARY KEY,
     Description TEXT,
     Type TEXT,
     Category TEXT,
@@ -43,32 +41,49 @@ CREATE TABLE Fee
 
 CREATE TABLE Discount
 (
-    Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    FamilyId INTEGER,
-    FeeId INTEGER,
+    FamilyName TEXT,
+    FeeCode TEXT,
     Percent NUMERIC,
     IsFinancialAid INTEGER
 );
 
-CREATE TABLE Ledger
+CREATE TABLE Payment
 (
     Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    FamilyId INTEGER,
+    FamilyName TEXT,
+    CheckNum TEXT,
+    Amount NUMERIC,
+    Received DATE,
+    InvoiceId INTEGER,
+    DepositId INTEGER
+);
+
+CREATE TABLE Deposit
+(
+    Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     Date DATE,
-    FeeId INTEGER,
-    PaymentId INTEGER,
+    Amount NUMERIC
+);
+
+CREATE TABLE Invoice 
+(
+    Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    FamilyName TEXT,
+    Due DATE,
+    Sent DATE,
+    Opened DATE,
+    Closed DATE
+);
+
+CREATE TABLE InvoiceLine
+(
+    InvoiceId INTEGER,
+    FeeCode TEXT,
     UnitPrice NUMERIC,
     Quantity INTEGER,
     Amount NUMERIC,
     Notes TEXT
 );
 
-CREATE TABLE Payment
-(
-    Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    FamilyId INTEGER,
-    CheckNum TEXT,
-    Amount NUMERIC,
-    Received DATE,
-    Deposited DATE
-);
+
+
