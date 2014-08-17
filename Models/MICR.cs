@@ -10,6 +10,7 @@ namespace SWPCCBilling2.Models
 		public string RoutingNumber { get; private set; }
 		public string AccountNumber { get; private set; }
 		public string CheckNumber { get; private set; }
+
 		public bool IsValid { get; private set; }
 		public string SHA256 { get; private set; }
 
