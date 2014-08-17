@@ -13,19 +13,8 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			var reader = new CsvReader(new StreamReader(path));
 
-			foreach (var feeCsv in reader.GetRecords<FeeCsv>())
-			{
-				var fee = new Fee 
-				{
-					Code = feeCsv.Code,
-					Description = feeCsv.Description,
-					Type = feeCsv.Type,
-					Category = feeCsv.Category,
-					Amount = feeCsv.Amount
-				};
-
+			foreach (var fee in reader.GetRecords<Fee>())
 				FeeAction(fee);
-			}
 		}
 	}
 	

@@ -92,7 +92,6 @@
     <Compile Include="Models\Fee.cs" />
     <Compile Include="Infrastructure\FeeStore.cs" />
     <Compile Include="Infrastructure\FeeImporter.cs" />
-    <Compile Include="Models\FeeCsv.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Completions\DiscountCompletion.cs" />
     <Compile Include="Completions\DateCompletion.cs" />
