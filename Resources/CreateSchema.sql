@@ -3,7 +3,7 @@ CREATE TABLE Version
     Version INTEGER
 );
 
-INSERT INTO Version (Version) VALUES (3);
+INSERT INTO Version (Version) VALUES (4);
 
 CREATE TABLE Family
 (
