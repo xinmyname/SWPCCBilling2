@@ -36,7 +36,6 @@ namespace SWPCCBilling2.Models
 		public string FeeCode { get; set; }
 		public double UnitPrice { get; set; }
 		public long Quantity { get; set; }
-		public double Amount { get; set; }
 		public string Notes { get; set; }
 	}
 }

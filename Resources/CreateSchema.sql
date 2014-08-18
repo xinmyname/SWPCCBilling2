@@ -81,7 +81,6 @@ CREATE TABLE InvoiceLine
     FeeCode TEXT,
     UnitPrice NUMERIC,
     Quantity INTEGER,
-    Amount NUMERIC,
     Notes TEXT
 );
 
