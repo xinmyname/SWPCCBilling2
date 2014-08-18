@@ -101,6 +101,8 @@
     <Compile Include="Modules\FamilyModule.cs" />
     <Compile Include="Models\MICR.cs" />
     <Compile Include="Modules\FeeModule.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Infrastructure\InvoiceStore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

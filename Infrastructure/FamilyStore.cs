@@ -79,6 +79,30 @@ namespace SWPCCBilling2.Infrastructure
 
 			return rows != 0;
 		}
+
+		public IEnumerable<string> GetFamilyNames(string name)
+		{
+			switch (name.ToUpper())
+			{
+				case "ALL":
+					return LoadActive().Select(f => f.Name);
+				case "RETURNING":
+					return LoadActive()
+						.Where(f => !f.IsNew)
+						.Select(f => f.Name);
+				case "NEW":
+					return LoadActive()
+						.Where(f => f.IsNew)
+						.Select(f => f.Name);
+				case "GRADUATING":
+					return LoadActive()
+						.Where(f => f.IsGraduating)
+						.Select(f => f.Name);
+				default:
+					return new[]{ name };
+			}
+		}
+
 	}
 }
 
