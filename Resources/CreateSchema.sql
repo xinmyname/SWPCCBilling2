@@ -3,7 +3,7 @@ CREATE TABLE Version
     Version INTEGER
 );
 
-INSERT INTO Version (Version) VALUES (4);
+INSERT INTO Version (Version) VALUES (5);
 
 CREATE TABLE Family
 (
@@ -79,8 +79,8 @@ CREATE TABLE InvoiceLine
 (
     InvoiceId INTEGER,
     FeeCode TEXT,
-    UnitPrice NUMERIC,
     Quantity INTEGER,
+    UnitPrice NUMERIC,
     Notes TEXT
 );
 

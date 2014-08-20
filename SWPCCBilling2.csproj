@@ -103,6 +103,7 @@
     <Compile Include="Modules\FeeModule.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Infrastructure\InvoiceStore.cs" />
+    <Compile Include="Infrastructure\Error.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

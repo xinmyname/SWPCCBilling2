@@ -28,14 +28,49 @@ namespace SWPCCBilling2.Models
 			Due = due;
 			Opened = opened;
 		}
+
+		public void AddLine(Family family, Fee fee, int? qty, double? amt)
+		{
+			double unitPrice = 0.0;
+			long quantity = 0;
+
+			switch (fee.Type)
+			{
+				case Fee.FeeTypeFixed:
+				case Fee.FeeTypePerMinute:
+					unitPrice = fee.Amount;
+					quantity = qty ?? 1;
+					break;
+				case Fee.FeeTypeVarying:
+					unitPrice = amt ?? 0.0;
+					quantity = qty ?? 1;
+					break;
+				case Fee.FeeTypePerChild:
+					unitPrice = fee.Amount;
+					quantity = family.NumChildren;
+					break;
+				case Fee.FeeTypePerChildDay:
+					unitPrice = fee.Amount;
+					quantity = family.BillableDays;
+					break;
+			}
+
+			Lines.Add(new InvoiceLine 
+			{
+				InvoiceId = Id,
+				FeeCode = fee.Code,
+				Quantity = quantity,
+				UnitPrice = unitPrice
+			});
+		}
 	}
 
 	public class InvoiceLine
 	{
 		public long InvoiceId { get; set; }
 		public string FeeCode { get; set; }
-		public double UnitPrice { get; set; }
 		public long Quantity { get; set; }
+		public double UnitPrice { get; set; }
 		public string Notes { get; set; }
 	}
 }

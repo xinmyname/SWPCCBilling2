@@ -21,9 +21,7 @@ namespace SWPCCBilling2.Infrastructure
 			using (IDbConnection con = _dbFactory.Open())
 			{
 				record = con.Query<Invoice>("SELECT * FROM Invoice WHERE FamilyName=? AND Opened=?", new { familyName, date }).SingleOrDefault();
-
-				if (record != null)
-					record.Lines = con.Query<InvoiceLine>("SELECT * FROM InvoiceLine WHERE InvoiceId=?", new { record.Id }).ToList();
+				LoadLines(con, record);
 			}
 
 			return record;
@@ -45,9 +43,30 @@ namespace SWPCCBilling2.Infrastructure
 			}
 		}
 
+		public Invoice LoadLatestOpenInvoiceForFamily(string familyName)
+		{
+			Invoice record = null;
+
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				record = con.Query<Invoice>("SELECT * FROM Invoice WHERE FamilyName=? AND Opened IS NOT NULL AND Closed IS NULL ORDER BY Opened DESC", new { familyName }).FirstOrDefault();
+				LoadLines(con, record);
+			}
+
+			return record;
+		}
+
 		public void Save(Invoice invoice)
 		{
+
+			// Just delete all lines and reinsert them. Terrible? Perhaps.
 			throw new NotImplementedException();
+		}
+
+		private void LoadLines(IDbConnection con, Invoice invoice)
+		{
+			if (invoice != null)
+				invoice.Lines = con.Query<InvoiceLine>("SELECT * FROM InvoiceLine WHERE InvoiceId=?", new { invoice.Id }).ToList();
 		}
 	}
 }

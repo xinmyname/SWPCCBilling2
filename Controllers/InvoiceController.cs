@@ -25,11 +25,10 @@ namespace SWPCCBilling2.Controllers
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
 			DateTime invoiceDate = GetInvoiceDate(date);
-			IList<string> familyNames = _familyStore.GetFamilyNames(name).ToList();
 
-			foreach (string familyName in familyNames)
+			foreach (Family family in _familyStore.LoadActiveFamilesWithName(name))
 			{
-				Family family = _familyStore.Load(familyName);
+				string familyName = family.Name;
 				Invoice invoice = _invoiceStore.Load(familyName, invoiceDate);
 
 				if (invoice == null)

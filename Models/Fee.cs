@@ -11,6 +11,12 @@ namespace SWPCCBilling2.Models
 		public string Type { get; set;}
 		public string Category { get; set; }
 		public double Amount { get; set; }
+
+		public const string FeeTypeFixed = "F";
+		public const string FeeTypeVarying = "V";
+		public const string FeeTypePerChild = "C";
+		public const string FeeTypePerChildDay = "D";
+		public const string FeeTypePerMinute = "M";
 	}
 }
 

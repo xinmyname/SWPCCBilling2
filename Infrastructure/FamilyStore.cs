@@ -80,29 +80,22 @@ namespace SWPCCBilling2.Infrastructure
 			return rows != 0;
 		}
 
-		public IEnumerable<string> GetFamilyNames(string name)
+		public IEnumerable<Family> LoadActiveFamilesWithName(string name)
 		{
 			switch (name.ToUpper())
 			{
 				case "ALL":
-					return LoadActive().Select(f => f.Name);
+					return LoadActive();
 				case "RETURNING":
-					return LoadActive()
-						.Where(f => !f.IsNew)
-						.Select(f => f.Name);
+					return LoadActive().Where(f => !f.IsNew);
 				case "NEW":
-					return LoadActive()
-						.Where(f => f.IsNew)
-						.Select(f => f.Name);
+					return LoadActive().Where(f => f.IsNew);
 				case "GRADUATING":
-					return LoadActive()
-						.Where(f => f.IsGraduating)
-						.Select(f => f.Name);
+					return LoadActive().Where(f => f.IsGraduating);
 				default:
-					return new[]{ name };
+					return new[]{ Load(name) };
 			}
 		}
-
 	}
 }
 
