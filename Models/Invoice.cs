@@ -29,7 +29,17 @@ namespace SWPCCBilling2.Models
 			Opened = opened;
 		}
 
-		public void AddLine(Family family, Fee fee, int? qty, double? amt)
+		public double AmountDue() 
+		{
+			decimal amountDue = 0;
+
+			foreach (InvoiceLine line in Lines)
+				amountDue += (decimal)line.UnitPrice * (decimal)line.Quantity;
+
+			return (double)amountDue;
+		}
+
+		public void AddLine(Family family, Fee fee, int? qty, double? amt, bool isCredit = false)
 		{
 			double unitPrice = 0.0;
 			long quantity = 0;
@@ -54,6 +64,9 @@ namespace SWPCCBilling2.Models
 					quantity = family.BillableDays;
 					break;
 			}
+
+			if (isCredit)
+				unitPrice = -unitPrice;
 
 			Lines.Add(new InvoiceLine 
 			{

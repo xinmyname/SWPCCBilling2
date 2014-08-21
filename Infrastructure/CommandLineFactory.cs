@@ -413,6 +413,8 @@ namespace SWPCCBilling2.Infrastructure
 				Span paramSpan = paramSpans[i];
 				ActionParam actionParam = actionParams[i];
 
+				//TODO: Need to handle nullable types and get underlying type as param type 
+
 				object parameter;
 				if (actionParam.ParamType == typeof(DateTime) || actionParam.ParamType == typeof(DateTime?))
 					parameter = DateFromText(paramSpan.Text);

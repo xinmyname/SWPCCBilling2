@@ -26,7 +26,9 @@ namespace SWPCCBilling2.Controllers
 		{
 			DateTime invoiceDate = GetInvoiceDate(date);
 
-			foreach (Family family in _familyStore.LoadActiveFamilesWithName(name))
+			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
+
+			foreach (Family family in activeFamilies)
 			{
 				string familyName = family.Name;
 				Invoice invoice = _invoiceStore.Load(familyName, invoiceDate);
