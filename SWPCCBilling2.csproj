@@ -104,6 +104,8 @@
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Infrastructure\InvoiceStore.cs" />
     <Compile Include="Infrastructure\Error.cs" />
+    <Compile Include="Models\LedgerLine.cs" />
+    <Compile Include="Infrastructure\Ledger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

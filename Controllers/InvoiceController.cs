@@ -24,28 +24,29 @@ namespace SWPCCBilling2.Controllers
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
-			DateTime invoiceDate = GetInvoiceDate(date);
-
-			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
-
-			foreach (Family family in activeFamilies)
-			{
-				string familyName = family.Name;
-				Invoice invoice = _invoiceStore.Load(familyName, invoiceDate);
-
-				if (invoice == null)
-				{
-					DateTime dueDate = new DateTime(invoiceDate.Year, invoiceDate.Month, family.DueDay);
-					invoice = new Invoice(familyName, invoiceDate, dueDate);
-					_invoiceStore.Add(invoice);
-
-					Console.WriteLine("New invoice created for {0} on {1:d}",
-						familyName, invoiceDate);
-				}
-				else
-					Console.WriteLine("Invoice already exists for {0} on {1:d}",
-						familyName, invoiceDate);
-			}
+			throw new NotImplementedException();
+//			DateTime invoiceDate = GetInvoiceDate(date);
+//
+//			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
+//
+//			foreach (Family family in activeFamilies)
+//			{
+//				string familyName = family.Name;
+//				Invoice invoice = _invoiceStore.Load(familyName, invoiceDate);
+//
+//				if (invoice == null)
+//				{
+//					DateTime dueDate = new DateTime(invoiceDate.Year, invoiceDate.Month, family.DueDay);
+//					invoice = new Invoice(familyName, invoiceDate, dueDate);
+//					_invoiceStore.Add(invoice);
+//
+//					Console.WriteLine("New invoice created for {0} on {1:d}",
+//						familyName, invoiceDate);
+//				}
+//				else
+//					Console.WriteLine("Invoice already exists for {0} on {1:d}",
+//						familyName, invoiceDate);
+//			}
 		}
 
 		[Action("close-invoice","family-name date(optional)")]

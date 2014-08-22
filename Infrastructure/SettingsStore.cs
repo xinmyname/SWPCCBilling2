@@ -18,6 +18,8 @@ namespace SWPCCBilling2.Infrastructure
             DefaultSettings = () => new Settings() 
             {
                 DatabaseName = "SWPCCBilling.sqlite",
+				DefaultFamilyImportPath = "/Users/andy/Dropbox/Documents/SWPCC/FY2015/RosterImport.csv",
+				DefaultFeeImportPath = "/Users/andy/Dropbox/Documents/SWPCC/FY2015/FeeImport.csv",
 				EmailServer = "smtp.gmail.com",
 				EmailPort = 587,
 				EmailSecure = true,
@@ -41,9 +43,12 @@ namespace SWPCCBilling2.Infrastructure
 			{
 				using (var stream = new FileStream(_settingsPath, FileMode.Open))
 					_settings = (Settings)_serializer.ReadObject(stream);
-			}
+			} 
 			else
-                _settings = DefaultSettings(); 
+			{
+				_settings = DefaultSettings(); 
+				Save(_settings);
+			}
 
 			return _settings;
 		}

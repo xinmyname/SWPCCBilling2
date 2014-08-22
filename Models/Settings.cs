@@ -5,6 +5,8 @@ namespace SWPCCBilling2.Models
 	public class Settings
 	{
 		public string DatabaseName { get; set; }
+		public string DefaultFamilyImportPath { get; set; }
+		public string DefaultFeeImportPath { get; set; }
 		public string EmailServer { get; set; }
 		public int EmailPort { get; set; }
 		public bool EmailSecure { get; set; }

@@ -4,6 +4,7 @@ using System.Text;
 using SWPCCBilling2.Models;
 using System.Linq;
 using SWPCCBilling2.Completions;
+using System.ComponentModel;
 
 namespace SWPCCBilling2.Infrastructure
 {
@@ -413,13 +414,19 @@ namespace SWPCCBilling2.Infrastructure
 				Span paramSpan = paramSpans[i];
 				ActionParam actionParam = actionParams[i];
 
-				//TODO: Need to handle nullable types and get underlying type as param type 
+				Type paramType = actionParam.ParamType;
+
+				if (paramType.IsGenericType && paramType.GetGenericTypeDefinition() == typeof(Nullable<>))
+				{
+					var converter = new NullableConverter(paramType);
+					paramType = converter.UnderlyingType;
+				}
 
 				object parameter;
-				if (actionParam.ParamType == typeof(DateTime) || actionParam.ParamType == typeof(DateTime?))
+				if (paramType == typeof(DateTime))
 					parameter = DateFromText(paramSpan.Text);
 				else
-					parameter = Convert.ChangeType(paramSpan.Text, actionParam.ParamType);
+					parameter = Convert.ChangeType(paramSpan.Text, paramType);
 
 				parameters.Add(parameter);
 			}

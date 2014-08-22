@@ -28,25 +28,26 @@ namespace SWPCCBilling2.Controllers
 			[Optional]int? quantity, 
 			[Optional]double? amount)
 		{
-			Fee fee = _feeStore.Load(feeCode);
-
-			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
-
-			foreach (Family family in activeFamilies)
-			{
-				string familyName = family.Name;
-				Invoice invoice = _invoiceStore.LoadLatestOpenInvoiceForFamily(familyName);
-
-				if (invoice == null)
-				{
-					Console.WriteLine("Could not find an open invoice for {0} family.", familyName);
-					continue;
-				}
-
-				invoice.AddLine(family, fee, quantity, amount);
-
-				_invoiceStore.Save(invoice);
-			}
+			throw new NotImplementedException();
+//			Fee fee = _feeStore.Load(feeCode);
+//
+//			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
+//
+//			foreach (Family family in activeFamilies)
+//			{
+//				string familyName = family.Name;
+//				Invoice invoice = _invoiceStore.LoadLatestOpenInvoiceForFamily(familyName);
+//
+//				if (invoice == null)
+//				{
+//					Console.WriteLine("Could not find an open invoice for {0} family.", familyName);
+//					continue;
+//				}
+//
+//				invoice.AddLine(family, fee, quantity, amount);
+//
+//				_invoiceStore.Save(invoice);
+//			}
 		}
 
 		[Action("credit-fee", "family-name fee-name quantity(number) amount(dollars)")]
@@ -56,25 +57,26 @@ namespace SWPCCBilling2.Controllers
 			[Optional]int? quantity, 
 			[Optional]double? amount)
 		{
-			Fee fee = _feeStore.Load(feeCode);
-
-			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
-
-			foreach (Family family in activeFamilies)
-			{
-				string familyName = family.Name;
-				Invoice invoice = _invoiceStore.LoadLatestOpenInvoiceForFamily(familyName);
-
-				if (invoice == null)
-				{
-					Console.WriteLine("Could not find an open invoice for {0} family.", familyName);
-					continue;
-				}
-
-				invoice.AddLine(family, fee, quantity, amount, true);
-
-				_invoiceStore.Save(invoice);
-			}
+			throw new NotImplementedException();
+//			Fee fee = _feeStore.Load(feeCode);
+//
+//			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
+//
+//			foreach (Family family in activeFamilies)
+//			{
+//				string familyName = family.Name;
+//				Invoice invoice = _invoiceStore.LoadLatestOpenInvoiceForFamily(familyName);
+//
+//				if (invoice == null)
+//				{
+//					Console.WriteLine("Could not find an open invoice for {0} family.", familyName);
+//					continue;
+//				}
+//
+//				invoice.AddLine(family, fee, quantity, amount, true);
+//
+//				_invoiceStore.Save(invoice);
+//			}
 		}
 
 		[Action("credit-payment", "family-name check-num amount")]

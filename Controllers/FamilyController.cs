@@ -3,24 +3,33 @@ using SWPCCBilling2.Infrastructure;
 using SWPCCBilling2.Completions;
 using System.Diagnostics;
 using SWPCCBilling2.Models;
+using System.Runtime.InteropServices;
 
 namespace SWPCCBilling2.Controllers
 {
 	public class FamilyController : Controller
 	{
+		private readonly SettingsStore _settingsStore;
 		private readonly FamilyStore _familyStore;
 		private readonly UrlFactory _urlFactory;
 
 		public FamilyController()
 		{
+			_settingsStore = new SettingsStore();
 			_familyStore = new FamilyStore();
 			_urlFactory = UrlFactory.DefaultUrlFactory;
 		}
 		
 		[Action("import-families", "path-to-csv-file")]
 		public void ImportFamilies(
-			string path)
+			[Optional]string path)
 		{
+			if (path == null)
+			{
+				Settings settings = _settingsStore.Load();
+				path = settings.DefaultFamilyImportPath;
+			}
+
 			var parentStore = new ParentStore();
 			var importer = new FamilyImporter();
 

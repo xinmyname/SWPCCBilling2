@@ -3,7 +3,7 @@ CREATE TABLE Version
     Version INTEGER
 );
 
-INSERT INTO Version (Version) VALUES (5);
+INSERT INTO Version (Version) VALUES (6);
 
 CREATE TABLE Family
 (
@@ -84,5 +84,16 @@ CREATE TABLE InvoiceLine
     Notes TEXT
 );
 
-
+CREATE TABLE LedgerLine
+(
+    Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    FamilyName TEXT,
+    Date DATE,
+    InvoiceId INTEGER,
+    PaymentId INTEGER,
+    FeeCode TEXT,
+    Quantity INTEGER,
+    UnitPrice NUMERIC,
+    Notes TEXT
+);
 
