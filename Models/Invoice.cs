@@ -29,51 +29,25 @@ namespace SWPCCBilling2.Models
 			Opened = opened;
 		}
 
-		public double AmountDue() 
+		public decimal AmountDue() 
 		{
 			decimal amountDue = 0;
 
 			foreach (InvoiceLine line in Lines)
 				amountDue += (decimal)line.UnitPrice * (decimal)line.Quantity;
 
-			return (double)amountDue;
+			return amountDue;
 		}
 
-		public void AddLine(Family family, Fee fee, int? qty, double? amt, bool isCredit = false)
+		public void AddLedgerLine(LedgerLine ledgerLine)
 		{
-			double unitPrice = 0.0;
-			long quantity = 0;
-
-			switch (fee.Type)
-			{
-				case Fee.FeeTypeFixed:
-				case Fee.FeeTypePerMinute:
-					unitPrice = fee.Amount;
-					quantity = qty ?? 1;
-					break;
-				case Fee.FeeTypeVarying:
-					unitPrice = amt ?? 0.0;
-					quantity = qty ?? 1;
-					break;
-				case Fee.FeeTypePerChild:
-					unitPrice = fee.Amount;
-					quantity = family.NumChildren;
-					break;
-				case Fee.FeeTypePerChildDay:
-					unitPrice = fee.Amount;
-					quantity = family.BillableDays;
-					break;
-			}
-
-			if (isCredit)
-				unitPrice = -unitPrice;
-
 			Lines.Add(new InvoiceLine 
 			{
-				InvoiceId = Id,
-				FeeCode = fee.Code,
-				Quantity = quantity,
-				UnitPrice = unitPrice
+				InvoiceId = this.Id,
+				FeeCode = ledgerLine.FeeCode,
+				Quantity = ledgerLine.Quantity,
+				UnitPrice = ledgerLine.UnitPrice,
+				Notes = ledgerLine.Notes
 			});
 		}
 	}

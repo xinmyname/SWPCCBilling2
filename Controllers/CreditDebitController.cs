@@ -10,13 +10,13 @@ namespace SWPCCBilling2.Controllers
 {
 	public class CreditDebitController : Controller
 	{
-		private readonly InvoiceStore _invoiceStore;
+		private readonly Ledger _ledger;
 		private readonly FamilyStore _familyStore;
 		private readonly FeeStore _feeStore;
 
 		public CreditDebitController()
 		{
-			_invoiceStore = new InvoiceStore();
+			_ledger = new Ledger();
 			_familyStore = new FamilyStore();
 			_feeStore = new FeeStore();
 		}
@@ -25,58 +25,36 @@ namespace SWPCCBilling2.Controllers
 		public void Debit(
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
 			[CompleteWith(typeof(FeeCompletion))] string feeCode, 
-			[Optional]int? quantity, 
+			[Optional]long? quantity, 
 			[Optional]double? amount)
 		{
-			throw new NotImplementedException();
-//			Fee fee = _feeStore.Load(feeCode);
-//
-//			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
-//
-//			foreach (Family family in activeFamilies)
-//			{
-//				string familyName = family.Name;
-//				Invoice invoice = _invoiceStore.LoadLatestOpenInvoiceForFamily(familyName);
-//
-//				if (invoice == null)
-//				{
-//					Console.WriteLine("Could not find an open invoice for {0} family.", familyName);
-//					continue;
-//				}
-//
-//				invoice.AddLine(family, fee, quantity, amount);
-//
-//				_invoiceStore.Save(invoice);
-//			}
+			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
+			Fee fee = _feeStore.Load(feeCode);
+
+			decimal total = 0m;
+
+			foreach (Family family in activeFamilies)
+				total += _ledger.Debit(family, fee, quantity, amount, null).SubTotal();
+
+			Console.WriteLine("Debited {0} families {1:C}", activeFamilies.Count, total);
 		}
 
 		[Action("credit-fee", "family-name fee-name quantity(number) amount(dollars)")]
 		public void CreditFee(
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
 			[CompleteWith(typeof(FeeCompletion))] string feeCode, 
-			[Optional]int? quantity, 
+			[Optional]long? quantity, 
 			[Optional]double? amount)
 		{
-			throw new NotImplementedException();
-//			Fee fee = _feeStore.Load(feeCode);
-//
-//			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
-//
-//			foreach (Family family in activeFamilies)
-//			{
-//				string familyName = family.Name;
-//				Invoice invoice = _invoiceStore.LoadLatestOpenInvoiceForFamily(familyName);
-//
-//				if (invoice == null)
-//				{
-//					Console.WriteLine("Could not find an open invoice for {0} family.", familyName);
-//					continue;
-//				}
-//
-//				invoice.AddLine(family, fee, quantity, amount, true);
-//
-//				_invoiceStore.Save(invoice);
-//			}
+			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
+			Fee fee = _feeStore.Load(feeCode);
+
+			decimal total = 0m;
+
+			foreach (Family family in activeFamilies)
+				total += _ledger.Credit(family, fee, quantity, amount, null).SubTotal();
+
+			Console.WriteLine("Credited {0} families {1:C}", activeFamilies.Count, -total);
 		}
 
 		[Action("credit-payment", "family-name check-num amount")]

@@ -17,5 +17,10 @@ namespace SWPCCBilling2.Models
 		public long Quantity { get; set; }
 		public double UnitPrice { get; set; }
 		public string Notes { get; set; }
+
+		public decimal SubTotal()
+		{
+			return ((decimal)UnitPrice * Quantity);
+		}
 	}
 }

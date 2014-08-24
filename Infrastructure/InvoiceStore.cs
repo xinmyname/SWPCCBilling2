@@ -56,17 +56,30 @@ namespace SWPCCBilling2.Infrastructure
 			return record;
 		}
 
-		public void Save(Invoice invoice)
+		public void Save(Invoice invoice, bool withLines = true)
 		{
 			using (IDbConnection con = _dbFactory.Open())
 			{
 				con.Execute("UPDATE Invoice SET FamilyName=?,Due=?,Sent=?,Opened=?,Closed=? WHERE Id=?",
 					invoice.AllValuesKeyLast());
 
-				con.Execute("DELETE FROM InvoiceLine WHERE InvoiceId=?", new { invoice.Id });
+				if (withLines)
+				{
 
-				foreach (InvoiceLine line in invoice.Lines)
-					con.Execute("INSERT INTO [InvoiceLine] VALUES(?,?,?,?,?)",line.AllValues());
+					con.Execute("DELETE FROM InvoiceLine WHERE InvoiceId=?", new { invoice.Id });
+
+					foreach (InvoiceLine line in invoice.Lines)
+						con.Execute("INSERT INTO [InvoiceLine] VALUES(?,?,?,?,?)", line.AllValues());
+				}
+			}
+		}
+
+		public void Remove(Invoice invoice)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				con.Execute("DELETE FROM Invoice WHERE Id=?", new { invoice.Id });
+				con.Execute("DELETE FROM InvoiceLine WHERE InvoiceId=?", new { invoice.Id });
 			}
 		}
 
