@@ -43,7 +43,7 @@ namespace SWPCCBilling2.Controllers
 		public void ShowFee(
 			[CompleteWith(typeof(FeeCompletion))] string code)
 		{
-			string url = _urlFactory.UrlForPath("/fee/{0}", code);
+			string url = _urlFactory.UrlForPath("fee/{0}", code);
 
 			Process.Start(url);
 		}

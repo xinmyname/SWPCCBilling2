@@ -34,7 +34,7 @@ namespace SWPCCBilling2.Models
 			decimal amountDue = 0;
 
 			foreach (InvoiceLine line in Lines)
-				amountDue += (decimal)line.UnitPrice * (decimal)line.Quantity;
+				amountDue += line.Amount();
 
 			return amountDue;
 		}
@@ -59,6 +59,11 @@ namespace SWPCCBilling2.Models
 		public long Quantity { get; set; }
 		public double UnitPrice { get; set; }
 		public string Notes { get; set; }
+
+		public decimal Amount()
+		{
+			return (decimal)UnitPrice * (decimal)Quantity;
+		}
 	}
 }
 

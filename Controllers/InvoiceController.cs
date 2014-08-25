@@ -5,6 +5,7 @@ using SWPCCBilling2.Completions;
 using System.Collections.Generic;
 using System.Linq;
 using SWPCCBilling2.Models;
+using System.Diagnostics;
 
 namespace SWPCCBilling2.Controllers
 {
@@ -13,12 +14,14 @@ namespace SWPCCBilling2.Controllers
 		private readonly InvoiceStore _invoiceStore;
 		private readonly FamilyStore _familyStore;
 		private readonly Ledger _ledger;
+		private readonly UrlFactory _urlFactory;
 
 		public InvoiceController()
 		{
 			_invoiceStore = new InvoiceStore();
 			_familyStore = new FamilyStore();
 			_ledger = new Ledger();
+			_urlFactory = UrlFactory.DefaultUrlFactory;
 		}
 
 		[Action("open-invoice","family-name date(optional)")]
@@ -111,6 +114,24 @@ namespace SWPCCBilling2.Controllers
 		{
 			throw new NotImplementedException();
 		}
+
+		[Action("show-invoice","family-name date(optional)")]
+		public void ShowInvoice(
+			[CompleteWith(typeof(FamilyCompletion))] string familyName, 
+			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
+		{
+			DateTime invoiceDate = GetInvoiceDate(date);
+			Invoice invoice = _invoiceStore.Load(familyName, invoiceDate);
+
+			if (invoice != null)
+			{
+				string url = _urlFactory.UrlForPath("invoice/{0}", invoice.Id);
+				Process.Start(url);
+			} 
+			else
+				Console.WriteLine("No invoice for {0} family on {1:d}.", familyName, invoiceDate);
+		}
+
 
 		[Action("remove-invoice","family-name date")]
 		public void RemoveInvoice(

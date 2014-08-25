@@ -46,7 +46,7 @@ namespace SWPCCBilling2.Controllers
 		public void ShowFamily(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName)
 		{
-			string url = _urlFactory.UrlForPath("/family/{0}", familyName);
+			string url = _urlFactory.UrlForPath("family/{0}", familyName);
 
 			Process.Start(url);
 		}

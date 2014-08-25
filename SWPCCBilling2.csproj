@@ -106,6 +106,9 @@
     <Compile Include="Infrastructure\Error.cs" />
     <Compile Include="Models\LedgerLine.cs" />
     <Compile Include="Infrastructure\Ledger.cs" />
+    <Compile Include="View Models\InvoiceViewModel.cs" />
+    <Compile Include="Infrastructure\InvoiceViewModelFactory.cs" />
+    <Compile Include="Modules\InvoiceModule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -124,6 +127,8 @@
     <Folder Include="vendor\normalize-css\" />
     <Folder Include="Views\Family\" />
     <Folder Include="Views\Fee\" />
+    <Folder Include="View Models\" />
+    <Folder Include="Views\Invoice\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateSchema.sql" />
@@ -148,6 +153,7 @@
     <EmbeddedResource Include="css\app.css" />
     <EmbeddedResource Include="Views\Family\Index.html" />
     <EmbeddedResource Include="Views\Fee\Index.html" />
+    <EmbeddedResource Include="Views\Invoice\Monthly.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

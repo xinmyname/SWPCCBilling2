@@ -37,7 +37,7 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				foreach (var record in con.Query<Family>("SELECT * FROM Family"))
+				foreach (var record in con.Query<Family>("SELECT * FROM Family ORDER BY Name"))
 					yield return record;
 			}
 		}
@@ -46,7 +46,7 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				foreach (var record in con.Query<Family>("SELECT * FROM Family WHERE Departed IS NULL OR Departed < date(\"now\")"))
+				foreach (var record in con.Query<Family>("SELECT * FROM Family WHERE Departed IS NULL OR Departed < date(\"now\") ORDER BY Name"))
 					yield return record;
 			}
 		}

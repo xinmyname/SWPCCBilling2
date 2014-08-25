@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>SWPCC @Model.Date Invoice</title>
+</head>
+<body style="font-family: 'Calibri', 'Helvetica Neue', 'Arial', sans-serif; font-weight: normal; font-size: 14pt;">
+    <table width="100%">
+        <tr>
+            <td valign="bottom">
+                <h2>Invoice #@Model.Id</h2>
+            </td>
+            <td valign="bottom" style="text-align:right">
+                <h2>@Model.Date</h2>
+            </td>
+        </tr>
+    </table>
+    <p>
+        Southwest Parent Child Collective<br />
+        6053 SW 55th Drive<br />
+        Portland, OR 97221<br />
+    </p>
+    <p>
+        Tax ID: 93-0748219
+    </p>
+    <p>
+        Billed to:<br />
+        @Model.Family.Name<br />
+        @Model.Family.StreetAddress<br />
+        @Model.Family.City @Model.Family.State @Model.Family.Zip<br />
+    </p>
+    <p>
+        @Each.Model.Parents
+        @Current.Email<br />
+        @EndEach
+    </p>
+
+    <table width="100%" style="border-collapse:collapse;border:solid 1px #000">
+        <thead>
+            <tr>
+                <td colspan="4" style="text-align:center;font-weight:bold;background-color:#cee;padding:0.2em">Due @Model.DueDate</td>
+            </tr>
+            <tr>
+                <th width="50%" style="border:solid 1px #000;text-align:left;padding:0.2em">Description</th>
+                <th style="border:solid 1px #000;text-align:right;padding:0.2em">Rate</th>
+                <th style="border:solid 1px #000;text-align:center;padding:0.2em">Quantity</th>
+                <th style="border:solid 1px #000;text-align:right;padding:0.2em">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @Each.Model.InvoiceLines
+            <tr>
+                <td width="50%" valign="top" style="border:solid 1px #000;padding:0.2em">@Current.Description</td>
+                <td valign="top" style="border:solid 1px #000;text-align:right;padding:0.2em">@Current.UnitPrice</td>
+                <td valign="top" style="border:solid 1px #000;text-align:center;padding:0.2em">@Current.Quantity</td>
+                <td valign="top" style="border:solid 1px #000;text-align:right;padding:0.2em">@Current.Amount</td>
+            </tr>
+            @EndEach
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" style="border:solid 1px #000;font-weight:bold;padding:0.2em">Total Due @Model.DueDate</td>
+                <td style="border:solid 1px #000;font-weight:bold;text-align:right;padding:0.2em">@Model.AmountDue</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <p>Please consider adding a tax-deductible donation for the Tuition Assistance Fund to your amount due. Write the amount of your donation and the word "Donation" in the note on your check. Thank you!
+    </p>
+
+    <p>
+        Remit payment to:<br />
+        SWPCC<br />
+        c/o Andy Sherwood<br />
+        5316 SW Boundary St<br />
+        Portland, OR 97221<br />
+    </p>
+</body>
+</html>
+	

@@ -14,6 +14,19 @@ namespace SWPCCBilling2.Infrastructure
 			_dbFactory = new DatabaseFactory();
 		}
 
+		public Invoice Load(long id)
+		{
+			Invoice record = null;
+
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				record = con.Query<Invoice>("SELECT * FROM Invoice WHERE Id=?", new { id }).SingleOrDefault();
+				LoadLines(con, record);
+			}
+
+			return record;
+		}
+
 		public Invoice Load(string familyName, DateTime date)
 		{
 			Invoice record = null;
