@@ -109,6 +109,8 @@
     <Compile Include="View Models\InvoiceViewModel.cs" />
     <Compile Include="Infrastructure\InvoiceViewModelFactory.cs" />
     <Compile Include="Modules\InvoiceModule.cs" />
+    <Compile Include="Infrastructure\InvoiceDocumentFactory.cs" />
+    <Compile Include="Infrastructure\Mailer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

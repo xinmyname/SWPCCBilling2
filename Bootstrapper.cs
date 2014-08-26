@@ -27,11 +27,20 @@ namespace SWPCCBilling2
 			}
 		}
 
+		private static Bootstrapper _defaultBootstrapper;
 		private readonly UrlFactory _urlFactory;
 
 		public Bootstrapper()
 		{
 			_urlFactory = UrlFactory.DefaultUrlFactory;
+
+			if (_defaultBootstrapper == null)
+				_defaultBootstrapper = this;
+		}
+
+		public static Bootstrapper DefaultBootstrapper
+		{
+			get { return _defaultBootstrapper; }
 		}
 
 		public void Run(string[] args)
