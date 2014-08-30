@@ -15,14 +15,14 @@ namespace SWPCCBilling2.Infrastructure
 			_dbFactory = new DatabaseFactory();
 		}
 
-		public LedgerLine Debit(Family family, Fee fee, long? qty, double? amt, string notes)
+		public LedgerLine Debit(Family family, Invoice invoice, Fee fee, long? qty, double? amt, string notes)
 		{
-			return Add(family, fee, qty, amt, notes, false);
+			return Add(family, invoice, fee, qty, amt, notes, false);
 		}
 
-		public LedgerLine Credit(Family family, Fee fee, long? qty, double? amt, string notes)
+		public LedgerLine Credit(Family family, Invoice invoice, Fee fee, long? qty, double? amt, string notes)
 		{
-			return Add(family, fee, qty, amt, notes, true);
+			return Add(family, invoice, fee, qty, amt, notes, true);
 		}
 
 		public IList<LedgerLine> LoadLinesWithoutInvoiceForFamily(string familyName)
@@ -56,10 +56,14 @@ namespace SWPCCBilling2.Infrastructure
 				con.Execute("UPDATE LedgerLine SET InvoiceId=NULL WHERE InvoiceId=?", new { invoiceId });
 		}
 
-		private LedgerLine Add(Family family, Fee fee, long? qty, double? amt, string notes, bool isCredit)
+		private LedgerLine Add(Family family, Invoice invoice, Fee fee, long? qty, double? amt, string notes, bool isCredit)
 		{
 			double unitPrice = 0.0;
 			long quantity = 0;
+			long? invoiceId = null;
+
+			if (invoice != null)
+				invoiceId = invoice.Id;
 
 			switch (fee.Type)
 			{
@@ -88,7 +92,7 @@ namespace SWPCCBilling2.Infrastructure
 			var line = new LedgerLine {
 				FamilyName = family.Name,
 				Date = DateTime.Now,
-				InvoiceId = null,
+				InvoiceId = invoiceId,
 				PaymentId = null,
 				FeeCode = fee.Code,
 				Quantity = quantity,

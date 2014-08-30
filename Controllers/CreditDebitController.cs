@@ -38,7 +38,7 @@ namespace SWPCCBilling2.Controllers
 			decimal total = 0m;
 
 			foreach (Family family in activeFamilies)
-				total += _ledger.Debit(family, fee, quantity, amount, null).SubTotal();
+				total += _ledger.Debit(family, null, fee, quantity, amount, null).SubTotal();
 
 			Console.WriteLine("Debited {0} families {1:C}", activeFamilies.Count, total);
 		}
@@ -56,7 +56,7 @@ namespace SWPCCBilling2.Controllers
 			decimal total = 0m;
 
 			foreach (Family family in activeFamilies)
-				total += _ledger.Credit(family, fee, quantity, amount, null).SubTotal();
+				total += _ledger.Credit(family, null, fee, quantity, amount, null).SubTotal();
 
 			Console.WriteLine("Credited {0} families {1:C}", activeFamilies.Count, -total);
 		}
@@ -93,8 +93,29 @@ namespace SWPCCBilling2.Controllers
 		[Action("scan-payment")]
 		public void ScanPayment()
 		{
+			while (true)
+			{
+				Console.WriteLine("Insert check into scanner or press Enter to stop...");
+				string micrText = Console.ReadLine().Trim();
 
-			throw new NotImplementedException();
+				if (String.IsNullOrEmpty(micrText))
+					break;
+
+				var micr = new MICR(micrText);
+
+				IList<Family> families = _familyStore.LoadWithMICR(micr).ToList();
+
+				if (families.Count == 0)
+					throw new Error("No matching family found for check #", micr.CheckNumber);
+
+				Family family = PickFamily(families);
+
+				Console.Write("Check amount? ");
+				string amountText = Console.ReadLine();
+				double amount = Double.Parse(amountText);
+
+				CreditPayment(family.Name, micr.CheckNumber, amount);
+			}
 		}
 
 		[Action("deposit-payment")]
@@ -120,7 +141,7 @@ namespace SWPCCBilling2.Controllers
 				_paymentStore.Add(payment);
 				paymentAdded = true;
 
-				ledgerLine = _ledger.Credit(family, paymentFee, 1, payment.Amount, null);
+				ledgerLine = _ledger.Credit(family, invoice, paymentFee, 1, payment.Amount, null);
 
 				invoice.AddLedgerLine(ledgerLine);
 
@@ -134,10 +155,15 @@ namespace SWPCCBilling2.Controllers
 					Fee creditNextFee = _feeStore.Load("CreditNext");
 					Fee creditPrevFee = _feeStore.Load("CreditPrev");
 
-					LedgerLine debitLine = _ledger.Credit(family, creditNextFee, 1, (double)amountDue, null);
-					_ledger.Credit(family, creditPrevFee, 1, (double)amountDue, null);
+					var amount = (double)-amountDue;
+
+					LedgerLine debitLine = _ledger.Debit(family, invoice, creditNextFee, 1, amount, null);
+
+					_ledger.Credit(family, null, creditPrevFee, 1, amount, null);
 
 					invoice.AddLedgerLine(debitLine);
+
+					amountDue = 0;
 				}
 				else if (amountDue > 0)
 				{
@@ -169,6 +195,31 @@ namespace SWPCCBilling2.Controllers
 					ledgerLine != null ? "" : " not",
 					ex);
 			}
+		}
+
+		private Family PickFamily(IList<Family> families)
+		{
+			if (families.Count == 1)
+			{
+				Family family = families.Single();
+				Console.WriteLine("Matched check to {0} family", family.Name);
+				return family;
+			}
+
+			Console.WriteLine("There are {0} families that match.\n", families.Count);
+
+			for (int i = 0; i < families.Count; i++)
+				Console.WriteLine("{0}) {1}", i + 1, families[i].Name);
+
+			Console.WriteLine("\nWhich family should be used? ");
+
+			string familyChoice = Console.ReadLine();
+			int idx = Int32.Parse(familyChoice) - 1;
+
+			if (idx < 0 || idx >= families.Count)
+				throw new Error("That wasn't a choice.");
+
+			return families[idx];
 		}
 	}
 }
