@@ -9,5 +9,10 @@ namespace SWPCCBilling2.Infrastructure
 			: base(String.Format(format, args))
 		{
 		}
+
+		public Error(Exception innerException, string format, params object[] args)
+			: base(String.Format(format, args), innerException)
+		{
+		}
 	}
 }

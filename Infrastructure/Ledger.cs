@@ -44,6 +44,12 @@ namespace SWPCCBilling2.Infrastructure
 			}
 		}
 
+		public void RemoveLine(LedgerLine line)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+				con.Execute("DELETE FROM LedgerLine WHERE Id=?", new { line.Id });
+		}
+
 		public void RemoveInvoiceId(long invoiceId)
 		{
 			using (IDbConnection con = _dbFactory.Open())

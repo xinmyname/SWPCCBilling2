@@ -111,6 +111,8 @@
     <Compile Include="Modules\InvoiceModule.cs" />
     <Compile Include="Infrastructure\InvoiceDocumentFactory.cs" />
     <Compile Include="Infrastructure\Mailer.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Infrastructure\PaymentStore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
