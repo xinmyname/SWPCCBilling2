@@ -62,16 +62,19 @@ namespace SWPCCBilling2.Controllers
 		public void ImportMICR(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName)
 		{
+			Family family = _familyStore.Load(familyName);
+
+			if (family == null)
+				throw new Error("{0} family not found in database.");
+
 			Console.WriteLine("Insert check into scanner...");
 			string micrText = Console.ReadLine();
 			var micr = new MICR(micrText);
 
 			if (!micr.IsValid)
-				throw new ApplicationException("Could not read MICR data from check.");
+				throw new Error("Could not read MICR data from check.");
 
 			Console.WriteLine(micr);
-
-			Family family = _familyStore.Load(familyName);
 
 			family.CheckSHA256 = micr.SHA256;
 

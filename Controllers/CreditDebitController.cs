@@ -93,6 +93,7 @@ namespace SWPCCBilling2.Controllers
 		[Action("scan-payment")]
 		public void ScanPayment()
 		{
+
 			throw new NotImplementedException();
 		}
 
