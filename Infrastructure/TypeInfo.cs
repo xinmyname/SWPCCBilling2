@@ -45,4 +45,12 @@ namespace SWPCCBilling2.Infrastructure
             return Get(typeof(T));
         }
     }
+
+	public static class PropertyDescriptorExtensions
+	{
+		public static bool ShouldIgnore(this PropertyDescriptor pd)
+		{
+			return pd.Attributes.OfType<IgnoreAttribute>().Any();
+		}
+	}
 }

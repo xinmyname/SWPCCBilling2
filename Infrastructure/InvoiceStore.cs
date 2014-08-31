@@ -73,8 +73,9 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				con.Execute("UPDATE Invoice SET FamilyName=?,Due=?,Sent=?,Opened=?,Closed=? WHERE Id=?",
-					invoice.AllValuesKeyLast());
+				object values = invoice.AllValuesKeyLast();
+
+				con.Execute("UPDATE Invoice SET FamilyName=?,Due=?,Sent=?,Opened=?,Closed=? WHERE Id=?", values);
 
 				if (withLines)
 				{

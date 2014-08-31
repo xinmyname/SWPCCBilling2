@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using SWPCCBilling2.Infrastructure;
 
 namespace SWPCCBilling2.Models
 {
@@ -14,6 +15,7 @@ namespace SWPCCBilling2.Models
 		public DateTime? Opened { get; set; }
 		public DateTime? Closed { get; set; }
 
+		[Ignore]
 		public IList<InvoiceLine> Lines { get; set; }
 
 		public Invoice()

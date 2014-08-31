@@ -8,6 +8,7 @@ namespace SWPCCBilling2
 	{
 		private static UrlFactory _defaultUrlFactory;
 		private static int _port;
+		private static IPAddress _address;
 
 		public static UrlFactory DefaultUrlFactory
 		{
@@ -25,6 +26,7 @@ namespace SWPCCBilling2
 			var listener = new TcpListener(IPAddress.Any, 0);
 			listener.Start();
 			_port = ((IPEndPoint)listener.LocalEndpoint).Port;
+			_address = ((IPEndPoint)listener.LocalEndpoint).Address;
 			listener.Stop();
 		}
 
@@ -32,7 +34,7 @@ namespace SWPCCBilling2
 
 		public UrlFactory()
 		{
-			BaseUrl = String.Format("http://localhost:{0}", _port);
+			BaseUrl = String.Format("http://{0}:{1}", _address, _port);
 		}
 
 		public Uri BaseUri

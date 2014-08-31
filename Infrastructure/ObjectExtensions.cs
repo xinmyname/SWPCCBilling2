@@ -12,6 +12,7 @@ namespace SWPCCBilling2.Infrastructure
 
             return typeInfo.Properties
                 .Where(p => p != typeInfo.KeyProperty)
+				.Where(p => !p.ShouldIgnore())
                 .Select(p => p.GetValue(o))
                 .ToArray();
         }
@@ -21,6 +22,7 @@ namespace SWPCCBilling2.Infrastructure
             TypeInfo typeInfo = TypeInfo.Get(o.GetType());
 
             return typeInfo.Properties
+				.Where(p => !p.ShouldIgnore())
                 .Select(p => p.GetValue(o))
                 .ToArray();
         }
