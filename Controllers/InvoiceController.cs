@@ -148,6 +148,9 @@ namespace SWPCCBilling2.Controllers
 				{
 					Console.WriteLine("Invoice {0} for {1} family on {2:d} has been sent.",
 						invoice.Id, family.Name, invoiceDate);
+
+					invoice.Sent = DateTime.Now;
+					_invoiceStore.Save(invoice, false);
 				}
 			}
 		}

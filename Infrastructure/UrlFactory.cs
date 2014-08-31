@@ -37,6 +37,7 @@ namespace SWPCCBilling2
 			BaseUrl = String.Format("http://{0}:{1}", _address, _port);
 		}
 
+
 		public Uri BaseUri
 		{
 			get { return new Uri(BaseUrl); }

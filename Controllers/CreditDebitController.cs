@@ -5,6 +5,7 @@ using SWPCCBilling2.Models;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace SWPCCBilling2.Controllers
 {
@@ -38,7 +39,7 @@ namespace SWPCCBilling2.Controllers
 			decimal total = 0m;
 
 			foreach (Family family in activeFamilies)
-				total += _ledger.Debit(family, null, fee, quantity, amount, null).SubTotal();
+				total += _ledger.Debit(family, fee, quantity, amount).SubTotal();
 
 			Console.WriteLine("Debited {0} families {1:C}", activeFamilies.Count, total);
 		}
@@ -56,7 +57,7 @@ namespace SWPCCBilling2.Controllers
 			decimal total = 0m;
 
 			foreach (Family family in activeFamilies)
-				total += _ledger.Credit(family, null, fee, quantity, amount, null).SubTotal();
+				total += _ledger.Credit(family, fee, quantity, amount).SubTotal();
 
 			Console.WriteLine("Credited {0} families {1:C}", activeFamilies.Count, -total);
 		}
@@ -87,6 +88,7 @@ namespace SWPCCBilling2.Controllers
 				DepositId = null
 			};
 
+
 			ApplyPayment(payment, invoice, family);
 		}
 
@@ -109,12 +111,37 @@ namespace SWPCCBilling2.Controllers
 					throw new Error("No matching family found for check #", micr.CheckNumber);
 
 				Family family = PickFamily(families);
+				Invoice invoice = _invoiceStore.LoadLatestOpenInvoiceForFamily(family.Name);
 
 				Console.Write("Check amount? ");
-				string amountText = Console.ReadLine();
-				double amount = Double.Parse(amountText);
 
-				CreditPayment(family.Name, micr.CheckNumber, amount);
+				int curLeft = Console.CursorLeft;
+				int curTop = Console.CursorTop;
+
+				Console.Write("{0:C}", invoice.AmountDue());
+
+				ConsoleKeyInfo keyInfo = Console.ReadKey();
+
+				decimal amount = 0.0m;
+
+				if (keyInfo.Key == ConsoleKey.Enter)
+					amount = invoice.AmountDue();
+				else
+				{
+					Console.SetCursorPosition(curLeft, curTop);
+					Console.Write("            ");
+					Console.SetCursorPosition(curLeft, curTop);
+					Console.Write(keyInfo.KeyChar);
+
+					var amountText = new StringBuilder();
+
+					amountText.Append(keyInfo.KeyChar);
+					amountText.Append(Console.ReadLine());
+
+					amount = Decimal.Parse(amountText.ToString());
+				}
+
+				CreditPayment(family.Name, micr.CheckNumber, (double)amount);
 			}
 		}
 
@@ -141,7 +168,7 @@ namespace SWPCCBilling2.Controllers
 				_paymentStore.Add(payment);
 				paymentAdded = true;
 
-				ledgerLine = _ledger.Credit(family, invoice, paymentFee, 1, payment.Amount, null);
+				ledgerLine = _ledger.Credit(family, paymentFee, invoice, payment);
 
 				invoice.AddLedgerLine(ledgerLine);
 
@@ -149,19 +176,19 @@ namespace SWPCCBilling2.Controllers
 
 				if (amountDue < 0)
 				{
+					amountDue = -amountDue;
+
 					Console.WriteLine("The {0} family overpaid by {1:C}. A credit will be applied to their next invoice.",
-						family.Name, -amountDue);
+						family.Name, amountDue);
 
 					Fee creditNextFee = _feeStore.Load("CreditNext");
 					Fee creditPrevFee = _feeStore.Load("CreditPrev");
 
-					var amount = (double)-amountDue;
-
-					LedgerLine debitLine = _ledger.Debit(family, invoice, creditNextFee, 1, amount, null);
-
-					_ledger.Credit(family, null, creditPrevFee, 1, amount, null);
+					LedgerLine debitLine = _ledger.Debit(family, creditNextFee, invoice, amountDue);
 
 					invoice.AddLedgerLine(debitLine);
+
+					_ledger.Credit(family, creditPrevFee, amountDue);
 
 					amountDue = 0;
 				}

@@ -15,14 +15,94 @@ namespace SWPCCBilling2.Infrastructure
 			_dbFactory = new DatabaseFactory();
 		}
 
-		public LedgerLine Debit(Family family, Invoice invoice, Fee fee, long? qty, double? amt, string notes)
+		public LedgerLine Debit(Family family, Fee fee, long? quantity, double? amount)
 		{
-			return Add(family, invoice, fee, qty, amt, notes, false);
+			// Id - AddLine()
+			// FamilyName - family.Name
+			// Date - LedgerLine()
+			// InvoiceId - null
+			// PaymentId - null
+			// FeeCode - fee.Code
+			// Quantity - quantity
+			// UnitPrice - amount
+			// Notes - null
+
+			var ledgerLine = new LedgerLine(family, fee, quantity, amount, false);
+
+			return AddLine(ledgerLine);
 		}
 
-		public LedgerLine Credit(Family family, Invoice invoice, Fee fee, long? qty, double? amt, string notes)
+		public LedgerLine Debit(Family family, Fee fee, Invoice invoice, decimal amount)
 		{
-			return Add(family, invoice, fee, qty, amt, notes, true);
+			// Id - AddLine()
+			// FamilyName - family.Name
+			// Date - LedgerLine()
+			// InvoiceId - invoice.Id
+			// PaymentId - null
+			// FeeCode - fee.Code
+			// Quantity - 1
+			// UnitPrice - amount
+			// Notes - null
+
+			var ledgerLine = new LedgerLine(family, fee, 1, (double)amount, false) {
+				InvoiceId = invoice.Id
+			};
+
+			return AddLine(ledgerLine);
+		}
+
+		public LedgerLine Credit(Family family, Fee fee, long? quantity, double? amount)
+		{
+			// Id - AddLine()
+			// FamilyName - family.Name
+			// Date - LedgerLine()
+			// InvoiceId - null
+			// PaymentId - null
+			// FeeCode - fee.Code
+			// Quantity - quantity
+			// UnitPrice - amount
+			// Notes - null
+
+			var ledgerLine = new LedgerLine(family, fee, quantity, amount, true);
+
+			return AddLine(ledgerLine);
+		}
+
+		public LedgerLine Credit(Family family, Fee fee, Invoice invoice, Payment payment)
+		{
+			// Id - AddLine()
+			// FamilyName - family.Name
+			// Date - LedgerLine()
+			// InvoiceId - invoice.Id
+			// PaymentId - payment.Id
+			// FeeCode - fee.Code
+			// Quantity - 1
+			// UnitPrice - payment.Amount
+			// Notes - null
+
+			var ledgerLine = new LedgerLine(family, fee, 1, payment.Amount, true) {
+				InvoiceId = invoice.Id,
+				PaymentId = payment.Id
+			};
+
+			return AddLine(ledgerLine);
+		}
+
+		public LedgerLine Credit(Family family, Fee fee, decimal amount)
+		{
+			// Id - AddLine()
+			// FamilyName - family.Name
+			// Date - LedgerLine()
+			// InvoiceId - null
+			// PaymentId - null
+			// FeeCode - fee.Code
+			// Quantity - 1
+			// UnitPrice - amount
+			// Notes - null
+
+			var ledgerLine = new LedgerLine(family, fee, 1, (double)amount, true);
+
+			return AddLine(ledgerLine);
 		}
 
 		public IList<LedgerLine> LoadLinesWithoutInvoiceForFamily(string familyName)
@@ -56,50 +136,8 @@ namespace SWPCCBilling2.Infrastructure
 				con.Execute("UPDATE LedgerLine SET InvoiceId=NULL WHERE InvoiceId=?", new { invoiceId });
 		}
 
-		private LedgerLine Add(Family family, Invoice invoice, Fee fee, long? qty, double? amt, string notes, bool isCredit)
+		private LedgerLine AddLine(LedgerLine line)
 		{
-			double unitPrice = 0.0;
-			long quantity = 0;
-			long? invoiceId = null;
-
-			if (invoice != null)
-				invoiceId = invoice.Id;
-
-			switch (fee.Type)
-			{
-				case Fee.FeeTypeFixed:
-				case Fee.FeeTypePerMinute:
-					unitPrice = fee.Amount;
-					quantity = qty ?? 1;
-					break;
-				case Fee.FeeTypeVarying:
-					unitPrice = amt ?? 0.0;
-					quantity = qty ?? 1;
-					break;
-				case Fee.FeeTypePerChild:
-					unitPrice = fee.Amount;
-					quantity = family.NumChildren;
-					break;
-				case Fee.FeeTypePerChildDay:
-					unitPrice = fee.Amount;
-					quantity = family.BillableDays;
-					break;
-			}
-
-			if (isCredit)
-				unitPrice = -unitPrice;
-
-			var line = new LedgerLine {
-				FamilyName = family.Name,
-				Date = DateTime.Now,
-				InvoiceId = invoiceId,
-				PaymentId = null,
-				FeeCode = fee.Code,
-				Quantity = quantity,
-				UnitPrice = unitPrice,
-				Notes = notes
-			};
-
 			using (IDbConnection con = _dbFactory.Open())
 			{
 				con.Execute("INSERT INTO [LedgerLine] VALUES (NULL,?,?,?,?,?,?,?,?)", line.NonKeyValues());
