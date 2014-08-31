@@ -16,6 +16,10 @@ namespace SWPCCBilling2.Models
 		public double UnitPrice { get; set; }
 		public string Notes { get; set; }
 
+		public LedgerLine()
+		{
+		}
+
 		public LedgerLine(Family family, Fee fee, long? quantity, double? amount, bool isCredit)
 		{
 			FamilyName = family.Name;
