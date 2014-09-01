@@ -16,6 +16,7 @@ namespace SWPCCBilling2.Controllers
 		private readonly FeeStore _feeStore;
 		private readonly PaymentStore _paymentStore;
 		private readonly InvoiceStore _invoiceStore;
+		private readonly DateFactory _dateFactory;
 
 		public CreditDebitController()
 		{
@@ -24,6 +25,7 @@ namespace SWPCCBilling2.Controllers
 			_feeStore = new FeeStore();
 			_paymentStore = new PaymentStore();
 			_invoiceStore = new InvoiceStore();
+			_dateFactory = DateFactory.DefaultDateFactory;
 		}
 
 		[Action("debit", "family-name fee-name quantity(number) amount(dollars)")]
@@ -83,7 +85,7 @@ namespace SWPCCBilling2.Controllers
 				FamilyName = familyName,
 				CheckNum = checkNum,
 				Amount = amount,
-				Received = DateTime.Now,
+				Received = _dateFactory.Now(),
 				InvoiceId = invoice.Id,
 				DepositId = null
 			};
@@ -202,7 +204,7 @@ namespace SWPCCBilling2.Controllers
 				if (amountDue == 0)
 				{
 					Console.WriteLine("Invoice {0} paid in full and marked as closed.", invoice.Id);
-					invoice.Closed = DateTime.Now;
+					invoice.Closed = _dateFactory.Now();
 				}
 
 				_invoiceStore.Save(invoice, true);

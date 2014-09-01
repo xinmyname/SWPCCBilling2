@@ -114,6 +114,7 @@
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Infrastructure\PaymentStore.cs" />
     <Compile Include="Infrastructure\IgnoreAttribute.cs" />
+    <Compile Include="Infrastructure\DateFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

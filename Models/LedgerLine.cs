@@ -24,7 +24,7 @@ namespace SWPCCBilling2.Models
 		{
 			FamilyName = family.Name;
 			FeeCode = fee.Code;
-			Date = DateTime.Now;
+			Date = DateFactory.DefaultDateFactory.Now();
 
 			switch (fee.Type)
 			{

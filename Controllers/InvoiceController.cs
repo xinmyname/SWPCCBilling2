@@ -19,6 +19,7 @@ namespace SWPCCBilling2.Controllers
 		private readonly InvoiceDocumentFactory _invoiceDocFactory;
 		private readonly Mailer _mailer;
 		private readonly ParentStore _parentStore;
+		private readonly DateFactory _dateFactory;
 
 		public InvoiceController()
 		{
@@ -29,6 +30,7 @@ namespace SWPCCBilling2.Controllers
 			_invoiceDocFactory = new InvoiceDocumentFactory();
 			_mailer = new Mailer();
 			_parentStore = new ParentStore();
+			_dateFactory = DateFactory.DefaultDateFactory;
 		}
 
 		[Action("open-invoice","family-name date(optional)")]
@@ -36,7 +38,7 @@ namespace SWPCCBilling2.Controllers
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
-			DateTime invoiceDate = GetInvoiceDate(date);
+			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 
 			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
 
@@ -84,7 +86,7 @@ namespace SWPCCBilling2.Controllers
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
-			DateTime invoiceDate = GetInvoiceDate(date);
+			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 
 			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
 
@@ -106,7 +108,7 @@ namespace SWPCCBilling2.Controllers
 					continue;
 				}
 
-				invoice.Closed = DateTime.Now;
+				invoice.Closed = _dateFactory.Now();
 				_invoiceStore.Save(invoice, false);
 
 				Console.WriteLine("Invoice {0} for {1} family on {2:d} has been closed.",
@@ -122,7 +124,7 @@ namespace SWPCCBilling2.Controllers
 			Console.Write("Password? ");
 			string password = Console.ReadLine();
 
-			DateTime invoiceDate = GetInvoiceDate(date);
+			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 
 			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
 
@@ -149,7 +151,7 @@ namespace SWPCCBilling2.Controllers
 					Console.WriteLine("Invoice {0} for {1} family on {2:d} has been sent.",
 						invoice.Id, family.Name, invoiceDate);
 
-					invoice.Sent = DateTime.Now;
+					invoice.Sent = _dateFactory.Now();
 					_invoiceStore.Save(invoice, false);
 				}
 			}
@@ -160,7 +162,7 @@ namespace SWPCCBilling2.Controllers
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
-			DateTime invoiceDate = GetInvoiceDate(date);
+			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 
 			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
 
@@ -199,7 +201,7 @@ namespace SWPCCBilling2.Controllers
 			[CompleteWith(typeof(FamilyCompletion))] string familyName, 
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
-			DateTime invoiceDate = GetInvoiceDate(date);
+			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 			Invoice invoice = _invoiceStore.Load(familyName, invoiceDate);
 
 			if (invoice != null)
@@ -217,7 +219,7 @@ namespace SWPCCBilling2.Controllers
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
-			DateTime invoiceDate = GetInvoiceDate(date);
+			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 
 			IList<Family> activeFamilies = _familyStore.LoadActiveFamilesWithName(name).ToList();
 
@@ -237,18 +239,6 @@ namespace SWPCCBilling2.Controllers
 				Console.WriteLine("Invoice {0} for {1} family on {2:d} has been removed.",
 					invoice.Id, family.Name, invoiceDate);
 			}
-		}
-
-		public DateTime GetInvoiceDate(DateTime? date)
-		{
-			DateTime now = DateTime.Now;
-			DateTime nextMonth = now.AddMonths(1);
-
-			DateTime invoiceDate = date != null 
-				? date.Value
-				: new DateTime(nextMonth.Year, nextMonth.Month, 1);
-
-			return invoiceDate;
 		}
 	}
 }
