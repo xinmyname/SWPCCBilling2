@@ -10,12 +10,14 @@ namespace SWPCCBilling2.Models
 		public ActionInfo ActionInfo { get; private set; }
 		public object[] Parameters { get; private set; }
 		public IList<string> Errors { get; private set; }
+		public bool Quit { get; set; }
 
 		public CommandLine(ActionInfo actionInfo, object[] parameters, IList<string> errors)
 		{
 			ActionInfo = actionInfo;
 			Parameters = parameters;
 			Errors = errors;
+			Quit = false;
 		}
 
 		public bool HasErrors

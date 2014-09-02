@@ -66,7 +66,9 @@ namespace SWPCCBilling2
 
 			foreach (CommandLine cmdLine in cmdLineFactory.Acquire(combinedArgs))
 			{
-				if (cmdLine.HasErrors)
+				if (cmdLine.Quit)
+					break;
+				else if (cmdLine.HasErrors)
 				{
 					foreach (string error in cmdLine.Errors)
 						Console.WriteLine("ERROR: {0}", error);

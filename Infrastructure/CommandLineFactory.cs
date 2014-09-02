@@ -79,17 +79,14 @@ namespace SWPCCBilling2.Infrastructure
 
 				switch (keyInfo.Key)
 				{
-					case ConsoleKey.Tab:
-						CompleteUnderCursor();
-						break;
-
 					case ConsoleKey.Enter:
-						ParseLine();
-						Console.WriteLine();
-						object[] parameters = LoadParametersFromSpans();
-						yield return new CommandLine(_actionInfo, parameters, _errors);
+						yield return BuildCommandLine();
 						SaveLineToHistory();
 						Prompt();
+						break;
+
+					case ConsoleKey.Tab:
+						CompleteUnderCursor();
 						break;
 
 					case ConsoleKey.Backspace:
@@ -132,6 +129,23 @@ namespace SWPCCBilling2.Infrastructure
 				RenderLine();
 
 			} while (!_done);
+		}
+
+		public CommandLine BuildCommandLine()
+		{
+			if (_line.ToString() == "quit")
+			{
+				Console.WriteLine();
+				return new CommandLine(null, null, null)
+				{
+					Quit = true
+				};
+			}
+
+			ParseLine();
+			Console.WriteLine();
+			object[] parameters = LoadParametersFromSpans();
+			return new CommandLine(_actionInfo, parameters, _errors);
 		}
 
 		public void CompleteUnderCursor()
