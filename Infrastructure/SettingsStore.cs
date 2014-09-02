@@ -7,27 +7,39 @@ namespace SWPCCBilling2.Infrastructure
 {
 	public class SettingsStore
 	{
-		private readonly string _settingsPath;
-		private readonly DataContractJsonSerializer _serializer;
-		private Settings _settings;
+		public static Func<Settings> DefaultSettings;
+		private static SettingsStore _defaultSettingsStore;
 
-        public static Func<Settings> DefaultSettings;
-
-        static SettingsStore()
-        {
-            DefaultSettings = () => new Settings() 
-            {
-                DatabaseName = "SWPCCBilling.sqlite",
+		static SettingsStore()
+		{
+			DefaultSettings = () => new Settings() 
+			{
+				DatabaseName = "SWPCCBilling.sqlite",
 				DefaultFamilyImportPath = "/Users/andy/Dropbox/Documents/SWPCC/FY2015/RosterImport.csv",
 				DefaultFeeImportPath = "/Users/andy/Dropbox/Documents/SWPCC/FY2015/FeeImport.csv",
 				EmailServer = "smtp.gmail.com",
 				EmailPort = 587,
 				EmailSecure = true,
 				EmailFrom = "swpcc@gmail.com"
-            };
-        }
+			};
+		}
 
-		public SettingsStore()
+		public static SettingsStore DefaultSettingsStore
+		{
+			get 
+			{
+				if (_defaultSettingsStore == null)
+					_defaultSettingsStore = new SettingsStore();
+
+				return _defaultSettingsStore;
+			}
+		}
+
+		private readonly string _settingsPath;
+		private readonly DataContractJsonSerializer _serializer;
+		private Settings _settings;
+
+		private SettingsStore()
 		{
             _settingsPath = DocumentPath.For("SWPCCBilling.settings");
 			_serializer = new DataContractJsonSerializer(typeof(Settings));

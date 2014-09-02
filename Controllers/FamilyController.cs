@@ -15,7 +15,7 @@ namespace SWPCCBilling2.Controllers
 
 		public FamilyController()
 		{
-			_settingsStore = new SettingsStore();
+			_settingsStore = SettingsStore.DefaultSettingsStore;
 			_familyStore = new FamilyStore();
 			_urlFactory = UrlFactory.DefaultUrlFactory;
 		}

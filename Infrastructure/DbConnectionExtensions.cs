@@ -62,66 +62,80 @@ namespace SWPCCBilling2.Infrastructure
 
         public static int Execute(this IDbConnection con, string text, object paramObj = null)
         {
-            IDbCommand cmd = CreateCommand(con, text, paramObj);
-            return cmd.ExecuteNonQuery();
+			int result;
+
+			using (IDbCommand cmd = CreateCommand(con, text, paramObj))
+				result = cmd.ExecuteNonQuery();
+
+            return result;
         }
 
         public static object ExecuteScalar(this IDbConnection con, string text, object paramObj = null)
         {
-            IDbCommand cmd = CreateCommand(con, text, paramObj);
-            return cmd.ExecuteScalar();
+			object result;
+
+			using (IDbCommand cmd = CreateCommand(con, text, paramObj))
+            	result = cmd.ExecuteScalar();
+
+			return result;
         }
 
         public static T ExecuteScalar<T>(this IDbConnection con, string text, object paramObj = null)
         {
-            IDbCommand cmd = CreateCommand(con, text, paramObj);
-            return (T)cmd.ExecuteScalar();
+			object result;
+
+			using (IDbCommand cmd = CreateCommand(con, text, paramObj))
+				result = cmd.ExecuteScalar();
+
+			return (T)result;
         }
 
         public static IEnumerable<T> Query<T>(this IDbConnection con, string text, object paramObj = null)
         {
             PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof (T));
 
-            IDbCommand cmd = CreateCommand(con, text, paramObj);
-            var dr = cmd.ExecuteReader();
+			using (IDbCommand cmd = CreateCommand(con, text, paramObj))
+			{
+				var dr = cmd.ExecuteReader();
 
-            while (dr.Read())
-            {
-                var result = (T)Activator.CreateInstance(typeof(T));
+				while (dr.Read())
+				{
+					var result = (T)Activator.CreateInstance(typeof(T));
 
-                for (int i = 0; i < dr.FieldCount; i++)
-                {
-                    PropertyDescriptor property = properties
+					for (int i = 0; i < dr.FieldCount; i++)
+					{
+						PropertyDescriptor property = properties
                         .Cast<PropertyDescriptor>()
                         .SingleOrDefault(p => p.Name == dr.GetName(i));
 
-                    if (property == null)
-                        continue;
+						if (property == null)
+							continue;
 
-                    object sourceValue = dr.GetValue(i);
-                    object targetValue = null;
+						object sourceValue = dr.GetValue(i);
+						object targetValue = null;
 
-					if (sourceValue != null && sourceValue.GetType() != typeof(DBNull))
-                    {
-                        Type conversionType = property.PropertyType;
+						if (sourceValue != null && sourceValue.GetType() != typeof(DBNull))
+						{
+							Type conversionType = property.PropertyType;
 
-                        if (conversionType.IsGenericType && conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                        {
-                            var converter = new NullableConverter(property.PropertyType);
-                            conversionType = converter.UnderlyingType;
-                        }
+							if (conversionType.IsGenericType && conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
+							{
+								var converter = new NullableConverter(property.PropertyType);
+								conversionType = converter.UnderlyingType;
+							}
 
-                        targetValue = Convert.ChangeType(sourceValue, conversionType);
-                    }
+							targetValue = Convert.ChangeType(sourceValue, conversionType);
+						}
 
-                    if (targetValue != null)
-                        property.SetValue(result, targetValue);
-                }
+						if (targetValue != null)
+							property.SetValue(result, targetValue);
+					}
 
-                yield return result;
-            }
+					yield return result;
+				}
 
-            dr.Close();
+				dr.Close();
+			}
         }
     }
 

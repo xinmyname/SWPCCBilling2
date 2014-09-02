@@ -10,6 +10,7 @@ using Nancy.Conventions;
 using Nancy.ViewEngines;
 using Nancy.Bootstrapper;
 using Nancy;
+using System.Diagnostics;
 
 namespace SWPCCBilling2
 {
@@ -58,6 +59,8 @@ namespace SWPCCBilling2
 				host = new NancyHost(this, _urlFactory.BaseUri);
 				host.Start();
 
+				Process process = Process.GetCurrentProcess();
+				Console.WriteLine("PID = {0}", process.Id);
 				Console.WriteLine("Listening on {0}", _urlFactory.BaseUrl);
 			}
 

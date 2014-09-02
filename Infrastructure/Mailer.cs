@@ -17,7 +17,7 @@ namespace SWPCCBilling2.Infrastructure
 
 		public Mailer()
 		{
-			_settingsStore = new SettingsStore();
+			_settingsStore = SettingsStore.DefaultSettingsStore;
 		}
 
 		public bool Send(string subject, string htmlBody, string emailPassword, IList<string> emailTo)

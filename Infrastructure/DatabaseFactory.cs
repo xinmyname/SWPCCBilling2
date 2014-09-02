@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
 using EmbeddedResources;
+using Mono.Data.Sqlite;
 
 namespace SWPCCBilling2.Infrastructure
 {
@@ -16,7 +17,7 @@ namespace SWPCCBilling2.Infrastructure
 
         public DatabaseFactory()
 		{
-			var settingsStore = new SettingsStore();
+			var settingsStore = SettingsStore.DefaultSettingsStore;
             Settings settings = settingsStore.Load();
             _dbFileName = settings.DatabaseName;
 		}
@@ -26,22 +27,12 @@ namespace SWPCCBilling2.Infrastructure
             IDbConnection con = null;
             string dbPath = DocumentPath.For(_dbFileName);
             bool dbExists = File.Exists(dbPath);
-            Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
 
-            if (Type.GetType("Mono.Runtime") != null)
-            {
-                Assembly asm = Assembly.Load("Mono.Data.Sqlite, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756");
-                Type type = asm.GetType("Mono.Data.Sqlite.SqliteConnection");
-                con = (IDbConnection) Activator.CreateInstance(type);
-                con.ConnectionString = String.Format("URI=file:{0},version=3", dbPath);
-            }
-            else
-            {
-                Assembly asm = Assembly.Load("System.Data.SQLite, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139");
-                Type type = asm.GetType("System.Data.SQLite.SQLiteConnection");
-                con = (IDbConnection) Activator.CreateInstance(type);
-                con.ConnectionString = String.Format("Data Source={0};Version=3", dbPath);
-            }
+			if (!dbExists)
+				Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
+
+			con = new SqliteConnection();
+			con.ConnectionString = String.Format("URI=file:{0},version=3", dbPath);
 
             con.Open();
 

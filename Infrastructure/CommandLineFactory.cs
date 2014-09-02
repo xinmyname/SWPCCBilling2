@@ -41,6 +41,8 @@ namespace SWPCCBilling2.Infrastructure
 
 		public void Prompt()
 		{
+			GC.Collect();
+
 			Console.Write("> ");
 			_left = Console.CursorLeft;
 			_top = Console.CursorTop;

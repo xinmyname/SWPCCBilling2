@@ -15,7 +15,7 @@ namespace SWPCCBilling2.Controllers
 
 		public FeeController()
 		{
-			_settingsStore = new SettingsStore();
+			_settingsStore = SettingsStore.DefaultSettingsStore;
 			_feeStore = new FeeStore();
 			_urlFactory = UrlFactory.DefaultUrlFactory;
 		}
