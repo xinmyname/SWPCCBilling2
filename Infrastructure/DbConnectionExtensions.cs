@@ -137,6 +137,25 @@ namespace SWPCCBilling2.Infrastructure
 				dr.Close();
 			}
         }
-    }
 
+		public static int Execute(this IDbTransaction xact, string text, object paramObj = null)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static object ExecuteScalar(this IDbTransaction xact, string text, object paramObj = null)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static T ExecuteScalar<T>(this IDbTransaction xact, string text, object paramObj = null)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static IEnumerable<T> Query<T>(this IDbTransaction xact, string text, object paramObj = null)
+		{
+			throw new NotImplementedException();
+		}
+    }
 }

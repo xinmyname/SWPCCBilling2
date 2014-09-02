@@ -36,34 +36,40 @@ namespace SWPCCBilling2.Infrastructure
 
             con.Open();
 
-            if (!dbExists)
-            {
-                Console.WriteLine("Creating new database...");
+			if (!dbExists)
+				CreateEmptyDatabase(con);
 
-                IDbTransaction xact = con.BeginTransaction();
-
-                var asm = Assembly.GetExecutingAssembly();
-                var resLocator = new AssemblyResourceLocator(asm);
-                var loader = new EmbeddedResourceLoader(resLocator);
-                string sql = loader.LoadText("CreateSchema.sql");
-
-                IEnumerable<string> statements = Regex.Split(sql.Replace("\r\n", "\n"), ";\n")
-                    .Select(s => s.Trim())
-                    .Where(s => !String.IsNullOrEmpty(s));
-
-                foreach (string statement in statements)
-                {
-                    IDbCommand cmd = con.CreateCommand();
-                    cmd.Transaction = xact;
-                    cmd.CommandText = statement;
-                    cmd.ExecuteNonQuery();
-                }
-
-                xact.Commit();
-            }
-
-            return con;
+			return con;
         }
+
+		private void CreateEmptyDatabase(IDbConnection con)
+		{
+			Console.WriteLine("Creating new database...");
+
+			using (IDbTransaction xact = con.BeginTransaction())
+			{
+				var asm = Assembly.GetExecutingAssembly();
+				var resLocator = new AssemblyResourceLocator(asm);
+				var loader = new EmbeddedResourceLoader(resLocator);
+				string sql = loader.LoadText("CreateSchema.sql");
+
+				IEnumerable<string> statements = Regex.Split(sql.Replace("\r\n", "\n"), ";\n")
+					.Select(s => s.Trim())
+					.Where(s => !String.IsNullOrEmpty(s));
+
+				foreach (string statement in statements)
+				{
+					using (IDbCommand cmd = con.CreateCommand())
+					{
+						cmd.Transaction = xact;
+						cmd.CommandText = statement;
+						cmd.ExecuteNonQuery();
+					}
+				}
+
+				xact.Commit();
+			}
+		}
 	}
 }
 
