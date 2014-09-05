@@ -29,5 +29,14 @@ namespace SWPCCBilling2.Infrastructure
 			using (IDbConnection con = _dbFactory.Open())
 				con.Execute("DELETE FROM Payment WHERE Id=?", new { payment.Id });
 		}
+
+		public IEnumerable<Payment> LoadUndeposited()
+		{
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				foreach (var record in con.Query<Payment>("SELECT * FROM Payment WHERE DepositId IS NULL ORDER BY FamilyName"))
+					yield return record;
+			}
+		}
 	}
 }

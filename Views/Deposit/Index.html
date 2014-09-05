@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body,td {
+				font-family: 'Calibri', 'Helvetica Neue', 'Arial', sans-serif; font-weight: normal; font-size: 14pt;
+			}
+			td {
+				padding-right: 0.5em;
+			}
+			td+td {
+				text-align: right;
+			}
+			th {
+				text-align: left;
+				padding-right: 0.5em;
+			}
+			th+th {
+				text-align: right;
+			}
+			tfoot tr td {
+				padding-top: 0.75em;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Pending Deposit Report</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Family</th>
+					<th>Check #</th>
+					<th>Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				@Each.Model.Checks
+				<tr>
+					<td>@Current.FamilyName</td>
+					<td>@Current.CheckNum</td>
+					<td>@Current.AmountText</td>
+				</tr>
+				@EndEach
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="2">Total</td>
+					<td>@Model.AmountText</td>
+				</tr>
+			</tfoot>
+		</table>
+	</body>
+</html>

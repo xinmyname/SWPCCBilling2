@@ -115,6 +115,8 @@
     <Compile Include="Infrastructure\PaymentStore.cs" />
     <Compile Include="Infrastructure\IgnoreAttribute.cs" />
     <Compile Include="Infrastructure\DateFactory.cs" />
+    <Compile Include="Controllers\DepositController.cs" />
+    <Compile Include="Modules\DepositModule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -135,6 +137,7 @@
     <Folder Include="Views\Fee\" />
     <Folder Include="View Models\" />
     <Folder Include="Views\Invoice\" />
+    <Folder Include="Views\Deposit\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateSchema.sql" />
@@ -160,6 +163,7 @@
     <EmbeddedResource Include="Views\Family\Index.html" />
     <EmbeddedResource Include="Views\Fee\Index.html" />
     <EmbeddedResource Include="Views\Invoice\Monthly.html" />
+    <EmbeddedResource Include="Views\Deposit\Index.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,27 +1,25 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Bootstrapper.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Infrastructure/CommandLineFactory.cs">
     <Files>
-      <File FileName="Controllers/CreditDebitController.cs" Line="1" Column="1" />
-      <File FileName="Infrastructure/FamilyStore.cs" Line="1" Column="1" />
-      <File FileName="Controllers/InvoiceController.cs" Line="1" Column="1" />
-      <File FileName="Infrastructure/InvoiceStore.cs" Line="1" Column="1" />
-      <File FileName="Infrastructure/ObjectExtensions.cs" Line="1" Column="1" />
-      <File FileName="Bootstrapper.cs" Line="1" Column="1" />
-      <File FileName="Infrastructure/UrlFactory.cs" Line="21" Column="21" />
-      <File FileName="Infrastructure/Ledger.cs" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Infrastructure/PaymentStore.cs" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Models/Invoice.cs" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Infrastructure/ActionAttribute.cs" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Infrastructure/TypeInfo.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Infrastructure/SettingsStore.cs" Line="41" Column="41" />
+      <File FileName="Bootstrapper.cs" Line="6" Column="6" />
+      <File FileName="Infrastructure/Ledger.cs" Line="1" Column="1" />
+      <File FileName="Controllers/CreditDebitController.cs" Line="25" Column="25" />
+      <File FileName="Infrastructure/CommandLineFactory.cs" Line="18" Column="18" />
+      <File FileName="Infrastructure/DbConnectionExtensions.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/DbCommandExtensions.cs" Line="3" Column="3" />
+      <File FileName="Infrastructure/DatabaseFactory.cs" Line="36" Column="36" NotebookId="1" />
+      <File FileName="Infrastructure/ActionMetaData.cs" Line="3" Column="3" NotebookId="1" />
+      <File FileName="Controllers/FamilyController.cs" Line="47" Column="47" NotebookId="1" />
+      <File FileName="Controllers/FeeController.cs" Line="31" Column="31" NotebookId="1" />
+      <File FileName="Infrastructure/Mailer.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Infrastructure/FamilyStore.cs" Line="41" Column="41" NotebookId="1" />
+      <File FileName="Models/CommandLine.cs" Line="4" Column="4" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/andy/Work/SWPCCBilling2/Infrastructure/InvoiceStore.cs" line="76" column="1" />
-      <Breakpoint file="/Users/andy/Work/SWPCCBilling2/Bootstrapper.cs" line="59" column="1" />
-      <Breakpoint file="/Users/andy/Work/SWPCCBilling2/Infrastructure/UrlFactory.cs" line="28" column="20" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
