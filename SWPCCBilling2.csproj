@@ -117,6 +117,9 @@
     <Compile Include="Infrastructure\DateFactory.cs" />
     <Compile Include="Controllers\DepositController.cs" />
     <Compile Include="Modules\DepositModule.cs" />
+    <Compile Include="Completions\DepositDateCompletion.cs" />
+    <Compile Include="Models\Deposit.cs" />
+    <Compile Include="Infrastructure\DepositStore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

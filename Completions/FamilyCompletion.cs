@@ -22,5 +22,4 @@ namespace SWPCCBilling2.Completions
 				AllStrings.Add(family.Name);
 		}
 	}
-
 }
