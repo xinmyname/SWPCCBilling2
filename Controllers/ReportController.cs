@@ -19,18 +19,21 @@ namespace SWPCCBilling2.Controllers
 
 		[Action("report-month","date")]
 		public void ReportMonth(
-			[CompleteWith(typeof(DateCompletion))] DateTime date)
+			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
-			throw new NotImplementedException();
+			DateTime reportDate = _dateFactory.GetReportDate(date);
+
+			string url = _urlFactory.UrlForPath("report/month/{0:yyyy-MM-dd}", reportDate);
+			Process.Start(url);
 		}
 
 		[Action("report-unpaid","date")]
 		public void ReportUnpaid(
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
-			DateTime invoiceDate = _dateFactory.GetReportDate(date);
+			DateTime reportDate = _dateFactory.GetReportDate(date);
 
-			string url = _urlFactory.UrlForPath("report/unpaid/{0}", invoiceDate.ToString("yyyy-MM-dd"));
+			string url = _urlFactory.UrlForPath("report/unpaid/{0:yyyy-MM-dd}", reportDate);
 			Process.Start(url);
 		}
 

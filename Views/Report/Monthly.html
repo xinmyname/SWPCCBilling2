@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body,td {
+				font-family: 'Calibri', 'Helvetica Neue', 'Arial', sans-serif; font-weight: normal; font-size: 9pt;
+			}
+			td {
+				padding-right: 0.5em;
+			}
+			th {
+				text-align: left;
+				padding-right: 0.5em;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="page">
+			<h2>@Model.Month Desposits</h2>
+			<table id="invoices">
+				<thead>
+					<tr>
+						<th>Family</th>
+						<th>Due</th>
+						<th>Paid</th>
+						<th>Donated</th>
+						<th>Check #</th>
+						<th>Closed</th>
+					</tr>
+				</thead>
+				<tbody>
+					@Each.Model.InvoiceSummaries
+					<tr>
+						<td>@Current.FamilyName</td>
+						<td>@Current.Due</td>
+						<td>@Current.Paid</td>
+						<td>@Current.Donated</td>
+						<td>@Current.CheckNumbers</td>
+						<td>@Current.Closed</td>
+					</tr>
+					@EndEach
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>Total</td>
+						<td>@Model.TotalDue</td>
+						<td>@Model.TotalPaid</td>
+						<td>@Model.TotalDonated</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		<div class="page">
+			<h2>@Model.Month Deposits</h2>
+			<table id="deposits">
+				<thead>
+					@Each.Model.DepositHeaderHtml
+					@Current
+					@EndEach
+				</thead>
+				<tbody>
+					@Each.Model.DepositRowHtml
+					@Current
+					@EndEach
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

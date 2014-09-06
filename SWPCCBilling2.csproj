@@ -167,6 +167,7 @@
     <EmbeddedResource Include="Views\Invoice\Monthly.html" />
     <EmbeddedResource Include="Views\Report\DepositPending.html" />
     <EmbeddedResource Include="Views\Report\Unpaid.html" />
+    <EmbeddedResource Include="Views\Report\Monthly.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
