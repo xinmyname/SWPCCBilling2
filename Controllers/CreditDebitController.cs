@@ -147,6 +147,12 @@ namespace SWPCCBilling2.Controllers
 			}
 		}
 
+		[Action("deposit")]
+		public void Deposit()
+		{
+			throw new NotImplementedException();
+		}
+
 		[Action("show-payment")]
 		public void ShowPayment()
 		{

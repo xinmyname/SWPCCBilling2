@@ -103,5 +103,16 @@ namespace SWPCCBilling2
 
 			return invoiceDate;
 		}
+
+		public DateTime GetReportDate(DateTime? date)
+		{
+			DateTime now = Now();
+
+			DateTime reportDate = date != null 
+				? date.Value
+				: new DateTime(now.Year, now.Month, 1);
+
+			return reportDate;
+		}
 	}
 }

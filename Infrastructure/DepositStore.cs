@@ -20,7 +20,7 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				foreach (var record in con.Query<Deposit>("SELECT * FORM Deposit ORDER BY Date DESC"))
+				foreach (var record in con.Query<Deposit>("SELECT * FROM Deposit ORDER BY Date DESC"))
 					yield return record;
 			}
 		}

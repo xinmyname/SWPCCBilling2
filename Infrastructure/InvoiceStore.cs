@@ -2,6 +2,7 @@
 using SWPCCBilling2.Models;
 using System.Data;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace SWPCCBilling2.Infrastructure
 {
@@ -67,6 +68,22 @@ namespace SWPCCBilling2.Infrastructure
 			}
 
 			return record;
+		}
+
+		public IList<Invoice> LoadOpenInvoicesAfter(DateTime date)
+		{
+			var records = new List<Invoice>();
+
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				foreach (var record in con.Query<Invoice>("SELECT * FROM Invoice WHERE Opened >= ? AND Closed IS NULL", new { date }))
+				{
+					LoadLines(con, record);
+					records.Add(record);
+				}
+			}
+
+			return records;
 		}
 
 		public void Save(Invoice invoice, bool withLines = true)

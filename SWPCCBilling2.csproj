@@ -38,9 +38,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="Mono.Data.Sqlite" />
     <Reference Include="System.Xml" />
-    <Reference Include="CsvHelper">
-      <HintPath>packages\CsvHelper.2.7.0\lib\net40-client\CsvHelper.dll</HintPath>
-    </Reference>
     <Reference Include="Nancy">
       <HintPath>packages\Nancy.0.23.2\lib\net40\Nancy.dll</HintPath>
     </Reference>
@@ -48,6 +45,9 @@
       <HintPath>packages\Nancy.Hosting.Self.0.23.2\lib\net40\Nancy.Hosting.Self.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="CsvHelper">
+      <HintPath>packages\CsvHelper.2.7.1\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,11 +115,10 @@
     <Compile Include="Infrastructure\PaymentStore.cs" />
     <Compile Include="Infrastructure\IgnoreAttribute.cs" />
     <Compile Include="Infrastructure\DateFactory.cs" />
-    <Compile Include="Controllers\DepositController.cs" />
-    <Compile Include="Modules\DepositModule.cs" />
     <Compile Include="Completions\DepositDateCompletion.cs" />
     <Compile Include="Models\Deposit.cs" />
     <Compile Include="Infrastructure\DepositStore.cs" />
+    <Compile Include="Modules\ReportModule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -140,7 +139,7 @@
     <Folder Include="Views\Fee\" />
     <Folder Include="View Models\" />
     <Folder Include="Views\Invoice\" />
-    <Folder Include="Views\Deposit\" />
+    <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateSchema.sql" />
@@ -166,7 +165,8 @@
     <EmbeddedResource Include="Views\Family\Index.html" />
     <EmbeddedResource Include="Views\Fee\Index.html" />
     <EmbeddedResource Include="Views\Invoice\Monthly.html" />
-    <EmbeddedResource Include="Views\Deposit\Index.html" />
+    <EmbeddedResource Include="Views\Report\DepositPending.html" />
+    <EmbeddedResource Include="Views\Report\Unpaid.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

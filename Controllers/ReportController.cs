@@ -9,10 +9,12 @@ namespace SWPCCBilling2.Controllers
 	public class ReportController : Controller
 	{
 		private readonly UrlFactory _urlFactory;
+		private readonly DateFactory _dateFactory;
 
 		public ReportController()
 		{
 			_urlFactory = UrlFactory.DefaultUrlFactory;
+			_dateFactory = DateFactory.DefaultDateFactory;
 		}
 
 		[Action("report-month","date")]
@@ -24,15 +26,19 @@ namespace SWPCCBilling2.Controllers
 
 		[Action("report-unpaid","date")]
 		public void ReportUnpaid(
-			[CompleteWith(typeof(DateCompletion))] DateTime date)
+			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
-			throw new NotImplementedException();
+			DateTime invoiceDate = _dateFactory.GetReportDate(date);
+
+			string url = _urlFactory.UrlForPath("report/unpaid/{0}", invoiceDate.ToString("yyyy-MM-dd"));
+			Process.Start(url);
 		}
 
 		[Action("report-payments","date")]
 		public void ReportPayments(
 			[CompleteWith(typeof(DateCompletion))] DateTime date)
 		{
+
 			throw new NotImplementedException();
 		}
 
@@ -47,9 +53,7 @@ namespace SWPCCBilling2.Controllers
 				throw new NotImplementedException("Need to get deposit ID");
 			}
 
-			// Move existing report to deposit pending report
 			string url = _urlFactory.UrlForPath("report/deposit/{0}", depositId);
-
 			Process.Start(url);
 		}
 	}
