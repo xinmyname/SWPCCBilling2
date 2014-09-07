@@ -32,16 +32,6 @@ namespace SWPCCBilling2.Models
 			Opened = opened;
 		}
 
-		public decimal AmountDue()
-		{
-			decimal amountDue = 0;
-
-			foreach (InvoiceLine line in Lines.Where(l => l.FeeCode != "Payment"))
-				amountDue += line.Amount();
-
-			return amountDue;
-		}
-
 		public decimal BalanceDue() 
 		{
 			decimal balance = 0;

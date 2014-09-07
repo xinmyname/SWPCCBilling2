@@ -18,7 +18,7 @@
 
 			}
 			tbody tr:nth-child(odd) {
-				background-color: #ddd;
+				background-color: #eee;
 			}
 			thead tr th {
 				border-bottom: solid 1px #000;
@@ -46,9 +46,9 @@
 					@Each.Model.InvoiceSummaries
 					<tr>
 						<td>@Current.FamilyName</td>
-						<td>@Current.Due</td>
-						<td>@Current.Paid</td>
-						<td>@Current.Donated</td>
+						<td>@Current.DueText</td>
+						<td>@Current.PaidText</td>
+						<td>@Current.DonatedText</td>
 						<td>@Current.CheckNumbers</td>
 						<td>@Current.Closed</td>
 					</tr>
@@ -57,9 +57,9 @@
 				<tfoot>
 					<tr>
 						<td>Total</td>
-						<td>@Model.TotalDue</td>
-						<td>@Model.TotalPaid</td>
-						<td>@Model.TotalDonated</td>
+						<td>@Model.TotalDueText</td>
+						<td>@Model.TotalPaidText</td>
+						<td>@Model.TotalDonatedText</td>
 						<td></td>
 						<td></td>
 					</tr>

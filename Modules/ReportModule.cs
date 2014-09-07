@@ -4,6 +4,7 @@ using SWPCCBilling2.Infrastructure;
 using SWPCCBilling2.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace SWPCCBilling2.Modules
 {
@@ -55,14 +56,11 @@ namespace SWPCCBilling2.Modules
 				var model = new MonthlyData();
 
 				model.Month = month.ToString("MMMM yyyy");
+
 				model.InvoiceSummaries = monthlyInvoices
 					.OrderBy(i => i.Closed)
-					.Select(i => new MonthlyInvoiceSummary(i)).ToList();
-				model.TotalDue = monthlyInvoices.Sum(i => i.AmountDue()).ToString("C");
-
-				foreach (Invoice invoice in monthlyInvoices)
-				{
-				}
+					.Select(i => new MonthlyInvoiceSummary(i, paymentStore.LoadPaymentsForInvoice(i)))
+					.ToList();
 
 				return View["Monthly", model];
 			};
@@ -73,9 +71,12 @@ namespace SWPCCBilling2.Modules
 	{
 		public string Month { get; set; }
 		public IList<MonthlyInvoiceSummary> InvoiceSummaries { get; set; }
-		public string TotalDue { get; set; }
-		public string TotalPaid { get; set; }
-		public string TotalDonated { get; set; }
+		public decimal TotalDue { get; set; }
+		public decimal TotalPaid { get; set; }
+		public decimal TotalDonated { get; set; }
+		public string TotalDueText { get; set; }
+		public string TotalPaidText { get; set; }
+		public string TotalDonatedText { get; set; }
 		public IList<string> DepositHeaderHtml { get; set; }
 		public IList<string> DepositRowHtml { get; set; }
 
@@ -90,19 +91,69 @@ namespace SWPCCBilling2.Modules
 	public class MonthlyInvoiceSummary
 	{
 		public string FamilyName { get; set; }
-		public string Due { get; set; }
-		public string Paid { get; set; }
-		public string Donated { get; set; }
+		public decimal Due { get; set; }
+		public decimal Paid { get; set; }
+		public decimal Donated { get; set; }
+		public string DueText { get; set; }
+		public string PaidText { get; set; }
+		public string DonatedText { get; set; }
 		public string CheckNumbers { get; set; }
 		public string Closed { get; set; }
 
-		public MonthlyInvoiceSummary(Invoice invoice)
+		public MonthlyInvoiceSummary(Invoice invoice, IEnumerable<Payment> payments)
 		{
 			FamilyName = invoice.FamilyName;
-			Due = invoice.AmountDue().ToString("C");
+			Due = AmountDue(invoice);
+			DueText = Due.ToString("C");
+			Paid = AmountPaid(invoice);
+			PaidText = Paid.ToString("C");
+			Donated = AmountDonated(invoice);
+			DonatedText = Donated.ToString("C");
+
+			var checkNumbers = new StringBuilder();
+
+			foreach (Payment payment in payments)
+			{
+				if (checkNumbers.Length > 0)
+					checkNumbers.Append(',');
+
+				checkNumbers.Append(payment.CheckNum);
+			}
+
+			CheckNumbers = checkNumbers.ToString();
 
 			if (invoice.Closed != null)
 				Closed = invoice.Closed.Value.ToString("d");
+		}
+
+		private decimal AmountDue(Invoice invoice)
+		{
+			decimal amount = 0;
+
+			foreach (InvoiceLine line in invoice.Lines.Where(l => l.FeeCode != "Payment"))
+				amount += line.Amount();
+
+			return amount;
+		}
+
+		private decimal AmountPaid(Invoice invoice)
+		{
+			decimal amount = 0;
+
+			foreach (InvoiceLine line in invoice.Lines.Where(l => l.FeeCode == "Payment"))
+				amount += line.Amount();
+
+			return amount;
+		}
+
+		private decimal AmountDonated(Invoice invoice)
+		{
+			decimal amount = 0;
+
+			foreach (InvoiceLine line in invoice.Lines.Where(l => l.FeeCode == "Donation"))
+				amount += line.Amount();
+
+			return amount;
 		}
 	}
 }
