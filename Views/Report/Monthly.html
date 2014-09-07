@@ -12,11 +12,25 @@
 				text-align: left;
 				padding-right: 0.5em;
 			}
+			table {
+				width: 100%;
+				border-collapse:collapse;
+
+			}
+			tbody tr:nth-child(odd) {
+				background-color: #ddd;
+			}
+			thead tr th {
+				border-bottom: solid 1px #000;
+			}
+			tfoot tr td {
+				border-top: solid 1px #000;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="page">
-			<h2>@Model.Month Desposits</h2>
+			<h2>@Model.Month Summary</h2>
 			<table id="invoices">
 				<thead>
 					<tr>

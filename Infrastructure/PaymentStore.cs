@@ -38,5 +38,14 @@ namespace SWPCCBilling2.Infrastructure
 					yield return record;
 			}
 		}
+
+		public IEnumerable<Payment> LoadPaymentsForInvoice(Invoice invoice)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				foreach (var record in con.Query<Payment>("SELECT * FROM Payment WHERE InvoiceId=?", new { invoice.Id }))
+					yield return record;
+			}
+		}
 	}
 }

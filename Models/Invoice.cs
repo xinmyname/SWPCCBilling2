@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using SWPCCBilling2.Infrastructure;
+using System.Linq;
 
 namespace SWPCCBilling2.Models
 {
@@ -31,14 +32,24 @@ namespace SWPCCBilling2.Models
 			Opened = opened;
 		}
 
-		public decimal AmountDue() 
+		public decimal AmountDue()
 		{
 			decimal amountDue = 0;
 
-			foreach (InvoiceLine line in Lines)
+			foreach (InvoiceLine line in Lines.Where(l => l.FeeCode != "Payment"))
 				amountDue += line.Amount();
 
 			return amountDue;
+		}
+
+		public decimal BalanceDue() 
+		{
+			decimal balance = 0;
+
+			foreach (InvoiceLine line in Lines)
+				balance += line.Amount();
+
+			return balance;
 		}
 
 		public void AddLedgerLine(LedgerLine ledgerLine)

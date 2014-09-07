@@ -17,13 +17,13 @@ namespace SWPCCBilling2.Controllers
 			_dateFactory = DateFactory.DefaultDateFactory;
 		}
 
-		[Action("report-month","date")]
-		public void ReportMonth(
+		[Action("report-monthly","date")]
+		public void ReportMonthly(
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
 		{
 			DateTime reportDate = _dateFactory.GetReportDate(date);
 
-			string url = _urlFactory.UrlForPath("report/month/{0:yyyy-MM-dd}", reportDate);
+			string url = _urlFactory.UrlForPath("report/monthly/{0:yyyy-MM-dd}", reportDate);
 			Process.Start(url);
 		}
 

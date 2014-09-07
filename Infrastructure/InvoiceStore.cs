@@ -86,6 +86,24 @@ namespace SWPCCBilling2.Infrastructure
 			return records;
 		}
 
+		public IList<Invoice> LoadInvoicesForMonth(DateTime date)
+		{
+			DateTime nextMonth = date.NextMonth();
+
+			var records = new List<Invoice>();
+
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				foreach (var record in con.Query<Invoice>("SELECT * FROM Invoice WHERE Opened >= ? AND Opened < ?", new { date, nextMonth }))
+				{
+					LoadLines(con, record);
+					records.Add(record);
+				}
+			}
+
+			return records;
+		}
+
 		public void Save(Invoice invoice, bool withLines = true)
 		{
 			using (IDbConnection con = _dbFactory.Open())
@@ -96,7 +114,6 @@ namespace SWPCCBilling2.Infrastructure
 
 				if (withLines)
 				{
-
 					con.Execute("DELETE FROM InvoiceLine WHERE InvoiceId=?", new { invoice.Id });
 
 					foreach (InvoiceLine line in invoice.Lines)

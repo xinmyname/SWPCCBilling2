@@ -48,7 +48,7 @@ namespace SWPCCBilling2.Infrastructure
 
 				}).ToList(),
 				DueDate = DateText(invoice.Due, "MMMM dd@@"),
-				AmountDue = invoice.AmountDue().ToString("C")
+				AmountDue = invoice.BalanceDue().ToString("C")
 			};
 		}
 

@@ -37,6 +37,7 @@ namespace SWPCCBilling2.Modules
 			{
 				IList<Invoice> unpaidInvoices = invoiceStore.LoadOpenInvoicesAfter(_.date);
 
+
 				IEnumerable<string> unpaidEmails = unpaidInvoices
 					.SelectMany(i => 
 						parentStore
@@ -47,6 +48,61 @@ namespace SWPCCBilling2.Modules
 				return View["Unpaid", unpaidEmails];
 			};
 
+			Get["/report/monthly/{date}"] = _ =>
+			{
+				DateTime month = _.date;
+				IList<Invoice> monthlyInvoices = invoiceStore.LoadInvoicesForMonth(month);
+				var model = new MonthlyData();
+
+				model.Month = month.ToString("MMMM yyyy");
+				model.InvoiceSummaries = monthlyInvoices
+					.OrderBy(i => i.Closed)
+					.Select(i => new MonthlyInvoiceSummary(i)).ToList();
+				model.TotalDue = monthlyInvoices.Sum(i => i.AmountDue()).ToString("C");
+
+				foreach (Invoice invoice in monthlyInvoices)
+				{
+				}
+
+				return View["Monthly", model];
+			};
+		}
+	}
+
+	public class MonthlyData
+	{
+		public string Month { get; set; }
+		public IList<MonthlyInvoiceSummary> InvoiceSummaries { get; set; }
+		public string TotalDue { get; set; }
+		public string TotalPaid { get; set; }
+		public string TotalDonated { get; set; }
+		public IList<string> DepositHeaderHtml { get; set; }
+		public IList<string> DepositRowHtml { get; set; }
+
+		public MonthlyData()
+		{
+			InvoiceSummaries = new List<MonthlyInvoiceSummary>();
+			DepositHeaderHtml = new List<string>();
+			DepositRowHtml = new List<string>();
+		}
+	}
+
+	public class MonthlyInvoiceSummary
+	{
+		public string FamilyName { get; set; }
+		public string Due { get; set; }
+		public string Paid { get; set; }
+		public string Donated { get; set; }
+		public string CheckNumbers { get; set; }
+		public string Closed { get; set; }
+
+		public MonthlyInvoiceSummary(Invoice invoice)
+		{
+			FamilyName = invoice.FamilyName;
+			Due = invoice.AmountDue().ToString("C");
+
+			if (invoice.Closed != null)
+				Closed = invoice.Closed.Value.ToString("d");
 		}
 	}
 }

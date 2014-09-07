@@ -69,7 +69,7 @@ namespace SWPCCBilling2.Controllers
 				foreach (LedgerLine ledgerLine in ledgerLines)
 					invoice.AddLedgerLine(ledgerLine);
 
-				Console.WriteLine("    Amount Due: {0:C}", invoice.AmountDue());
+				Console.WriteLine("    Amount Due: {0:C}", invoice.BalanceDue());
 
 				_invoiceStore.Save(invoice);
 
@@ -100,10 +100,10 @@ namespace SWPCCBilling2.Controllers
 					continue;
 				}
 
-				if (invoice.AmountDue() != 0m)
+				if (invoice.BalanceDue() != 0m)
 				{
 					Console.WriteLine("Invoice for {0} family on {1:d} cannot be closed because they owe {2:C}",
-						family.Name, invoiceDate, invoice.AmountDue());
+						family.Name, invoiceDate, invoice.BalanceDue());
 
 					continue;
 				}

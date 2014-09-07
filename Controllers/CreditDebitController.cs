@@ -120,14 +120,14 @@ namespace SWPCCBilling2.Controllers
 				int curLeft = Console.CursorLeft;
 				int curTop = Console.CursorTop;
 
-				Console.Write("{0:C}", invoice.AmountDue());
+				Console.Write("{0:C}", invoice.BalanceDue());
 
 				ConsoleKeyInfo keyInfo = Console.ReadKey();
 
 				decimal amount = 0.0m;
 
 				if (keyInfo.Key == ConsoleKey.Enter)
-					amount = invoice.AmountDue();
+					amount = invoice.BalanceDue();
 				else
 				{
 					Console.SetCursorPosition(curLeft, curTop);
@@ -174,7 +174,7 @@ namespace SWPCCBilling2.Controllers
 
 				invoice.AddLedgerLine(ledgerLine);
 
-				decimal amountDue = invoice.AmountDue();
+				decimal amountDue = invoice.BalanceDue();
 
 				if (amountDue < 0)
 				{
