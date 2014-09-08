@@ -3,16 +3,23 @@ using SWPCCBilling2.Models;
 using System.Data;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
+using EmbeddedResources;
 
 namespace SWPCCBilling2.Infrastructure
 {
 	public class InvoiceStore
 	{
 		private readonly DatabaseFactory _dbFactory;
+		private readonly EmbeddedResourceLoader _resLoader;
 
 		public InvoiceStore()
 		{
 			_dbFactory = new DatabaseFactory();
+
+			Assembly asm = Assembly.GetExecutingAssembly();
+			ILocateResources resLocator = new AssemblyResourceLocator(asm);
+			_resLoader = new EmbeddedResourceLoader(resLocator);
 		}
 
 		public Invoice Load(long id)
@@ -129,6 +136,25 @@ namespace SWPCCBilling2.Infrastructure
 				con.Execute("DELETE FROM Invoice WHERE Id=?", new { invoice.Id });
 				con.Execute("DELETE FROM InvoiceLine WHERE InvoiceId=?", new { invoice.Id });
 			}
+		}
+
+		public IDictionary<string, double> CategoryTotals(IEnumerable<long> invoiceIds)
+		{
+			var categoryTotals = new Dictionary<string, double>();
+
+			string invoiceIdText = String.Join(",", invoiceIds.Select(id => id.ToString()));
+			string cmdText = _resLoader.LoadText("CategoryTotals.sql");
+			cmdText = String.Format(cmdText, invoiceIdText);
+
+			using (IDbConnection con = _dbFactory.Open())
+			using (IDbCommand cmd = con.CreateCommand(cmdText))
+			using (IDataReader reader = cmd.ExecuteReader())
+			{
+				while (reader.Read())
+					categoryTotals[reader.GetString(0)] = reader.GetDouble(1);
+			}
+
+			return categoryTotals;
 		}
 
 		private void LoadLines(IDbConnection con, Invoice invoice)

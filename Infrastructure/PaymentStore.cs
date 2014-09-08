@@ -47,5 +47,17 @@ namespace SWPCCBilling2.Infrastructure
 					yield return record;
 			}
 		}
+
+		public void Save(IEnumerable<Payment> payments)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				foreach (Payment payment in payments)
+				{
+					con.Execute("UPDATE Payment SET FamilyName=?,CheckNum=?,Amount=?,Received=?,InvoiceId=?,DepositId=? WHERE Id=?",
+						payment.AllValuesKeyLast());
+				}
+			}
+		}
 	}
 }

@@ -17,6 +17,7 @@ namespace SWPCCBilling2.Controllers
 		private readonly PaymentStore _paymentStore;
 		private readonly InvoiceStore _invoiceStore;
 		private readonly DateFactory _dateFactory;
+		private readonly DepositStore _depositStore;
 
 		public CreditDebitController()
 		{
@@ -26,6 +27,7 @@ namespace SWPCCBilling2.Controllers
 			_paymentStore = new PaymentStore();
 			_invoiceStore = new InvoiceStore();
 			_dateFactory = DateFactory.DefaultDateFactory;
+			_depositStore = new DepositStore();
 		}
 
 		[Action("debit", "family-name fee-name quantity(number) amount(dollars)")]
@@ -150,7 +152,19 @@ namespace SWPCCBilling2.Controllers
 		[Action("deposit")]
 		public void Deposit()
 		{
-			throw new NotImplementedException();
+			IList<Payment> undepositedPayments = _paymentStore.LoadUndeposited().ToList();
+			decimal total = undepositedPayments.Sum(p => (decimal)p.Amount);
+
+			var deposit = new Deposit(_dateFactory.Now(), (double)total);
+
+			_depositStore.Add(deposit);
+
+			foreach (Payment payment in undepositedPayments)
+				payment.DepositId = deposit.Id;
+
+			_paymentStore.Save(undepositedPayments);
+
+			Console.WriteLine("Deposit {0} for {1:C} completed.", deposit.Id, deposit.Amount);
 		}
 
 		[Action("show-payment")]

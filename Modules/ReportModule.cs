@@ -10,7 +10,7 @@ namespace SWPCCBilling2.Modules
 {
 	public class ReportModule : NancyModule
 	{
-		public ReportModule(PaymentStore paymentStore, InvoiceStore invoiceStore, ParentStore parentStore)
+		public ReportModule(PaymentStore paymentStore, InvoiceStore invoiceStore, ParentStore parentStore, DepositStore depositStore)
 		{
 			Get["/report/deposit/pending"] = _ =>
 			{
@@ -38,7 +38,6 @@ namespace SWPCCBilling2.Modules
 			{
 				IList<Invoice> unpaidInvoices = invoiceStore.LoadOpenInvoicesAfter(_.date);
 
-
 				IEnumerable<string> unpaidEmails = unpaidInvoices
 					.SelectMany(i => 
 						parentStore
@@ -61,6 +60,27 @@ namespace SWPCCBilling2.Modules
 					.OrderBy(i => i.Closed)
 					.Select(i => new MonthlyInvoiceSummary(i, paymentStore.LoadPaymentsForInvoice(i)))
 					.ToList();
+
+				model.TotalDue = model.InvoiceSummaries.Sum(mis => mis.Due);
+				model.TotalDueText = model.TotalDue.ToHtmlCurrency();
+				model.TotalPaid = model.InvoiceSummaries.Sum(mis => mis.Paid);
+				model.TotalPaidText = model.TotalPaid.ToHtmlCurrency();
+				model.TotalDonated = model.InvoiceSummaries.Sum(mis => mis.Donated);
+				model.TotalDonatedText = model.TotalDonated.ToHtmlCurrency();
+
+				IDictionary<long, IList<long>> invoicesForDeposits;
+
+				invoicesForDeposits = depositStore.InvoicesForDeposits(month);
+
+				foreach (long depositId in invoicesForDeposits.Keys)
+				{
+					Deposit deposit = depositStore.Load(depositId);
+					IList<long> invoiceIds = invoicesForDeposits[depositId];
+					IDictionary<string, double> categoryTotals = invoiceStore.CategoryTotals(invoiceIds);
+
+					// TODO: Build matrix from deposit and category totals
+					throw new NotImplementedException();
+				}
 
 				return View["Monthly", model];
 			};
@@ -104,11 +124,11 @@ namespace SWPCCBilling2.Modules
 		{
 			FamilyName = invoice.FamilyName;
 			Due = AmountDue(invoice);
-			DueText = Due.ToString("C");
-			Paid = AmountPaid(invoice);
-			PaidText = Paid.ToString("C");
+			DueText = Due.ToHtmlCurrency();
+			Paid = -AmountPaid(invoice);
+			PaidText = Paid.ToHtmlCurrency();
 			Donated = AmountDonated(invoice);
-			DonatedText = Donated.ToString("C");
+			DonatedText = Donated.ToHtmlCurrency();
 
 			var checkNumbers = new StringBuilder();
 
@@ -130,7 +150,7 @@ namespace SWPCCBilling2.Modules
 		{
 			decimal amount = 0;
 
-			foreach (InvoiceLine line in invoice.Lines.Where(l => l.FeeCode != "Payment"))
+			foreach (InvoiceLine line in invoice.Lines.Where(l => l.FeeCode != "Payment" && l.FeeCode != "CreditNext"))
 				amount += line.Amount();
 
 			return amount;

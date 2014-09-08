@@ -120,6 +120,7 @@
     <Compile Include="Infrastructure\DepositStore.cs" />
     <Compile Include="Modules\ReportModule.cs" />
     <Compile Include="Infrastructure\DateExtensions.cs" />
+    <Compile Include="Infrastructure\DecimalExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -169,6 +170,8 @@
     <EmbeddedResource Include="Views\Report\DepositPending.html" />
     <EmbeddedResource Include="Views\Report\Unpaid.html" />
     <EmbeddedResource Include="Views\Report\Monthly.html" />
+    <EmbeddedResource Include="Resources\InvoicesForDeposits.sql" />
+    <EmbeddedResource Include="Resources\CategoryTotals.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
