@@ -10,7 +10,7 @@ namespace SWPCCBilling2.Modules
 {
 	public class ReportModule : NancyModule
 	{
-		public ReportModule(PaymentStore paymentStore, InvoiceStore invoiceStore, ParentStore parentStore, DepositStore depositStore)
+		public ReportModule(PaymentStore paymentStore, InvoiceStore invoiceStore, ParentStore parentStore, DepositStore depositStore, DepositSummaryFactory depositSummaryFactory)
 		{
 			Get["/report/deposit/pending"] = _ =>
 			{
@@ -72,6 +72,8 @@ namespace SWPCCBilling2.Modules
 				model.TotalDonated = model.InvoiceSummaries.Sum(mis => mis.Donated);
 				model.TotalDonatedText = model.TotalDonated.ToHtmlCurrency();
 
+				depositSummaryFactory.Clear();
+
 				IDictionary<long, IList<long>> invoicesForDeposits;
 
 				invoicesForDeposits = depositStore.InvoicesForDeposits(month);
@@ -82,9 +84,11 @@ namespace SWPCCBilling2.Modules
 					IList<long> invoiceIds = invoicesForDeposits[depositId];
 					IDictionary<string, double> categoryTotals = invoiceStore.CategoryTotals(invoiceIds);
 
-					// TODO: Build matrix from deposit and category totals
-					throw new NotImplementedException();
+					depositSummaryFactory.AddDeposit(deposit, categoryTotals);
 				}
+
+				model.DepositHeaderHtml = depositSummaryFactory.BuildHeaderRow().ToList();
+				model.DepositRowsHtml = depositSummaryFactory.BuildDepositRows().ToList();
 
 				return View["Monthly", model];
 			};
@@ -106,13 +110,13 @@ namespace SWPCCBilling2.Modules
 		public string TotalCreditDueText { get; set; }
 		public string TotalDonatedText { get; set; }
 		public IList<string> DepositHeaderHtml { get; set; }
-		public IList<string> DepositRowHtml { get; set; }
+		public IList<string> DepositRowsHtml { get; set; }
 
 		public MonthlyData()
 		{
 			InvoiceSummaries = new List<MonthlyInvoiceSummary>();
 			DepositHeaderHtml = new List<string>();
-			DepositRowHtml = new List<string>();
+			DepositRowsHtml = new List<string>();
 		}
 	}
 

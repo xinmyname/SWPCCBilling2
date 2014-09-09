@@ -29,6 +29,15 @@
 			.neg {
 				color: red;
 			}
+			.zero {
+				color: #888;
+			}
+			.money {
+				text-align: right;
+			}
+			.page {
+				page-break-after: always;
+			}
 		</style>
 	</head>
 	<body>
@@ -38,11 +47,11 @@
 				<thead>
 					<tr>
 						<th>Family</th>
-						<th>Due</th>
-						<th>Credit Used</th>
-						<th>Paid</th>
-						<th>Credit Due</th>
-						<th>Donated</th>
+						<th class="money">Due</th>
+						<th class="money">Credit Used</th>
+						<th class="money">Paid</th>
+						<th class="money">Credit Due</th>
+						<th class="money">Donated</th>
 						<th>Check #</th>
 						<th>Closed</th>
 					</tr>
@@ -51,11 +60,11 @@
 					@Each.Model.InvoiceSummaries
 					<tr>
 						<td>@Current.FamilyName</td>
-						<td>@Current.DueText</td>
-						<td>@Current.CreditUsedText</td>
-						<td>@Current.PaidText</td>
-						<td>@Current.CreditDueText</td>
-						<td>@Current.DonatedText</td>
+						<td class="money">@Current.DueText</td>
+						<td class="money">@Current.CreditUsedText</td>
+						<td class="money">@Current.PaidText</td>
+						<td class="money">@Current.CreditDueText</td>
+						<td class="money">@Current.DonatedText</td>
 						<td>@Current.CheckNumbers</td>
 						<td>@Current.Closed</td>
 					</tr>
@@ -64,11 +73,11 @@
 				<tfoot>
 					<tr>
 						<td>Total</td>
-						<td>@Model.TotalDueText</td>
-						<td>@Model.TotalCreditUsedText</td>
-						<td>@Model.TotalPaidText</td>
-						<td>@Model.TotalCreditDueText</td>
-						<td>@Model.TotalDonatedText</td>
+						<td class="money">@Model.TotalDueText</td>
+						<td class="money">@Model.TotalCreditUsedText</td>
+						<td class="money">@Model.TotalPaidText</td>
+						<td class="money">@Model.TotalCreditDueText</td>
+						<td class="money">@Model.TotalDonatedText</td>
 						<td></td>
 						<td></td>
 					</tr>
@@ -84,7 +93,7 @@
 					@EndEach
 				</thead>
 				<tbody>
-					@Each.Model.DepositRowHtml
+					@Each.Model.DepositRowsHtml
 					@Current
 					@EndEach
 				</tbody>

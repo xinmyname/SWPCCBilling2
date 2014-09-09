@@ -121,6 +121,7 @@
     <Compile Include="Modules\ReportModule.cs" />
     <Compile Include="Infrastructure\DateExtensions.cs" />
     <Compile Include="Infrastructure\DecimalExtensions.cs" />
+    <Compile Include="Infrastructure\DepositSummaryFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
