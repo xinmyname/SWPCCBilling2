@@ -63,8 +63,12 @@ namespace SWPCCBilling2.Modules
 
 				model.TotalDue = model.InvoiceSummaries.Sum(mis => mis.Due);
 				model.TotalDueText = model.TotalDue.ToHtmlCurrency();
+				model.TotalCreditUsed = model.InvoiceSummaries.Sum(mis => mis.CreditUsed);
+				model.TotalCreditUsedText = model.TotalCreditUsed.ToHtmlCurrency();
 				model.TotalPaid = model.InvoiceSummaries.Sum(mis => mis.Paid);
 				model.TotalPaidText = model.TotalPaid.ToHtmlCurrency();
+				model.TotalCreditDue = model.InvoiceSummaries.Sum(mis => mis.CreditDue);
+				model.TotalCreditDueText = model.TotalCreditDue.ToHtmlCurrency();
 				model.TotalDonated = model.InvoiceSummaries.Sum(mis => mis.Donated);
 				model.TotalDonatedText = model.TotalDonated.ToHtmlCurrency();
 
@@ -173,7 +177,12 @@ namespace SWPCCBilling2.Modules
 
 		private decimal AmountCreditUsed(Invoice invoice)
 		{
-			return 0m;
+			decimal amount = 0;
+
+			foreach (InvoiceLine line in invoice.Lines.Where(l => l.FeeCode == "CreditPrev"))
+				amount += line.Amount();
+
+			return amount;
 		}
 
 		private decimal AmountPaid(Invoice invoice)
@@ -188,7 +197,12 @@ namespace SWPCCBilling2.Modules
 
 		private decimal AmountCreditDue(Invoice invoice)
 		{
-			return 0m;
+			decimal amount = 0;
+
+			foreach (InvoiceLine line in invoice.Lines.Where(l => l.FeeCode == "CreditNext"))
+				amount += line.Amount();
+
+			return amount;
 		}
 
 		private decimal AmountDonated(Invoice invoice)
