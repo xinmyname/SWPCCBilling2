@@ -92,10 +92,14 @@ namespace SWPCCBilling2.Modules
 		public string Month { get; set; }
 		public IList<MonthlyInvoiceSummary> InvoiceSummaries { get; set; }
 		public decimal TotalDue { get; set; }
+		public decimal TotalCreditUsed { get; set; }
 		public decimal TotalPaid { get; set; }
+		public decimal TotalCreditDue { get; set; }
 		public decimal TotalDonated { get; set; }
 		public string TotalDueText { get; set; }
+		public string TotalCreditUsedText { get; set; }
 		public string TotalPaidText { get; set; }
+		public string TotalCreditDueText { get; set; }
 		public string TotalDonatedText { get; set; }
 		public IList<string> DepositHeaderHtml { get; set; }
 		public IList<string> DepositRowHtml { get; set; }
@@ -111,12 +115,19 @@ namespace SWPCCBilling2.Modules
 	public class MonthlyInvoiceSummary
 	{
 		public string FamilyName { get; set; }
+
 		public decimal Due { get; set; }
+		public decimal CreditUsed { get; set; }
 		public decimal Paid { get; set; }
+		public decimal CreditDue { get; set; }
 		public decimal Donated { get; set; }
+
 		public string DueText { get; set; }
+		public string CreditUsedText { get; set; }
 		public string PaidText { get; set; }
+		public string CreditDueText { get; set; }
 		public string DonatedText { get; set; }
+
 		public string CheckNumbers { get; set; }
 		public string Closed { get; set; }
 
@@ -125,8 +136,12 @@ namespace SWPCCBilling2.Modules
 			FamilyName = invoice.FamilyName;
 			Due = AmountDue(invoice);
 			DueText = Due.ToHtmlCurrency();
+			CreditUsed = AmountCreditUsed(invoice);
+			CreditUsedText = CreditUsed.ToHtmlCurrency();
 			Paid = -AmountPaid(invoice);
 			PaidText = Paid.ToHtmlCurrency();
+			CreditDue = AmountCreditDue(invoice);
+			CreditDueText = CreditDue.ToHtmlCurrency();
 			Donated = AmountDonated(invoice);
 			DonatedText = Donated.ToHtmlCurrency();
 
@@ -156,6 +171,11 @@ namespace SWPCCBilling2.Modules
 			return amount;
 		}
 
+		private decimal AmountCreditUsed(Invoice invoice)
+		{
+			return 0m;
+		}
+
 		private decimal AmountPaid(Invoice invoice)
 		{
 			decimal amount = 0;
@@ -164,6 +184,11 @@ namespace SWPCCBilling2.Modules
 				amount += line.Amount();
 
 			return amount;
+		}
+
+		private decimal AmountCreditDue(Invoice invoice)
+		{
+			return 0m;
 		}
 
 		private decimal AmountDonated(Invoice invoice)
