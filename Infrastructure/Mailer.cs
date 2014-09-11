@@ -20,7 +20,12 @@ namespace SWPCCBilling2.Infrastructure
 			_settingsStore = SettingsStore.DefaultSettingsStore;
 		}
 
-		public bool Send(string subject, string htmlBody, string emailPassword, IList<string> emailTo)
+		public bool SendSecretly(string subject, string htmlBody, string emailPassword, IList<string> emailTo)
+		{
+			return Send(subject, htmlBody, emailPassword, emailTo, true);
+		}
+
+		public bool Send(string subject, string htmlBody, string emailPassword, IList<string> emailTo, bool secretly = false)
 		{
 			bool result = true;
 
@@ -48,8 +53,18 @@ namespace SWPCCBilling2.Infrastructure
 					Subject = subject
 				};
 
-				foreach (string to in emailTo)
-					msg.To.Add(to);
+				if (!secretly)
+				{
+					foreach (string to in emailTo)
+						msg.To.Add(to);
+				}
+				else
+				{
+					msg.To.Add(settings.EmailFrom);
+
+					foreach (string to in emailTo)
+						msg.Bcc.Add(to);
+				}
 
 				msg.IsBodyHtml = true;
 				msg.Body = htmlBody;

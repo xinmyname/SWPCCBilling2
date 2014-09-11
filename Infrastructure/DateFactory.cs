@@ -114,5 +114,24 @@ namespace SWPCCBilling2
 
 			return reportDate;
 		}
+
+		public string CardinalDay(DateTime date)
+		{
+			switch (date.Day)
+			{
+				case 1: 
+				case 21: 
+				case 31: 
+					return String.Format("{0}st", date.Day);
+				case 2: 
+				case 22: 
+					return String.Format("{0}nd", date.Day);
+				case 3: 
+				case 23: 
+					return String.Format("{0}rd", date.Day);
+			}
+
+			return String.Format("{0}th", date.Day);
+		}
 	}
 }

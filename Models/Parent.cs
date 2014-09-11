@@ -8,6 +8,11 @@ namespace SWPCCBilling2.Models
 		public string FamilyName { get; set; }
 		public string Name { get; set; }
 		public string Email { get; set; }
+
+		public override string ToString()
+		{
+			return String.Format("{0}\t{1}\t{2}", FamilyName, Name, Email);
+		}
 	}
 }
 
