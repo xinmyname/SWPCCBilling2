@@ -175,6 +175,7 @@
     <EmbeddedResource Include="Views\Report\Monthly.html" />
     <EmbeddedResource Include="Resources\InvoicesForDeposits.sql" />
     <EmbeddedResource Include="Resources\CategoryTotals.sql" />
+    <EmbeddedResource Include="Views\Family\Detail.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -68,6 +68,27 @@ namespace SWPCCBilling2.Controllers
 			Console.WriteLine("Credited {0} families {1:C}", activeFamilies.Count, -total);
 		}
 
+		[Action("rescind-payment", "family-name")]
+		public void RescindPayment(
+			[CompleteWith(typeof(FamilyCompletion))] string familyName)
+		{
+			Family family = _familyStore.Load(familyName);
+
+			if (family == null)
+				throw new Error("{0} family not in database.", familyName);
+
+			IList<Payment> undepositedPayments = _paymentStore.LoadUndepositedPaymentsForFamily(family).ToList();
+
+			int count = 0;
+			foreach (Payment payment in undepositedPayments)
+			{
+				_paymentStore.Rescind(payment);
+				count++;
+			}
+
+			Console.WriteLine("Removed {0} payments for {1} family.", count, family.Name);
+		}
+
 		[Action("credit-payment", "family-name check-num amount")]
 		public void CreditPayment(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName, 

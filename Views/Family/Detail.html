@@ -1,0 +1,38 @@
+﻿@Master['Master.html']
+@Section['Content']
+
+<section>
+	<h1>@Model.Name</h1>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">@Model.StreetAddress</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">@Model.City, @Model.State @Model.Zip</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">Children</div>
+			<div class="col-sm-10">@Model.NumChildren</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">Billable Days</div>
+			<div class="col-sm-10">@Model.BillableDays</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+			@If.IsNew
+				New Family
+			@EndIf
+			@IfNot.IsNew
+				Returning Family
+			@EndIf
+			</div>
+		</div>
+		@If.IsGraduating
+			<div class="row"><div class="col-xs-12">Graduating</div></div>
+		@EndIf
+	</div>
+</section>
+
+@EndSection

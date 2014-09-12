@@ -27,7 +27,24 @@ namespace SWPCCBilling2.Infrastructure
 		public void Remove(Payment payment)
 		{
 			using (IDbConnection con = _dbFactory.Open())
+			{
 				con.Execute("DELETE FROM Payment WHERE Id=?", new { payment.Id });
+			}
+		}
+
+		public void Rescind(Payment payment)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				con.Execute("DELETE FROM Payment WHERE Id=?", new { payment.Id });
+				con.Execute("DELETE FROM LedgerLine WHERE PaymentId=?", new { payment.Id });
+				con.Execute("UPDATE Invoice SET Closed=NULL WHERE Id=?", new { payment.InvoiceId });
+				con.Execute("DELETE FROM InvoiceLine WHERE FeeCode='Payment' AND InvoiceId=? AND UnitPrice=?", 
+					new { 
+						payment.InvoiceId, 
+						UnitPrice=-payment.Amount 
+					});
+			}
 		}
 
 		public IEnumerable<Payment> LoadUndeposited()
@@ -47,6 +64,16 @@ namespace SWPCCBilling2.Infrastructure
 					yield return record;
 			}
 		}
+
+		public IEnumerable<Payment> LoadUndepositedPaymentsForFamily(Family family)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				foreach (var record in con.Query<Payment>("SELECT * FROM Payment WHERE DepositId IS NULL AND FamilyName=?", new { family.Name }))
+					yield return record;
+			}
+		}
+
 
 		public void Save(IEnumerable<Payment> payments)
 		{
