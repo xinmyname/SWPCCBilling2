@@ -61,15 +61,6 @@ namespace SWPCCBilling2.Infrastructure
 			return record;
 		}
 
-		public IEnumerable<Family> LoadWithMICR(MICR micr)
-		{
-			using (IDbConnection con = _dbFactory.Open())
-			{
-				foreach (var record in con.Query<Family>("SELECT * FROM Family WHERE CheckSHA256=?", new { micr.SHA256 }))
-					yield return record;
-			}
-		}
-
 		public void Remove(string name)
 		{
 			using (IDbConnection con = _dbFactory.Open())

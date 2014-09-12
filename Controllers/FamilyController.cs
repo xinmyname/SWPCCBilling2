@@ -12,12 +12,14 @@ namespace SWPCCBilling2.Controllers
 		private readonly SettingsStore _settingsStore;
 		private readonly FamilyStore _familyStore;
 		private readonly UrlFactory _urlFactory;
+		private readonly MICRStore _micrStore;
 
 		public FamilyController()
 		{
 			_settingsStore = SettingsStore.DefaultSettingsStore;
 			_familyStore = new FamilyStore();
 			_urlFactory = UrlFactory.DefaultUrlFactory;
+			_micrStore = new MICRStore();
 		}
 		
 		[Action("import-families", "path-to-csv-file")]
@@ -76,9 +78,7 @@ namespace SWPCCBilling2.Controllers
 
 			Console.WriteLine(micr);
 
-			family.CheckSHA256 = micr.SHA256;
-
-			_familyStore.Save(family);
+			_micrStore.Save(micr, family.Name);
 		}
 	}
 }

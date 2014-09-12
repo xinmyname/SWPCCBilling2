@@ -18,6 +18,7 @@ namespace SWPCCBilling2.Controllers
 		private readonly InvoiceStore _invoiceStore;
 		private readonly DateFactory _dateFactory;
 		private readonly DepositStore _depositStore;
+		private readonly MICRStore _micrStore;
 
 		public CreditDebitController()
 		{
@@ -28,6 +29,7 @@ namespace SWPCCBilling2.Controllers
 			_invoiceStore = new InvoiceStore();
 			_dateFactory = DateFactory.DefaultDateFactory;
 			_depositStore = new DepositStore();
+			_micrStore = new MICRStore();
 		}
 
 		[Action("debit", "family-name fee-name quantity(number) amount(dollars)")]
@@ -109,7 +111,10 @@ namespace SWPCCBilling2.Controllers
 
 				var micr = new MICR(micrText);
 
-				IList<Family> families = _familyStore.LoadWithMICR(micr).ToList();
+				IList<Family> families = _micrStore
+					.LoadFamilyNamesForMICR(micr)
+					.Select(n => _familyStore.Load(n))
+					.ToList();
 
 				if (families.Count == 0)
 					throw new Error("No matching family found for check #", micr.CheckNumber);

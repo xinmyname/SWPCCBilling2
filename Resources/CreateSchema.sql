@@ -3,7 +3,7 @@ CREATE TABLE Version
     Version INTEGER
 );
 
-INSERT INTO Version (Version) VALUES (6);
+INSERT INTO Version (Version) VALUES (7);
 
 CREATE TABLE Family
 (
@@ -29,6 +29,11 @@ CREATE TABLE Parent
     Email TEXT
 );
 
+CREATE TABLE MICR
+(
+    CheckSHA256 TEXT NOT NULL,
+    FamilyName TEXT
+);
 
 CREATE TABLE Fee
 (

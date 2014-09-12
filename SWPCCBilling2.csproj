@@ -123,6 +123,7 @@
     <Compile Include="Infrastructure\DecimalExtensions.cs" />
     <Compile Include="Infrastructure\DepositSummaryFactory.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Infrastructure\MICRStore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -46,7 +46,7 @@ namespace SWPCCBilling2.Infrastructure
 				BillableDays = csvRecord.BillableDays,
 				IsNew = csvRecord.IsNew == "Yes",
 				IsGraduating = csvRecord.IsGraduating == "Yes",
-				CheckSHA256 = csvRecord.CheckSHA256.EmptyAsNull(),
+				CheckSHA256 = null,
 				Joined = csvRecord.Joined,
 				Departed = csvRecord.Departed
 			};
