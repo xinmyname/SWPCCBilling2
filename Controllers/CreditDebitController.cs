@@ -68,6 +68,32 @@ namespace SWPCCBilling2.Controllers
 			Console.WriteLine("Credited {0} families {1:C}", activeFamilies.Count, -total);
 		}
 
+		[Action("rescind-fee", "family-name fee-name")]
+		public void RescindFee(
+			[CompleteWith(typeof(FamilyCompletion))] string familyName, 
+			[CompleteWith(typeof(FeeCompletion))] string feeCode)
+		{
+			Family family = _familyStore.Load(familyName);
+
+			if (family == null)
+				throw new Error("{0} family not in database.", familyName);
+
+			Fee fee = _feeStore.Load(feeCode);
+
+			if (fee == null)
+				throw new Error("{0} fee not in database.", feeCode);
+
+			LedgerLine line = _ledger.LoadLinesWithoutInvoiceForFamily(family.Name)
+				.Where(l => l.FeeCode == feeCode)
+				.LastOrDefault();
+
+			if (line != null)
+			{
+				_ledger.RemoveLine(line);
+				Console.WriteLine("Rescinded last {0} fee for {1:C}.", fee.Description, line.SubTotal());
+			}
+		}
+
 		[Action("rescind-payment", "family-name")]
 		public void RescindPayment(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName)
@@ -80,13 +106,15 @@ namespace SWPCCBilling2.Controllers
 			IList<Payment> undepositedPayments = _paymentStore.LoadUndepositedPaymentsForFamily(family).ToList();
 
 			int count = 0;
+			decimal total = 0m;
 			foreach (Payment payment in undepositedPayments)
 			{
 				_paymentStore.Rescind(payment);
 				count++;
+				total += (decimal)payment.Amount;
 			}
 
-			Console.WriteLine("Removed {0} payments for {1} family.", count, family.Name);
+			Console.WriteLine("Rescinded {0:C} in {1} payments for {2} family.", total, count, family.Name);
 		}
 
 		[Action("credit-payment", "family-name check-num amount")]
