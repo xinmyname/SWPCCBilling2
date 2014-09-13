@@ -115,23 +115,24 @@ namespace SWPCCBilling2
 			return reportDate;
 		}
 
-		public string CardinalDay(DateTime date)
+		public DateTime Grace1Date(int dueDay)
 		{
-			switch (date.Day)
-			{
-				case 1: 
-				case 21: 
-				case 31: 
-					return String.Format("{0}st", date.Day);
-				case 2: 
-				case 22: 
-					return String.Format("{0}nd", date.Day);
-				case 3: 
-				case 23: 
-					return String.Format("{0}rd", date.Day);
-			}
+			DateTime graceDate = GetReportDate(null).AddDays(dueDay+1);
 
-			return String.Format("{0}th", date.Day);
+			if (graceDate.DayOfWeek == DayOfWeek.Sunday)
+				graceDate = graceDate.AddDays(1);
+
+			return graceDate;
+		}
+
+		public DateTime Grace2Date(int dueDay)
+		{
+			DateTime graceDate = GetReportDate(null).AddDays(dueDay+6);
+
+			if (graceDate.DayOfWeek == DayOfWeek.Sunday)
+				graceDate = graceDate.AddDays(1);
+
+			return graceDate;
 		}
 	}
 }
