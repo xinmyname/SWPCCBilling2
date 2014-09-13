@@ -88,7 +88,7 @@ namespace SWPCCBilling2.Controllers
 
 			DateTime reportDate = _dateFactory.GetReportDate(null);
 			string monthText = reportDate.ToString("MMMMM yyyy");
-			string subject = String.Format("SWPCC {0} Tuition Not Received - 2nd notice", monthText);
+			string subject = String.Format("SWPCC {0} Tuition Not Received - final notice", monthText);
 
 			foreach (Family family in OverdueFamilies(familyName).ToList())
 			{
