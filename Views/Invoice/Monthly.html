@@ -40,7 +40,8 @@
                 <td colspan="4" style="text-align:center;font-weight:bold;background-color:#cee;padding:0.2em">Due @Model.DueDate</td>
             </tr>
             <tr>
-                <th width="50%" style="border:solid 1px #000;text-align:left;padding:0.2em">Description</th>
+                <th width="50%" style="border:solid 1px #000;text
+                -align:left;padding:0.2em">Description</th>
                 <th style="border:solid 1px #000;text-align:right;padding:0.2em">Rate</th>
                 <th style="border:solid 1px #000;text-align:center;padding:0.2em">Quantity</th>
                 <th style="border:solid 1px #000;text-align:right;padding:0.2em">Amount</th>
@@ -50,7 +51,7 @@
 
             @Each.Model.InvoiceLines
             <tr>
-                <td width="50%" valign="top" style="border:solid 1px #000;padding:0.2em">@Current.Description</td>
+                <td width="50%" valign="top" style="border:solid 1px #000;padding:0.2em">@Current.Description @Current.Notes</td>
                 <td valign="top" style="border:solid 1px #000;text-align:right;padding:0.2em">@Current.UnitPrice</td>
                 <td valign="top" style="border:solid 1px #000;text-align:center;padding:0.2em">@Current.Quantity</td>
                 <td valign="top" style="border:solid 1px #000;text-align:right;padding:0.2em">@Current.Amount</td>

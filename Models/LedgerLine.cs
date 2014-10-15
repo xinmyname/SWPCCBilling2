@@ -26,25 +26,33 @@ namespace SWPCCBilling2.Models
 			FeeCode = fee.Code;
 			Date = DateFactory.DefaultDateFactory.Now();
 
-			switch (fee.Type)
+			if (quantity != null && amount != null)
 			{
-				case Fee.FeeTypeFixed:
-				case Fee.FeeTypePerMinute:
-					UnitPrice = fee.Amount;
-					Quantity = quantity ?? 1;
-					break;
-				case Fee.FeeTypeVarying:
-					UnitPrice = amount ?? 0.0;
-					Quantity = quantity ?? 1;
-					break;
-				case Fee.FeeTypePerChild:
-					UnitPrice = fee.Amount;
-					Quantity = family.NumChildren;
-					break;
-				case Fee.FeeTypePerChildDay:
-					UnitPrice = fee.Amount;
-					Quantity = family.BillableDays;
-					break;
+				UnitPrice = amount.Value;
+				Quantity = quantity.Value;
+			}
+			else
+			{
+				switch (fee.Type)
+				{
+					case Fee.FeeTypeFixed:
+					case Fee.FeeTypePerMinute:
+						UnitPrice = fee.Amount;
+						Quantity = quantity ?? 1;
+						break;
+					case Fee.FeeTypeVarying:
+						UnitPrice = amount ?? 0.0;
+						Quantity = quantity ?? 1;
+						break;
+					case Fee.FeeTypePerChild:
+						UnitPrice = fee.Amount;
+						Quantity = family.NumChildren;
+						break;
+					case Fee.FeeTypePerChildDay:
+						UnitPrice = fee.Amount;
+						Quantity = family.BillableDays;
+						break;
+				}
 			}
 
 			if (isCredit)

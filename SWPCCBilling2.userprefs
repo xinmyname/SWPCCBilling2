@@ -1,11 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Models/LedgerLine.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/NotificationController.cs">
     <Files>
-      <File FileName="Controllers/CreditDebitController.cs" Line="22" Column="22" />
-      <File FileName="Controllers/ReportController.cs" Line="14" Column="14" />
-      <File FileName="Infrastructure/Ledger.cs" Line="49" Column="49" NotebookId="1" />
-      <File FileName="Models/LedgerLine.cs" Line="22" Column="22" NotebookId="1" />
+      <File FileName="Controllers/CreditDebitController.cs" Line="27" Column="27" />
+      <File FileName="Controllers/ReportController.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/CommandLineFactory.cs" Line="1" Column="1" />
+      <File FileName="Bootstrapper.cs" Line="1" Column="1" />
+      <File FileName="Controllers/NotificationController.cs" Line="9" Column="9" />
+      <File FileName="Infrastructure/Ledger.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Models/LedgerLine.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Views/Invoice/Monthly.html" Line="1" Column="1" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
