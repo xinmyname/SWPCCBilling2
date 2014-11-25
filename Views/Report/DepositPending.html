@@ -20,6 +20,7 @@
 			}
 			tfoot tr td {
 				padding-top: 0.75em;
+				font-weight: bold;
 			}
 		</style>
 	</head>
@@ -28,6 +29,7 @@
 		<table>
 			<thead>
 				<tr>
+					<th>Id</th>
 					<th>Family</th>
 					<th>Check #</th>
 					<th>Amount</th>
@@ -36,6 +38,7 @@
 			<tbody>
 				@Each.Model.Checks
 				<tr>
+					<td>@Current.Id</td>
 					<td>@Current.FamilyName</td>
 					<td>@Current.CheckNum</td>
 					<td>@Current.AmountText</td>
@@ -44,7 +47,7 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="2">Total</td>
+					<td colspan="3">@Model.Count, Total</td>
 					<td>@Model.AmountText</td>
 				</tr>
 			</tfoot>

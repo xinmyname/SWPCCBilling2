@@ -18,12 +18,16 @@ namespace SWPCCBilling2.Modules
 				decimal depositAmount = undeposited.Sum(x => (decimal)x.Amount);
 
 				return View["DepositPending", new {
-					Checks = undeposited.Select(p => new {
+					Checks = undeposited
+						.OrderBy(p => p.Id)
+						.Select(p => new {
+						p.Id,
 						p.FamilyName,
 						p.CheckNum,
 						p.Amount,
 						AmountText = p.Amount.ToString("C")
 					}),
+					Count = undeposited.Count,
 					Amount = depositAmount,
 					AmountText = depositAmount.ToString("C")
 				}];
@@ -71,6 +75,8 @@ namespace SWPCCBilling2.Modules
 				model.TotalCreditDueText = model.TotalCreditDue.ToHtmlCurrency();
 				model.TotalDonated = model.InvoiceSummaries.Sum(mis => mis.Donated);
 				model.TotalDonatedText = model.TotalDonated.ToHtmlCurrency();
+				model.TotalBalance = model.InvoiceSummaries.Sum(mis => mis.Balance);
+				model.TotalBalanceText = model.TotalBalance.ToHtmlCurrency();
 
 				depositSummaryFactory.Clear();
 
@@ -104,11 +110,15 @@ namespace SWPCCBilling2.Modules
 		public decimal TotalPaid { get; set; }
 		public decimal TotalCreditDue { get; set; }
 		public decimal TotalDonated { get; set; }
+		public decimal TotalBalance { get; set; }
+
 		public string TotalDueText { get; set; }
 		public string TotalCreditUsedText { get; set; }
 		public string TotalPaidText { get; set; }
 		public string TotalCreditDueText { get; set; }
 		public string TotalDonatedText { get; set; }
+		public string TotalBalanceText { get; set; }
+
 		public IList<string> DepositHeaderHtml { get; set; }
 		public IList<string> DepositRowsHtml { get; set; }
 
@@ -129,12 +139,14 @@ namespace SWPCCBilling2.Modules
 		public decimal Paid { get; set; }
 		public decimal CreditDue { get; set; }
 		public decimal Donated { get; set; }
+		public decimal Balance { get; set; }
 
 		public string DueText { get; set; }
 		public string CreditUsedText { get; set; }
 		public string PaidText { get; set; }
 		public string CreditDueText { get; set; }
 		public string DonatedText { get; set; }
+		public string BalanceText { get; set ; }
 
 		public string CheckNumbers { get; set; }
 		public string Closed { get; set; }
@@ -152,6 +164,8 @@ namespace SWPCCBilling2.Modules
 			CreditDueText = CreditDue.ToHtmlCurrency();
 			Donated = AmountDonated(invoice);
 			DonatedText = Donated.ToHtmlCurrency();
+			Balance = invoice.BalanceDue();
+			BalanceText = Balance.ToHtmlCurrency();
 
 			var checkNumbers = new StringBuilder();
 
@@ -166,7 +180,7 @@ namespace SWPCCBilling2.Modules
 			CheckNumbers = checkNumbers.ToString();
 
 			if (invoice.Closed != null)
-				Closed = invoice.Closed.Value.ToString("d");
+				Closed = invoice.Closed.Value.ToString("MM/dd");
 		}
 
 		private decimal AmountDue(Invoice invoice)
