@@ -11,6 +11,7 @@ namespace SWPCCBilling2.Controllers
 	{
 		private readonly SettingsStore _settingsStore;
 		private readonly FamilyStore _familyStore;
+		private readonly ParentStore _parentStore;
 		private readonly UrlFactory _urlFactory;
 		private readonly MICRStore _micrStore;
 
@@ -18,6 +19,7 @@ namespace SWPCCBilling2.Controllers
 		{
 			_settingsStore = SettingsStore.DefaultSettingsStore;
 			_familyStore = new FamilyStore();
+			_parentStore = new ParentStore();
 			_urlFactory = UrlFactory.DefaultUrlFactory;
 			_micrStore = new MICRStore();
 		}
@@ -53,6 +55,42 @@ namespace SWPCCBilling2.Controllers
 				: _urlFactory.UrlForPath("families");
 
 			Process.Start(url);
+		}
+
+		[Action("new-family", "family-name city zip num-children billable-days")]
+		public void NewFamily(string familyName, /*string streetAddress, */string city, string zip, int numChildren, int billableDays)
+		{
+			var newFamily = new Family();
+
+			newFamily.Name = familyName;
+			//newFamily.StreetAddress = streetAddress;
+			newFamily.City = city;
+			newFamily.State = "OR";
+			newFamily.Zip = zip;
+			newFamily.DueDay = 10;
+			newFamily.NumChildren = numChildren;
+			newFamily.BillableDays = billableDays;
+			newFamily.IsNew = true;
+			newFamily.Joined = DateFactory.DefaultDateFactory.GetInvoiceDate(null);
+
+			_familyStore.Add(newFamily);
+
+			string url = _urlFactory.UrlForPath("family/{0}", familyName);
+
+			Process.Start(url);
+		}
+
+		[Action("add-parent", "family-name first-name email")]
+		public void AddParent(string familyName, string firstName, string email)
+		{
+			var parent = new Parent 
+			{
+				FamilyName = familyName,
+				Name = firstName + " " + familyName,
+				Email = email
+			};
+
+			_parentStore.Add(parent);
 		}
 
 		[Action("remove-family", "family-name")]

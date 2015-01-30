@@ -9,10 +9,12 @@ namespace SWPCCBilling2.Infrastructure
 	public class FamilyStore
 	{
 		private readonly DatabaseFactory _dbFactory;
+		private readonly DateFactory _dateFactory;
 
 		public FamilyStore()
 		{
 			_dbFactory = new DatabaseFactory();
+			_dateFactory = DateFactory.DefaultDateFactory;
 		}
 
 		public void RemoveAll()
@@ -46,7 +48,8 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			using (IDbConnection con = _dbFactory.Open())
 			{
-				foreach (var record in con.Query<Family>("SELECT * FROM Family WHERE Departed IS NULL OR Departed < date(\"now\") ORDER BY Name"))
+				foreach (var record in con.Query<Family>("SELECT * FROM Family WHERE Departed IS NULL OR NOT Departed < " +
+					"date(\"now\") ORDER BY Name"))
 					yield return record;
 			}
 		}
@@ -64,7 +67,7 @@ namespace SWPCCBilling2.Infrastructure
 		public void Remove(string name)
 		{
 			using (IDbConnection con = _dbFactory.Open())
-				con.Execute("UPDATE Family SET Departed=date(\"now\") WHERE Name=?", new { name });
+				con.Execute("UPDATE Family SET Departed=? WHERE Name=?", new { departed=_dateFactory.Now(), name });
 		}
 
 		public bool Save(Family record)

@@ -114,7 +114,6 @@ namespace SWPCCBilling2.Infrastructure
 						break;
 					
 					case ConsoleKey.Escape:
-						_line.Append("credit-payment Sherwood/Odman 1235 123.45");
 						_reparse = true;
 						break;
 

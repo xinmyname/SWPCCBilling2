@@ -19,4 +19,20 @@ namespace SWPCCBilling2.Models
 			return string.Format("[Token: Position={0}, Length={1}, Text=\"{2}\", IsWhiteSpace={3}]", Position, Length, Text, IsWhiteSpace);
 		}
 	}
+
+	public class TextToken : CommandLineToken
+	{
+	}
+
+	public class WhiteSpaceToken : CommandLineToken
+	{
+	}
+
+	public class QuoteToken : CommandLineToken
+	{
+	}
+
+	public class CommentToken : CommandLineToken
+	{
+	}
 }
