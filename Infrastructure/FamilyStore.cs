@@ -99,6 +99,20 @@ namespace SWPCCBilling2.Infrastructure
 					return new[]{ Load(name) };
 			}
 		}
+
+		public void RenameFamily(string oldName, string newName)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				con.Execute("UPDATE Family SET Name=? WHERE Name=?", new { newName, oldName });
+				con.Execute("UPDATE Parent SET FamilyName=? WHERE FamilyName=?", new { newName, oldName });
+				con.Execute("UPDATE Discount SET FamilyName=? WHERE FamilyName=?", new { newName, oldName });
+				con.Execute("UPDATE MICR SET FamilyName=? WHERE FamilyName=?", new { newName, oldName });
+				con.Execute("UPDATE Invoice SET FamilyName=? WHERE FamilyName=?", new { newName, oldName });
+				con.Execute("UPDATE LedgerLine SET FamilyName=? WHERE FamilyName=?", new { newName, oldName });
+				con.Execute("UPDATE Payment SET FamilyName=? WHERE FamilyName=?", new { newName, oldName });
+			}
+		}
 	}
 }
 
