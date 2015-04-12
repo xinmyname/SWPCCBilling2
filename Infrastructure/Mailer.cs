@@ -18,6 +18,7 @@ namespace SWPCCBilling2.Infrastructure
 		public Mailer()
 		{
 			_settingsStore = SettingsStore.DefaultSettingsStore;
+			ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 		}
 
 		public bool SendSecretly(string subject, string htmlBody, string emailPassword, IList<string> emailTo)
