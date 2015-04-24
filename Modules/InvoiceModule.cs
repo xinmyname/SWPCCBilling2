@@ -9,10 +9,13 @@ namespace SWPCCBilling2.Modules
 	{
 		public InvoiceModule(InvoiceViewModelFactory factory)
 		{
-			Get["/invoice/{id}"] = _ =>
+			Get["/invoice/{id}/{view?}"] = _ =>
 			{
+				string viewName = _.view;
+				if (viewName == null)
+					viewName = "Monthly";
 				InvoiceViewModel viewModel = factory.Create(_.id);
-				return View["Monthly", viewModel];
+				return View[viewName, viewModel];
 			};
 		}
 	}

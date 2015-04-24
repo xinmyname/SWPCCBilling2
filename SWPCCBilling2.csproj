@@ -176,6 +176,7 @@
     <EmbeddedResource Include="Resources\InvoicesForDeposits.sql" />
     <EmbeddedResource Include="Resources\CategoryTotals.sql" />
     <EmbeddedResource Include="Views\Family\Detail.html" />
+    <EmbeddedResource Include="Views\Invoice\Camp.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

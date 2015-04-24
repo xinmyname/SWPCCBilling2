@@ -119,7 +119,8 @@ namespace SWPCCBilling2.Controllers
 		[Action("send-invoice","family-name date(optional)")]
 		public void SendInvoice(
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
-			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
+			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date,
+			[Optional]string viewName)
 		{
 			Console.Write("Password? ");
 			string password = Console.ReadLine();
@@ -139,7 +140,7 @@ namespace SWPCCBilling2.Controllers
 				}
 
 				string subject = String.Format("SWPCC {0:MMMM yyyy} Invoice for {1}", invoice.Opened, family.Name);
-				string htmlBody = _invoiceDocFactory.CreateInvoiceHtmlText(invoice.Id);
+				string htmlBody = _invoiceDocFactory.CreateInvoiceHtmlText(invoice.Id, viewName);
 
 				IList<string> emailAddresses = _parentStore.LoadForFamilyName(family.Name)
 					.Where(p => !String.IsNullOrEmpty(p.Email))
@@ -160,7 +161,8 @@ namespace SWPCCBilling2.Controllers
 		[Action("export-invoice","family-name date(optional)")]
 		public void ExportInvoice(
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
-			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
+			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date,
+			[Optional]string viewName)
 		{
 			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 
@@ -184,7 +186,7 @@ namespace SWPCCBilling2.Controllers
 
 				var outStream = new FileStream(invoiceFilePath, FileMode.CreateNew);
 
-				Stream inStream = _invoiceDocFactory.CreateInvoiceHtmlStream(invoice.Id);
+				Stream inStream = _invoiceDocFactory.CreateInvoiceHtmlStream(invoice.Id, viewName);
 
 				inStream.CopyTo(outStream);
 
@@ -199,14 +201,15 @@ namespace SWPCCBilling2.Controllers
 		[Action("show-invoice","family-name date(optional)")]
 		public void ShowInvoice(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName, 
-			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date)
+			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date,
+			[Optional]string viewName)
 		{
 			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 			Invoice invoice = _invoiceStore.Load(familyName, invoiceDate);
 
 			if (invoice != null)
 			{
-				string url = _urlFactory.UrlForPath("invoice/{0}", invoice.Id);
+				string url = _urlFactory.UrlForPath("invoice/{0}/{1}", invoice.Id, viewName);
 				Process.Start(url);
 			} 
 			else
