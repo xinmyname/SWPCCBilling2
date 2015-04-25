@@ -31,7 +31,7 @@ namespace SWPCCBilling2.Infrastructure
 		{
 			string text;
 
-			using (Stream stream = CreateInvoiceHtmlStream(invoiceId))
+			using (Stream stream = CreateInvoiceHtmlStream(invoiceId, viewName))
 			using (var reader = new StreamReader(stream))
 			{
 				text = reader.ReadToEnd();

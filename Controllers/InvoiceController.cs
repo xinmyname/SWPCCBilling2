@@ -116,11 +116,11 @@ namespace SWPCCBilling2.Controllers
 			}
 		}
 
-		[Action("send-invoice","family-name date(optional)")]
+		[Action("send-invoice","family-name date(optional) invoice-style(optional)")]
 		public void SendInvoice(
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date,
-			[Optional]string viewName)
+			[CompleteWith(typeof(InvoiceStyleCompletion))][Optional]string viewName)
 		{
 			Console.Write("Password? ");
 			string password = Console.ReadLine();
@@ -158,11 +158,11 @@ namespace SWPCCBilling2.Controllers
 			}
 		}
 
-		[Action("export-invoice","family-name date(optional)")]
+		[Action("export-invoice","family-name date(optional) invoice-style(optional)")]
 		public void ExportInvoice(
 			[CompleteWith(typeof(FamilyCompletion))] string name, 
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date,
-			[Optional]string viewName)
+			[CompleteWith(typeof(InvoiceStyleCompletion))][Optional]string viewName)
 		{
 			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 
@@ -198,11 +198,11 @@ namespace SWPCCBilling2.Controllers
 			}
 		}
 
-		[Action("show-invoice","family-name date(optional)")]
+		[Action("show-invoice","family-name date(optional) invoice-style(optional)")]
 		public void ShowInvoice(
 			[CompleteWith(typeof(FamilyCompletion))] string familyName, 
 			[CompleteWith(typeof(DateCompletion))][Optional] DateTime? date,
-			[Optional]string viewName)
+			[CompleteWith(typeof(InvoiceStyleCompletion))][Optional]string viewName)
 		{
 			DateTime invoiceDate = _dateFactory.GetInvoiceDate(date);
 			Invoice invoice = _invoiceStore.Load(familyName, invoiceDate);

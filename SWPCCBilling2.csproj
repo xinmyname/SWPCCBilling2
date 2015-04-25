@@ -124,6 +124,7 @@
     <Compile Include="Infrastructure\DepositSummaryFactory.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Infrastructure\MICRStore.cs" />
+    <Compile Include="Completions\InvoiceStyleCompletion.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
