@@ -221,6 +221,12 @@ namespace SWPCCBilling2.Controllers
 			Console.WriteLine("Deposit {0} for {1:C} completed.", deposit.Id, deposit.Amount);
 		}
 
+		[Action("add-note", "note")]
+		public void AddNote(string note)
+		{
+			_ledger.AddNoteToLastEntry(note);
+		}
+
 		[Action("show-payment")]
 		public void ShowPayment()
 		{

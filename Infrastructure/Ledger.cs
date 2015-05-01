@@ -10,6 +10,8 @@ namespace SWPCCBilling2.Infrastructure
 	{
 		private readonly DatabaseFactory _dbFactory;
 
+		public static long LastLedgerId = -1;
+
 		public Ledger()
 		{
 			_dbFactory = new DatabaseFactory();
@@ -136,12 +138,19 @@ namespace SWPCCBilling2.Infrastructure
 				con.Execute("UPDATE LedgerLine SET InvoiceId=NULL WHERE InvoiceId=?", new { invoiceId });
 		}
 
+		public void AddNoteToLastEntry(string note)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+				con.Execute("UPDATE LedgerLine SET Notes=? WHERE Id=?", new { note, LastLedgerId });
+		}
+
 		private LedgerLine AddLine(LedgerLine line)
 		{
 			using (IDbConnection con = _dbFactory.Open())
 			{
 				con.Execute("INSERT INTO [LedgerLine] VALUES (NULL,?,?,?,?,?,?,?,?)", line.NonKeyValues());
 				line.Id = con.ExecuteScalar<long>("SELECT MAX(Id) FROM [LedgerLine]");
+				LastLedgerId = line.Id;
 			}
 
 			return line;

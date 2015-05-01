@@ -14,14 +14,14 @@
       <File FileName="Controllers/SettingsController.cs" Line="1" Column="1" />
       <File FileName="Infrastructure/DatabaseFactory.cs" Line="1" Column="1" />
       <File FileName="Controllers/FeeController.cs" Line="1" Column="1" />
-      <File FileName="Completions/InvoiceStyleCompletion.cs" Line="15" Column="1" />
+      <File FileName="Completions/InvoiceStyleCompletion.cs" Line="1" Column="1" />
       <File FileName="Models/CommandLineToken.cs" Line="14" Column="35" NotebookId="1" />
       <File FileName="Infrastructure/Span.cs" Line="1" Column="1" NotebookId="1" />
       <File FileName="Models/Invoice.cs" Line="1" Column="1" NotebookId="1" />
       <File FileName="Views/Invoice/Monthly.html" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Controllers/InvoiceController.cs" Line="143" Column="1" NotebookId="1" />
+      <File FileName="Controllers/InvoiceController.cs" Line="1" Column="1" NotebookId="1" />
       <File FileName="Views/Invoice/Camp.html" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Infrastructure/InvoiceDocumentFactory.cs" Line="34" Column="59" NotebookId="1" />
+      <File FileName="Infrastructure/InvoiceDocumentFactory.cs" Line="1" Column="1" NotebookId="1" />
       <File FileName="Modules/InvoiceModule.cs" Line="1" Column="1" NotebookId="1" />
       <File FileName="Completions/ActionCompletion.cs" Line="1" Column="1" NotebookId="1" />
       <File FileName="Completions/FilteredStringCompletion.cs" Line="1" Column="1" NotebookId="1" />
