@@ -21,7 +21,7 @@ namespace SWPCCBilling2.Controllers
 		public void SetDatabase(string name)
 		{
 			Settings settings = _settingsStore.Load();
-			settings.DatabaseName = name;
+			settings.DatabaseName = name + ".sqlite";
 			_settingsStore.Save(settings);
 		}
 
