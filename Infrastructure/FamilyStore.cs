@@ -90,7 +90,7 @@ namespace SWPCCBilling2.Infrastructure
 				case "ALL":
 					return LoadActive();
 				case "RETURNING":
-					return LoadActive().Where(f => !f.IsNew);
+					return LoadActive().Where(f => !f.IsGraduating);
 				case "NEW":
 					return LoadActive().Where(f => f.IsNew);
 				case "GRADUATING":
