@@ -3,6 +3,7 @@ using Nancy;
 using SWPCCBilling2.Infrastructure;
 using SWPCCBilling2.Models;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
 
@@ -35,7 +36,31 @@ namespace SWPCCBilling2.Modules
 
 			Get["/report/deposit/{id}"] = _ =>
 			{
-				throw new NotImplementedException();
+				long depositId = _.id;
+				Deposit deposit = depositStore.Load(depositId);
+				string depositDateText = deposit != null
+					? deposit.Date.ToString("dddd MMMM d, yyyy")
+					: "Not Found";
+
+				IList<Payment> deposited = paymentStore.LoadForDepositId(depositId).ToList();
+				decimal depositAmount = deposited.Sum(x => (decimal)x.Amount);
+
+				return View["Deposit", new {
+					DepositId = depositId,
+					Checks = deposited
+						.OrderBy(p => p.Id)
+						.Select(p => new {
+							p.Id,
+							p.FamilyName,
+							p.CheckNum,
+							p.Amount,
+							AmountText = p.Amount.ToString("C")
+						}),
+					Count = deposited.Count,
+					Amount = depositAmount,
+					AmountText = depositAmount.ToString("C"),
+					DepositDateText = depositDateText
+				}];
 			};
 
 			Get["/report/unpaid/{date}"] = _ =>

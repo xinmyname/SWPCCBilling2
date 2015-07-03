@@ -47,16 +47,14 @@ namespace SWPCCBilling2.Controllers
 
 		[Action("report-deposit")]
 		public void ReportDeposit(
-			[CompleteWith(typeof(DepositDateCompletion))][Optional] DateTime? depositDate)
+			[CompleteWith(typeof(DepositDateCompletion))]
+			[Optional] long? depositId)
 		{
-			string depositId = "pending";
+			string deposit = (depositId == null)
+				? "pending"
+				: depositId.Value.ToString();
 
-			if (depositDate != null)
-			{
-				throw new NotImplementedException("Need to get deposit ID");
-			}
-
-			string url = _urlFactory.UrlForPath("report/deposit/{0}", depositId);
+			string url = _urlFactory.UrlForPath("report/deposit/{0}", deposit);
 			Process.Start(url);
 		}
 	}

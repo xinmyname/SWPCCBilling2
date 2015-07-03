@@ -1,9 +1,10 @@
 ﻿<Properties StartupItem="SWPCCBilling2.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/CreditDebitController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/InvoiceController.cs">
     <Files>
       <File FileName="Controllers/SettingsController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/CreditDebitController.cs" Line="238" Column="47" />
+      <File FileName="Controllers/CreditDebitController.cs" Line="1" Column="1" />
+      <File FileName="Controllers/InvoiceController.cs" Line="54" Column="1" />
       <File FileName="Models/CommandLineToken.cs" Line="14" Column="35" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

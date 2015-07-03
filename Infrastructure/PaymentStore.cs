@@ -56,6 +56,15 @@ namespace SWPCCBilling2.Infrastructure
 			}
 		}
 
+		public IEnumerable<Payment> LoadForDepositId(long depositId)
+		{
+			using (IDbConnection con = _dbFactory.Open())
+			{
+				foreach (var record in con.Query<Payment>("SELECT * FROM Payment WHERE DepositId=? ORDER BY FamilyName", new { depositId }))
+					yield return record;
+			}
+		}
+
 		public IEnumerable<Payment> LoadPaymentsForInvoice(Invoice invoice)
 		{
 			using (IDbConnection con = _dbFactory.Open())

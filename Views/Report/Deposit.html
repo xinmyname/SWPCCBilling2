@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body,td {
+				font-family: 'Calibri', 'Helvetica Neue', 'Arial', sans-serif; font-weight: normal; font-size: 9pt;
+			}
+			td {
+				padding-right: 0.5em;
+			}
+			td+td {
+				text-align: right;
+			}
+			th {
+				text-align: left;
+				padding-right: 0.5em;
+			}
+			th+th {
+				text-align: right;
+			}
+			tfoot tr td {
+				padding-top: 0.75em;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Deposit @Model.DepositId</h1>
+		<h2>@Model.DepositDateText</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Family</th>
+					<th>Check #</th>
+					<th>Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				@Each.Model.Checks
+				<tr>
+					<td>@Current.Id</td>
+					<td>@Current.FamilyName</td>
+					<td>@Current.CheckNum</td>
+					<td>@Current.AmountText</td>
+				</tr>
+				@EndEach
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3">@Model.Count, Total</td>
+					<td>@Model.AmountText</td>
+				</tr>
+			</tfoot>
+		</table>
+	</body>
+</html>
