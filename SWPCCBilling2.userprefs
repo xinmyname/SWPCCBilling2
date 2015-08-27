@@ -1,11 +1,21 @@
 ﻿<Properties StartupItem="SWPCCBilling2.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/InvoiceController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/FamilyController.cs">
     <Files>
       <File FileName="Controllers/SettingsController.cs" Line="1" Column="1" />
       <File FileName="Controllers/CreditDebitController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/InvoiceController.cs" Line="54" Column="1" />
-      <File FileName="Models/CommandLineToken.cs" Line="14" Column="35" NotebookId="1" />
+      <File FileName="Controllers/InvoiceController.cs" Line="1" Column="1" />
+      <File FileName="Controllers/ReportController.cs" Line="1" Column="1" />
+      <File FileName="Modules/ReportModule.cs" Line="1" Column="1" />
+      <File FileName="Views/Invoice/Camp.html" Line="1" Column="1" />
+      <File FileName="View Models/InvoiceViewModel.cs" Line="1" Column="1" />
+      <File FileName="Modules/InvoiceModule.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/InvoiceViewModelFactory.cs" Line="1" Column="1" />
+      <File FileName="Controllers/FamilyController.cs" Line="20" Column="41" />
+      <File FileName="Models/CommandLineToken.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Infrastructure/PaymentStore.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Views/Report/Deposit.html" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Infrastructure/DepositStore.cs" Line="1" Column="1" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
