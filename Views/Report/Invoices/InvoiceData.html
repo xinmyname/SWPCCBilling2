@@ -1,1 +1,27 @@
-﻿
+﻿		<div class="invoice">
+			<table class="invoiceHeader">
+				<tr>
+					<th>Invoice #{{InvoiceId}}</th>
+					<th>{{FamilyName}}</th>
+					<th>{{AmountDueText}}</th>
+				</tr>
+			</table>
+
+			<table class="invoicePayments">
+				<tr>
+					<th>Payment Id</th>
+					<th>Check #</th>
+					<th>Amount</th>
+					<th>Received</th>
+				</tr>
+{{PaymentData}}
+			</table>
+
+			<table class="feePayments">
+				<tr>
+					<th>Category</th>
+					<th>Amount</th>
+				</tr>
+{{FeePayments}}
+			</table>
+		</div>

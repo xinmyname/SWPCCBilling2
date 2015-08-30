@@ -5,23 +5,11 @@
 			body,td {
 				font-family: 'Calibri', 'Helvetica Neue', 'Arial', sans-serif; font-weight: normal; font-size: 9pt;
 			}
-			td {
-				padding-right: 0.5em;
-			}
-			td+td {
-				text-align: right;
-			}
+
 			th {
 				text-align: left;
-				padding-right: 0.5em;
 			}
-			th+th {
-				text-align: right;
-			}
-			tfoot tr td {
-				padding-top: 0.75em;
-				font-weight: bold;
-			}
+
 			.neg {
 				color: red;
 			}
@@ -31,12 +19,49 @@
 			.money {
 				text-align: right;
 			}
+
+			.deposit {
+				margin-bottom: 2em;
+			}
+
+			.depositHeader {
+				width: 500px;
+			}
+
+			.depositHeader tr th {
+				font-size: 1.5em;
+				text-align:left;
+			}
+
+			.depositHeader tr th+th+th { text-align:right; }
+
+			.invoice {
+				margin-left: 40px;
+				margin-bottom: 1em;
+			}
+
+			.invoiceHeader {
+				width: 460px;
+			}
+
+			.invoiceHeader tr th {
+				font-size: 1.25em;
+				text-align:left;
+			}
+
+			.invoiceHeader tr th+th+th { text-align:right; }
+
+			.invoicePayments {
+				margin-left: 40px;
+			}
+
+			.feePayments {
+				margin-left: 40px;
+			}
+
 		</style>
 	</head>
 	<body>
-		<h1>Invoices for Deposits</h1>
-
-
-
+		@Model.Html
 	</body>
 </html>

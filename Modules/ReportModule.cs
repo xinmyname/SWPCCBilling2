@@ -11,7 +11,7 @@ namespace SWPCCBilling2.Modules
 {
 	public class ReportModule : NancyModule
 	{
-		public ReportModule(PaymentStore paymentStore, InvoiceStore invoiceStore, ParentStore parentStore, DepositStore depositStore, DepositSummaryFactory depositSummaryFactory, FeeStore feeStore)
+		public ReportModule(PaymentStore paymentStore, InvoiceStore invoiceStore, ParentStore parentStore, DepositStore depositStore, DepositSummaryFactory depositSummaryFactory, FeeStore feeStore, InvoiceReportRenderer invoiceReportRenderer)
 		{
 			Get["/report/deposit/pending"] = _ =>
 			{
@@ -134,8 +134,10 @@ namespace SWPCCBilling2.Modules
 						{
 							Fee fee = cachedFees[invoiceLine.FeeCode];
 
-							if (fee.Category != "Payment")
-								amountDue += invoiceLine.Amount();
+							if (fee.Category == "Payment")
+								continue;
+
+							amountDue += invoiceLine.Amount();
 
 							decimal feeTotal = feeTotals.ContainsKey(fee.Category)
 								? feeTotals[fee.Category]
@@ -175,7 +177,7 @@ namespace SWPCCBilling2.Modules
 					models.Add(depositInvoiceData);
 				}
 
-				return View["Invoices", models];
+				return View["Invoices", new { Html = invoiceReportRenderer.Render(models)}];
 			};
 
 			Get["/report/monthly/{date}"] = _ =>

@@ -125,6 +125,7 @@
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Infrastructure\MICRStore.cs" />
     <Compile Include="Completions\InvoiceStyleCompletion.cs" />
+    <Compile Include="Infrastructure\InvoiceReportRenderer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -146,6 +147,7 @@
     <Folder Include="View Models\" />
     <Folder Include="Views\Invoice\" />
     <Folder Include="Views\Report\" />
+    <Folder Include="Views\Report\Invoices\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateSchema.sql" />
@@ -180,6 +182,10 @@
     <EmbeddedResource Include="Views\Invoice\Camp.html" />
     <EmbeddedResource Include="Views\Report\Deposit.html" />
     <EmbeddedResource Include="Views\Report\Invoices.html" />
+    <EmbeddedResource Include="Views\Report\Invoices\DepositInvoiceData.html" />
+    <EmbeddedResource Include="Views\Report\Invoices\InvoiceData.html" />
+    <EmbeddedResource Include="Views\Report\Invoices\PaymentData.html" />
+    <EmbeddedResource Include="Views\Report\Invoices\FeePayments.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
