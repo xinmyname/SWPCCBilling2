@@ -1,21 +1,18 @@
 ﻿<Properties StartupItem="SWPCCBilling2.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/FamilyController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Views/Report/Invoices.html">
     <Files>
-      <File FileName="Controllers/SettingsController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/CreditDebitController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/InvoiceController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/ReportController.cs" Line="1" Column="1" />
-      <File FileName="Modules/ReportModule.cs" Line="1" Column="1" />
-      <File FileName="Views/Invoice/Camp.html" Line="1" Column="1" />
-      <File FileName="View Models/InvoiceViewModel.cs" Line="1" Column="1" />
-      <File FileName="Modules/InvoiceModule.cs" Line="1" Column="1" />
-      <File FileName="Infrastructure/InvoiceViewModelFactory.cs" Line="1" Column="1" />
-      <File FileName="Controllers/FamilyController.cs" Line="20" Column="41" />
-      <File FileName="Models/CommandLineToken.cs" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Infrastructure/PaymentStore.cs" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Views/Report/Deposit.html" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Infrastructure/DepositStore.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Infrastructure/DepositStore.cs" Line="33" Column="5" />
+      <File FileName="Infrastructure/InvoiceViewModelFactory.cs" Line="44" Column="13" />
+      <File FileName="Infrastructure/DepositSummaryFactory.cs" Line="29" Column="4" />
+      <File FileName="Infrastructure/InvoiceStore.cs" Line="144" Column="4" />
+      <File FileName="Views/Report/Invoices.html" Line="9" Column="8" />
+      <File FileName="Infrastructure/InvoiceReportRenderer.cs" Line="46" Column="4" />
+      <File FileName="Modules/ReportModule.cs" Line="142" Column="7" />
+      <File FileName="Views/Report/Invoices/DepositInvoiceData.html" Line="4" Column="5" NotebookId="1" />
+      <File FileName="Views/Report/Invoices/InvoiceData.html" Line="6" Column="31" NotebookId="1" />
+      <File FileName="Views/Report/Invoices/FeePayments.html" Line="5" Column="1" NotebookId="1" />
+      <File FileName="Views/Report/Invoices/PaymentData.html" Line="7" Column="1" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
