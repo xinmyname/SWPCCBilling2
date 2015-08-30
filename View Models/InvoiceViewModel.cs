@@ -19,6 +19,7 @@ namespace SWPCCBilling2
 	{
 		public string Description { get; set; }
 		public string Notes { get; set; }
+		public string FeeCode { get; set; }
 		public string UnitPrice { get; set; }
 		public long Quantity { get; set; }
 		public string Amount { get; set; }

@@ -40,7 +40,7 @@ namespace SWPCCBilling2.Models
 				balance += line.Amount();
 
 			return balance;
-		}
+		}			
 
 		public void AddLedgerLine(LedgerLine ledgerLine)
 		{

@@ -11,7 +11,7 @@ namespace SWPCCBilling2.Modules
 {
 	public class ReportModule : NancyModule
 	{
-		public ReportModule(PaymentStore paymentStore, InvoiceStore invoiceStore, ParentStore parentStore, DepositStore depositStore, DepositSummaryFactory depositSummaryFactory)
+		public ReportModule(PaymentStore paymentStore, InvoiceStore invoiceStore, ParentStore parentStore, DepositStore depositStore, DepositSummaryFactory depositSummaryFactory, FeeStore feeStore)
 		{
 			Get["/report/deposit/pending"] = _ =>
 			{
@@ -77,6 +77,107 @@ namespace SWPCCBilling2.Modules
 				return View["Unpaid", unpaidEmails];
 			};
 
+			Get["/report/invoices/{deposit}"] = _ =>
+			{
+				string depositArg = _.deposit;
+				IList<long> depositIds;
+
+				if (depositArg == "all")
+					depositIds = depositStore.LoadAll()
+						.Select(d => d.Id)
+						.OrderBy(id => id)
+						.ToList();
+				else
+					depositIds = new List<long>(new[]{ Int64.Parse(depositArg)});
+
+				IDictionary<string, Fee> cachedFees = feeStore.LoadAll().ToDictionary(f => f.Code, f => f);
+
+				var models = new List<DepositInvoiceData>();
+
+				foreach (long depositId in depositIds)
+				{
+					Deposit deposit = depositStore.Load(depositId);
+
+					var depositInvoiceData = new DepositInvoiceData
+					{
+						DepositId = depositId,
+						DepositDateText = deposit.Date.ToShortDateString(),
+						DepositAmountText = deposit.Amount.ToString("C")
+					};
+
+					IList<Payment> payments = paymentStore
+						.LoadForDepositId(depositId)
+						.OrderBy(p => p.Received)
+						.ToList();
+
+					IList<long> invoiceIds = payments
+						.Select(p => p.InvoiceId)
+						.Distinct()
+						.OrderBy(id => id)
+						.ToList();
+
+					foreach (long invoiceId in invoiceIds)
+					{
+						var invoice = invoiceStore.Load(invoiceId);
+
+						var invoiceData = new InvoiceData
+						{
+							InvoiceId = invoiceId,
+							FamilyName = invoice.FamilyName,
+							ClosedDateText = invoice.Closed.Value.ToShortDateString()
+						};
+
+						decimal amountDue = 0.0m;
+						var feeTotals = new Dictionary<string, decimal>();
+
+						foreach (InvoiceLine invoiceLine in invoice.Lines)
+						{
+							Fee fee = cachedFees[invoiceLine.FeeCode];
+
+							if (fee.Category != "Payment")
+								amountDue += invoiceLine.Amount();
+
+							decimal feeTotal = feeTotals.ContainsKey(fee.Category)
+								? feeTotals[fee.Category]
+								: 0.0m;
+
+							feeTotal += invoiceLine.Amount();
+
+							feeTotals[fee.Category] = feeTotal;
+						}
+
+						invoiceData.AmountDueText = amountDue.ToString("C");
+
+						foreach (Payment payment in payments.Where(p => p.InvoiceId == invoiceId))
+						{
+							var paymentData = new PaymentData
+							{
+								PaymentId = payment.Id,
+								CheckNumber = payment.CheckNum,
+								AmountText = payment.Amount.ToString("C"),
+								ReceivedDateText = payment.Received.ToShortDateString()
+							};
+
+							invoiceData.PaymentData.Add(paymentData);
+						}
+
+						invoiceData.FeePayments = feeTotals.ToList()
+							.Select(fp => new FeePayment
+							{
+								FeeCategory = fp.Key,
+								TotalPaidText = fp.Value.ToHtmlCurrency()
+							}).ToList();
+
+						depositInvoiceData.InvoiceData.Add(invoiceData);
+
+					}
+
+					models.Add(depositInvoiceData);
+				}
+
+				return View["Invoices", models];
+			};
+
 			Get["/report/monthly/{date}"] = _ =>
 			{
 				DateTime month = _.date;
@@ -124,6 +225,50 @@ namespace SWPCCBilling2.Modules
 				return View["Monthly", model];
 			};
 		}
+	}
+
+	public class DepositInvoiceData
+	{
+		public long DepositId { get; set; }
+		public string DepositDateText { get; set; }
+		public string DepositAmountText { get; set; }
+
+		public IList<InvoiceData> InvoiceData { get; set; }
+
+		public DepositInvoiceData()
+		{
+			InvoiceData = new List<InvoiceData>();
+		}
+	}
+
+	public class InvoiceData
+	{
+		public long InvoiceId { get; set; }
+		public string FamilyName { get; set; }
+		public string AmountDueText { get; set; }
+		public string ClosedDateText { get; set; }
+
+		public IList<PaymentData> PaymentData { get; set; }
+		public IList<FeePayment> FeePayments { get; set; }
+
+		public InvoiceData()
+		{
+			PaymentData = new List<PaymentData>();
+		}
+	}
+
+	public class PaymentData
+	{
+		public long PaymentId { get; set; }
+		public string CheckNumber { get; set; }
+		public string AmountText { get; set; }
+		public string ReceivedDateText { get; set; }
+	}
+
+	public class FeePayment
+	{
+		public string FeeCategory { get; set; }
+		public string TotalPaidText { get; set; }
 	}
 
 	public class MonthlyData

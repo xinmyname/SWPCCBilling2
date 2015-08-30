@@ -179,6 +179,7 @@
     <EmbeddedResource Include="Views\Family\Detail.html" />
     <EmbeddedResource Include="Views\Invoice\Camp.html" />
     <EmbeddedResource Include="Views\Report\Deposit.html" />
+    <EmbeddedResource Include="Views\Report\Invoices.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

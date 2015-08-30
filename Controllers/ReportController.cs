@@ -37,12 +37,12 @@ namespace SWPCCBilling2.Controllers
 			Process.Start(url);
 		}
 
-		[Action("report-payments","date")]
-		public void ReportPayments(
-			[CompleteWith(typeof(DateCompletion))] DateTime date)
+		[Action("report-invoices","deposit")]
+		public void ReportInvoices(
+			string deposit)
 		{
-
-			throw new NotImplementedException();
+			string url = _urlFactory.UrlForPath("report/invoices/{0}", deposit.ToLower());
+			Process.Start(url);
 		}
 
 		[Action("report-deposit")]

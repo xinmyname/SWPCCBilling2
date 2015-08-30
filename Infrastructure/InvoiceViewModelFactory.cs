@@ -42,6 +42,7 @@ namespace SWPCCBilling2.Infrastructure
 				{
 					Description = _fees[ll.FeeCode].FirstOrDefault(),
 					Notes = ll.Notes,
+					FeeCode = ll.FeeCode,
 					UnitPrice = ll.UnitPrice.ToString("C"),
 					Quantity = ll.Quantity,
 					Amount = ll.Amount().ToString("C")
