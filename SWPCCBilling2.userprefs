@@ -1,18 +1,32 @@
 ﻿<Properties StartupItem="SWPCCBilling2.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Views/Report/Invoices.html">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Models/MICR.cs">
     <Files>
-      <File FileName="Infrastructure/DepositStore.cs" Line="33" Column="5" />
-      <File FileName="Infrastructure/InvoiceViewModelFactory.cs" Line="44" Column="13" />
-      <File FileName="Infrastructure/DepositSummaryFactory.cs" Line="29" Column="4" />
-      <File FileName="Infrastructure/InvoiceStore.cs" Line="144" Column="4" />
-      <File FileName="Views/Report/Invoices.html" Line="9" Column="8" />
-      <File FileName="Infrastructure/InvoiceReportRenderer.cs" Line="46" Column="4" />
-      <File FileName="Modules/ReportModule.cs" Line="142" Column="7" />
-      <File FileName="Views/Report/Invoices/DepositInvoiceData.html" Line="4" Column="5" NotebookId="1" />
-      <File FileName="Views/Report/Invoices/InvoiceData.html" Line="6" Column="31" NotebookId="1" />
-      <File FileName="Views/Report/Invoices/FeePayments.html" Line="5" Column="1" NotebookId="1" />
-      <File FileName="Views/Report/Invoices/PaymentData.html" Line="7" Column="1" NotebookId="1" />
+      <File FileName="Infrastructure/DepositStore.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/InvoiceViewModelFactory.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/DepositSummaryFactory.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/InvoiceStore.cs" Line="1" Column="1" />
+      <File FileName="Views/Report/Invoices.html" Line="1" Column="1" />
+      <File FileName="Infrastructure/InvoiceReportRenderer.cs" Line="1" Column="1" />
+      <File FileName="Modules/ReportModule.cs" Line="1" Column="1" />
+      <File FileName="Models/Fee.cs" Line="1" Column="1" />
+      <File FileName="Controllers/CreditDebitController.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/FamilyStore.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/DatabaseFactory.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/DbConnectionExtensions.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/ObjectExtensions.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/TypeInfo.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/DecimalExtensions.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/DbCommandExtensions.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/Controller.cs" Line="1" Column="1" />
+      <File FileName="Controllers/ReportController.cs" Line="1" Column="1" />
+      <File FileName="Controllers/NotificationController.cs" Line="1" Column="1" />
+      <File FileName="Infrastructure/MICRStore.cs" Line="1" Column="1" />
+      <File FileName="Models/MICR.cs" Line="17" Column="27" />
+      <File FileName="Views/Report/Invoices/DepositInvoiceData.html" Line="11" Column="1" NotebookId="1" />
+      <File FileName="Views/Report/Invoices/InvoiceData.html" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Views/Report/Invoices/FeePayments.html" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Views/Report/Invoices/PaymentData.html" Line="1" Column="1" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
