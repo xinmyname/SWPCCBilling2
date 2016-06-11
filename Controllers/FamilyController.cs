@@ -81,7 +81,7 @@ namespace SWPCCBilling2.Controllers
 		}
 
 		[Action("add-parent", "family-name first-name email")]
-		public void AddParent(string familyName, string firstName, string email)
+		public void AddParent([CompleteWith(typeof(FamilyCompletion))] string familyName, string firstName, string email)
 		{
 			var parent = new Parent 
 			{
